@@ -1,3 +1,6 @@
+"use client";
+
+import { checkUser } from "@/db/checkUser";
 import {
   ClerkLoaded,
   ClerkLoading,
@@ -5,9 +8,24 @@ import {
   SignedOut,
   SignInButton,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
+import { useEffect } from "react";
 
-const ClerkUser = () => {
+export default function ClerkUser() {
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user && user.id) {
+      const verifyUser = async () => {
+        await checkUser(user.id);
+      };
+
+      verifyUser().catch((error) => {
+        console.error("Error checking user:", error);
+      });
+    }
+  }, [user]);
   return (
     <div>
       <ClerkLoading>Loading...</ClerkLoading>
@@ -26,6 +44,4 @@ const ClerkUser = () => {
       </ClerkLoaded>
     </div>
   );
-};
-
-export default ClerkUser;
+}
