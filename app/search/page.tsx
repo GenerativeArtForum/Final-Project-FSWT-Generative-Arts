@@ -1,9 +1,13 @@
-export default function Search() {
+"use client";
+
+import { SearchPageWrapper } from "./page.style";
+
+const SearchPage = () => {
   return (
-    <main>
-      <div>
-        <span>SEARCH PAGE</span>
-      </div>
-    </main>
+    <SearchPageWrapper>
+      <span>SEARCH PAGE</span>
+    </SearchPageWrapper>
   );
-}
+};
+
+export default SearchPage;

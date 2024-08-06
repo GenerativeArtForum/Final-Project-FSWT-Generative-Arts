@@ -27,7 +27,7 @@ export default function ClerkUser() {
     }
   }, [user]);
   return (
-    <div>
+    <>
       <ClerkLoading>Loading...</ClerkLoading>
       <ClerkLoaded>
         <SignedIn>
@@ -35,13 +35,13 @@ export default function ClerkUser() {
         </SignedIn>
         <SignedOut>
           <SignInButton mode="modal">
-            <button className="text-slate-500 border rounded-full p-1 px-3 hover:bg-blue-50 transition duration-500">
+            <button className="text-slate-500 border bg-white rounded-full p-1 px-3 hover:bg-gray-100 transition duration-500">
               {" "}
               Login{" "}
             </button>
           </SignInButton>
         </SignedOut>
       </ClerkLoaded>
-    </div>
+    </>
   );
 }

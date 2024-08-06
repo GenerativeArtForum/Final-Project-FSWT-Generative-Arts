@@ -2,12 +2,14 @@ import Link from "next/link";
 
 import styled from "styled-components";
 
+import { Colors } from "@/constants/Colors";
+
 export const MenuLinkWrapper = styled(Link)<{ $active: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Inter', sans-serif;
-  color: ${(props) => (props.$active ? "#5C8AFF" : "#444444")};
+  font-family: "Inter", sans-serif;
+  color: ${(props) => (props.$active ? Colors.blue : Colors.gray)};
   font-weight: ${(props) => (props.$active ? 600 : 400)};
   text-decoration: none;
   font-size: 18px;
@@ -19,6 +21,6 @@ export const MenuLinkWrapper = styled(Link)<{ $active: boolean }>`
   transition: background-color 0.25s ease;
 
   &:hover {
-    background-color: #F4F4F4;
+    background-color: ${Colors.white};
   }
 `;

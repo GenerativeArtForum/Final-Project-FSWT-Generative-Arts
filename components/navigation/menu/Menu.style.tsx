@@ -1,3 +1,5 @@
+import { Colors } from "@/constants/Colors";
+
 import styled from "styled-components";
 
 export const MenuWrapper = styled.nav`
@@ -13,12 +15,16 @@ export const MenuWrapper = styled.nav`
   padding-bottom: 8px;
   min-height: calc(100vh - 64px);
   padding-right: 32px;
-  border-right: 1.5px solid #e5e7eb;
+  border-right: 1.5px solid ${Colors.lightgray};
 
   div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 24px;
+  }
+
+  .login {
+    padding-left: 14px;
   }
 `;

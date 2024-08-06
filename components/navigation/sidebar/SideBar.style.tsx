@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { Colors } from "@/constants/Colors";
+
 export const SideBarWrapper = styled.nav`
   position: sticky;
   top: 40px;
@@ -12,5 +14,5 @@ export const SideBarWrapper = styled.nav`
   min-width: 140px;
   min-height: calc(100vh - 64px);
   padding-left: 32px;
-  border-left: 1.5px solid #e5e7eb;
+  border-left: 1.5px solid ${Colors.lightgray};
 `;

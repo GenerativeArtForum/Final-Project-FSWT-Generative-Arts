@@ -3,9 +3,13 @@ import { ReactNode } from "react";
 
 import { ClerkProvider } from "@clerk/nextjs";
 
+import { ThreadModalProvider } from "@/hooks/useThreadModal";
+
+import NewThreadModal from "@/components/modals/newThreadModal/newThreadModal";
 import Menu from "@/components/navigation/menu/Menu";
 import SideBar from "@/components/navigation/sidebar/SideBar";
 
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,15 +24,19 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body>
-          <div className="app-sections">
-            <Menu />
-            <div className="content">{children}</div>
-            <SideBar />
-          </div>
-        </body>
-      </html>
+      <ThreadModalProvider>
+        <html lang="en">
+          <body>
+            <NewThreadModal />
+            <Toaster />
+            <div className="app-sections">
+              <Menu />
+              <div className="content">{children}</div>
+              <SideBar />
+            </div>
+          </body>
+        </html>
+      </ThreadModalProvider>
     </ClerkProvider>
   );
 }
