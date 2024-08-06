@@ -8,7 +8,8 @@ import SmallButton from "../smallButton/smallButton";
 import { CreateThreadWrapper } from "./createThread.style";
 
 const CreateThread = () => {
-  const { setIsOpenModal } = useThreadModal();
+  const { newThreadFormState, setIsOpenModal, setThreadData } =
+    useThreadModal();
 
   const newThreadModal = () => {
     setIsOpenModal(true);
@@ -21,7 +22,12 @@ const CreateThread = () => {
         newThreadModal();
       }}
     >
-      <Input type={"text"} placeholder={"Create a new thread"} />
+      <Input
+        type={"text"}
+        placeholder={"Create a new thread"}
+        onChange={(e) => setThreadData("title", e.target.value)}
+        value={newThreadFormState.title}
+      />
       <SmallButton variant={1} icon="plus" onClick={newThreadModal} />
     </CreateThreadWrapper>
   );

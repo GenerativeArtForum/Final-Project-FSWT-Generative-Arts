@@ -5,9 +5,11 @@ export const Colors = {
   lightBlack: "#484C52",
   pureBlack: "#000000",
   blue: "#5C8AFF",
+  lightBlue: "#AFD4FF",
   transparent: "transparent",
   lightgray: "#e5e7eb",
   gray: "#444444",
+  red: "#FF5C5C",
 };
 
 export const TagColors = {

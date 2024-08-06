@@ -28,16 +28,66 @@ export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
     z-index: 1;
   }
 
-  .content {
+  .modal {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: auto;
+    gap: 16px;
+    min-width: 500px;
+    width: fit-content;
     background-color: ${Colors.pureWhite};
     padding: 2rem 4rem;
     border-radius: 16px;
     z-index: 2;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    font-size: 20px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 450px;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
+    gap: 4px;
+  }
+
+  .input-label {
+    font-size: 14px;
+    fonft-family: "Inter", sans-serif;
+    font-weight: 300;
+  }
+
+  .buttons-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    max-width: 450px;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .error-message {
+    font-size: 14px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    color: ${Colors.red};
   }
 `;
