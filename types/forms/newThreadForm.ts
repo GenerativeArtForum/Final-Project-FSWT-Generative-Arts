@@ -2,10 +2,10 @@ export type NewThreadForm = {
     _id: string;
     title: string;
     description: string;
-    tags: Tag[];
+    tags: TagType[];
 }
 
-export type Tag = {
+export type TagType = {
     _id: string;
     name: string;
 }

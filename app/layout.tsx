@@ -8,8 +8,8 @@ import { ThreadModalProvider } from "@/hooks/useThreadModal";
 import NewThreadModal from "@/components/modals/newThreadModal/newThreadModal";
 import Menu from "@/components/navigation/menu/Menu";
 import SideBar from "@/components/navigation/sidebar/SideBar";
-
 import { Toaster } from "@/components/ui/toaster";
+
 import "./globals.css";
 
 export const metadata: Metadata = {

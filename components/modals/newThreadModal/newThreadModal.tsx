@@ -18,10 +18,13 @@ const NewThreadModal = () => {
     isOpenModal,
     newThreadFormState,
     error,
+    selectedTags,
     setIsOpenModal,
     setThreadData,
     setNewThreadFormState,
     validateThreadForm,
+    setError,
+    setSelectedTags,
   } = useThreadModal();
   const { toast } = useToast();
 
@@ -31,12 +34,16 @@ const NewThreadModal = () => {
       const canContinue = validateThreadForm();
       if (canContinue) {
         setIsOpenModal(false);
+        setError(null);
         setNewThreadFormState(InitialNewThreadForm);
+        setSelectedTags([]);
         setToast();
       }
     } else {
       setIsOpenModal(false);
+      setError(null);
       setNewThreadFormState(InitialNewThreadForm);
+      setSelectedTags([]);
     }
   };
 
@@ -93,7 +100,9 @@ const NewThreadModal = () => {
                   key={field.name}
                   type={field.type}
                   placeholder={field.placeholder}
-                  onChange={(e) => setThreadData(field.name, e.target.value)}
+                  onChange={(e) =>
+                    setThreadData(field.name, e.target.value as any)
+                  }
                   value={newThreadFormState[field.name] as string}
                 />
               </div>
@@ -103,12 +112,14 @@ const NewThreadModal = () => {
             <label className="input-label">Tags</label>
             <MultiSelect
               tagsList={tagsList}
-              newThreadFormState={newThreadFormState}
+              placeholder="Add tags"
+              selectedTags={selectedTags}
               setThreadData={setThreadData}
+              setSelectedTags={setSelectedTags}
             />
           </div>
         </div>
-        {error && <p className="error-message">{error}</p>}
+        <p className="error-message">{error}</p>
         <div className="buttons-container">
           <Button
             text="Cancel"

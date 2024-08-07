@@ -2,21 +2,23 @@
 
 import { createContext, ReactNode, useContext, useState } from "react";
 
-import { NewThreadForm } from "@/types/forms/newThreadForm";
+import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
 
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
-import { set } from "mongoose";
 
 type ThreadModalContextType = {
   isOpenModal: boolean;
   feedDisplay: number;
   newThreadFormState: NewThreadForm;
   error: string | null;
+  selectedTags: TagType[] | null;
   setIsOpenModal: (isOpenModal: boolean) => void;
   setFeedDisplay: (feedDisplay: number) => void;
   setNewThreadFormState: (newThreadForm: NewThreadForm) => void;
-  setThreadData: (name: keyof NewThreadForm, value: string) => void;
+  setThreadData: (name: keyof NewThreadForm, value: TagType[]) => void;
   validateThreadForm: () => boolean;
+  setError: (error: string | null) => void;
+  setSelectedTags: (tags: TagType[]) => void;
 };
 
 const ThreadModalContext = createContext<ThreadModalContextType>({
@@ -24,11 +26,14 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   feedDisplay: 1,
   newThreadFormState: InitialNewThreadForm,
   error: null,
+  selectedTags: null,
   setIsOpenModal: () => {},
   setFeedDisplay: () => {},
   setNewThreadFormState: () => {},
   setThreadData: () => {},
   validateThreadForm: () => false,
+  setError: () => {},
+  setSelectedTags: () => {},
 });
 
 export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
@@ -37,8 +42,11 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
   const [newThreadFormState, setNewThreadFormState] =
     useState<NewThreadForm>(InitialNewThreadForm);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<TagType[]>(
+    newThreadFormState.tags || []
+  );
 
-  const setThreadData = (name: keyof NewThreadForm, value: string) => {
+  const setThreadData = (name: keyof NewThreadForm, value: TagType[]) => {
     setError(null);
     setNewThreadFormState((prevState) => ({
       ...prevState,
@@ -73,11 +81,14 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
         feedDisplay,
         newThreadFormState,
         error,
+        selectedTags,
         setIsOpenModal,
         setFeedDisplay,
         setNewThreadFormState,
         setThreadData,
         validateThreadForm,
+        setError,
+        setSelectedTags,
       }}
     >
       {children}

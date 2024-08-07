@@ -75,7 +75,7 @@ export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
     font-weight: 300;
   }
 
-  .buttons-container{
+  .buttons-container {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -88,6 +88,7 @@ export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
     font-size: 14px;
     font-family: "Inter", sans-serif;
     font-weight: 400;
+    height: 20px;
     color: ${Colors.red};
   }
 `;
