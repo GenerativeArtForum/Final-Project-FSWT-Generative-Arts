@@ -13,28 +13,19 @@ export const InputWrapper = styled.input<{ variant?: number }>`
   font-size: 14px;
   background-color: transparent;
   transition: 0.25s ease;
-
-  &:hover {
-    border: ${(props) =>
-      props.variant === 2 ? `1px solid ${Colors.gray}` : "none"};
-  }
 `;
 
-export const InputWrapperArea = styled.textarea<{ variant?: number }>`
-  border: ${(props) =>
-    props.variant === 2 ? `1px solid ${Colors.lightgray}` : "none"};
+export const InputWrapperArea = styled.div<{ variant?: number }>`
   border-radius: 8px;
   outline: none;
-  flex: 1;
-  width: 100%;
   resize: none;
-  padding: ${(props) => (props.variant === 2 ? "8px 8px" : "12px 0")};
-  font-size: 14px;
-  background-color: transparent;
-  transition: 0.25s ease;
 
-  &:hover {
-    border: ${(props) =>
-      props.variant === 2 ? `1px solid ${Colors.gray}` : "none"};
+  div {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  span {
+      font-size: 14px;
   }
 `;

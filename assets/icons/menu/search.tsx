@@ -10,8 +10,8 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => {
       {...props}
     >
       <g
-        stroke={props.stroke}
-        strokeWidth={props.strokeWidth}
+        stroke={props.stroke || "#444"}
+        strokeWidth={props.strokeWidth || 1}
         strokeLinecap="round"
         strokeLinejoin="round"
         clipPath="url(#a)"

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { Colors } from "@/constants/Colors";
 
 export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
@@ -15,8 +14,7 @@ export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
   opacity: ${({ isOpenModal }) => (isOpenModal ? 1 : 0)};
   pointer-events: ${({ isOpenModal }) => (isOpenModal ? "auto" : "none")};
   backdrop-filter: blur(2px);
-  overflow: ${({ isOpenModal }) => (isOpenModal ? "auto" : "hidden")};
-  transition: 0.25s;
+  transition: opacity 0.25s ease-in-out;
 
   .background {
     position: absolute;
@@ -28,19 +26,33 @@ export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
     z-index: 1;
   }
 
+  h2 {
+    padding-bottom: 1rem;
+  }
+
   .modal {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 16px;
-    min-width: 500px;
+    justify-content: flex-start;
+    max-width: 1200px;
+    max-height: 90vh;
     width: fit-content;
     background-color: ${Colors.pureWhite};
-    padding: 2rem 4rem;
     border-radius: 16px;
     z-index: 2;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+    padding: 3rem 4rem;
   }
 
   h1 {
@@ -48,7 +60,6 @@ export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
     font-family: "Inter", sans-serif;
     font-weight: 600;
     width: 100%;
-    max-width: 450px;
   }
 
   .form {
@@ -58,20 +69,18 @@ export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
     justify-content: center;
     gap: 16px;
     width: 100%;
-    max-width: 450px;
   }
 
   .input-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 450px;
     gap: 4px;
   }
 
   .input-label {
     font-size: 14px;
-    fonft-family: "Inter", sans-serif;
+    font-family: "Inter", sans-serif;
     font-weight: 300;
   }
 
@@ -79,9 +88,12 @@ export const NewThreadModalWrapper = styled.div<{ isOpenModal: boolean }>`
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    max-width: 450px;
     width: 100%;
+    margin: 0;
+    padding: 1rem 2rem;
     gap: 8px;
+    background-color: ${Colors.pureWhite};
+    border-top: 1px solid ${Colors.lightgray};
   }
 
   .error-message {

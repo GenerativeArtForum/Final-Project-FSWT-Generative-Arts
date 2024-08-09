@@ -2,7 +2,8 @@ import { NewThreadForm } from "@/types/forms/newThreadForm";
 
 export const InitialNewThreadForm: NewThreadForm = {
   _id: "",
-  title: "",
-  description: "",
+  question: "",
+  body: "",
   tags: [],
+  images: [],
 };

@@ -1,10 +1,22 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
 
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
+
+type FormField = {
+  name: keyof NewThreadForm;
+  placeholder: string;
+  type: string;
+};
 
 type ThreadModalContextType = {
   isOpenModal: boolean;
@@ -12,13 +24,18 @@ type ThreadModalContextType = {
   newThreadFormState: NewThreadForm;
   error: string | null;
   selectedTags: TagType[] | null;
+  formFields: FormField[];
+  images: File[];
+  content: string;
   setIsOpenModal: (isOpenModal: boolean) => void;
   setFeedDisplay: (feedDisplay: number) => void;
   setNewThreadFormState: (newThreadForm: NewThreadForm) => void;
-  setThreadData: (name: keyof NewThreadForm, value: TagType[]) => void;
+  setThreadData: (name: keyof NewThreadForm, value: any) => void;
   validateThreadForm: () => boolean;
   setError: (error: string | null) => void;
   setSelectedTags: (tags: TagType[]) => void;
+  setImages: (images: File[]) => void;
+  setContent: (content: string) => void;
 };
 
 const ThreadModalContext = createContext<ThreadModalContextType>({
@@ -27,6 +44,9 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   newThreadFormState: InitialNewThreadForm,
   error: null,
   selectedTags: null,
+  formFields: [],
+  images: [],
+  content: "",
   setIsOpenModal: () => {},
   setFeedDisplay: () => {},
   setNewThreadFormState: () => {},
@@ -34,6 +54,8 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   validateThreadForm: () => false,
   setError: () => {},
   setSelectedTags: () => {},
+  setImages: () => {},
+  setContent: () => {},
 });
 
 export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
@@ -45,8 +67,34 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
   const [selectedTags, setSelectedTags] = useState<TagType[]>(
     newThreadFormState.tags || []
   );
+  const [images, setImages] = useState<File[]>([]);
+  const [content, setContent] = useState<string>("");
 
-  const setThreadData = (name: keyof NewThreadForm, value: TagType[]) => {
+  useEffect(() => {
+    if (isOpenModal) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [isOpenModal]);
+
+  const formFields: {
+    name: keyof NewThreadForm;
+    placeholder: string;
+    type: string;
+  }[] = [
+    { name: "question", placeholder: "Thread question", type: "text" },
+    {
+      name: "body",
+      placeholder: "Thread body",
+      type: "textarea",
+    },
+  ];
+
+  const setThreadData = (name: keyof NewThreadForm, value: any) => {
     setError(null);
     setNewThreadFormState((prevState) => ({
       ...prevState,
@@ -55,20 +103,23 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const validateThreadForm = () => {
-    if (newThreadFormState.title === "" || newThreadFormState.title === "") {
+    if (
+      newThreadFormState.question === "" ||
+      newThreadFormState.question === ""
+    ) {
       setError("Please fill out all fields");
       return false;
-    } else if (newThreadFormState.title.length < 5) {
-      setError("Title must be at least 5 characters");
+    } else if (newThreadFormState.question.length < 5) {
+      setError("Question must be at least 5 characters");
       return false;
-    } else if (newThreadFormState.description.length < 10) {
-      setError("Description must be at least 10 characters");
+    } else if (newThreadFormState.body.length < 10) {
+      setError("Body must be at least 10 characters");
       return false;
-    } else if (newThreadFormState.title.length > 100) {
-      setError("Title must be less than 100 characters");
+    } else if (newThreadFormState.question.length > 100) {
+      setError("Question must be less than 100 characters");
       return false;
-    } else if (newThreadFormState.description.length > 500) {
-      setError("Description must be less than 500 characters");
+    } else if (newThreadFormState.body.length > 1000) {
+      setError("Body must be less than 1000 characters");
       return false;
     }
     return true;
@@ -82,6 +133,9 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
         newThreadFormState,
         error,
         selectedTags,
+        formFields,
+        images,
+        content,
         setIsOpenModal,
         setFeedDisplay,
         setNewThreadFormState,
@@ -89,6 +143,8 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
         validateThreadForm,
         setError,
         setSelectedTags,
+        setImages,
+        setContent,
       }}
     >
       {children}

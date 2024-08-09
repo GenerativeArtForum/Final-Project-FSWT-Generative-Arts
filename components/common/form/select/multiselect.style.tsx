@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 export const MultiSelectWrapper = styled.div`
   position: relative;
-  max-width: 400px;
   width: 100%;
 
   .input {
@@ -11,7 +10,6 @@ export const MultiSelectWrapper = styled.div`
     border-radius: 8px;
     outline: none;
     flex: 1;
-    max-width: 400px;
     width: 100%;
     height: 48px;
     padding: 12px 8px;
@@ -33,10 +31,6 @@ export const MultiSelectWrapper = styled.div`
       flex-direction: row;
       flex-wrap: wrap;
       gap: 8px;
-    }
-
-    &:hover {
-      border: 1px solid ${Colors.gray};
     }
 
     .placeholder {
@@ -74,20 +68,20 @@ export const MultiSelectWrapper = styled.div`
     position: absolute;
     top: 100%;
     left: 0;
-    max-width: 400px;
     width: 100%;
     border: none;
     border-radius: 8px;
     background: white;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
-    margin-top: 4px;
     z-index: 10;
 
     display: flex;
     flex-direction: column;
-    max-height: 200px;
+    height: 300px;
     overflow-y: auto;
     padding: 8px;
+    margin-top: 4px;
+    margin-bottom: 10px;
   }
 
   .checkbox-label {
@@ -112,5 +106,22 @@ export const MultiSelectWrapper = styled.div`
         color: ${Colors.blue};
       }
     }
+  }
+
+  .feedback {
+    position: absolute;
+    height: 50px;
+    left: 0;
+    width: 100%;
+    background-color: ${Colors.red};
+    color: white;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    padding: 14px;
+    border-radius: 8px;
+    z-index: 20;
+    transition: opacity 0.5s ease;
+    opacity: 0.9;
   }
 `;

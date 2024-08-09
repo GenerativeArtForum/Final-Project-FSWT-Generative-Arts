@@ -25,8 +25,8 @@ const CreateThread = () => {
       <Input
         type={"text"}
         placeholder={"Create a new thread"}
-        onChange={(e) => setThreadData("title", e.target.value as any)}
-        value={newThreadFormState.title}
+        onChange={(e) => setThreadData("question", e.target.value as any)}
+        value={newThreadFormState.question}
       />
       <SmallButton variant={1} icon="plus" onClick={newThreadModal} />
     </CreateThreadWrapper>

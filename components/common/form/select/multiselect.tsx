@@ -1,15 +1,20 @@
-"use client";
-
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
+import useSearch from "@/hooks/useSearch";
+
 import Tag from "../../tag/tag";
+import SearchBar from "../searchBar/searchBar";
 import { MultiSelectWrapper } from "./multiselect.style";
 
 import DownArrow from "../../../../assets/icons/common/down-arrow.svg";
 import UpArrow from "../../../../assets/icons/common/up-arrow.svg";
 
 import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
+import { useToast } from "@/components/ui/use-toast";
+
+const MAX_TAGS = 6;
+const FEEDBACK_DURATION = 3000;
 
 const MultiSelect = ({
   tagsList,
@@ -26,30 +31,63 @@ const MultiSelect = ({
 }) => {
   const [multiselectOpen, setMultiselectOpen] = useState<boolean>(false);
   const [totalChars, setTotalChars] = useState<number>(0);
+  const [maxChars, setMaxChars] = useState<number>(32);
+  const [feedback, setFeedback] = useState<string | null>(null);
   const multiselectRef = useRef<HTMLDivElement | null>(null);
+  const tagsContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const { text, handleChangeText } = useSearch();
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (multiselectRef.current && !multiselectRef.current.contains(event.target as Node)) {
+      if (
+        multiselectRef.current &&
+        !multiselectRef.current.contains(event.target as Node)
+      ) {
         setMultiselectOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  if (selectedTags === null) return;
+  useEffect(() => {
+    if (tagsContainerRef.current) {
+      const containerWidth = tagsContainerRef.current.offsetWidth;
+      const averageCharWidth = 10;
+      const paddingBuffer = 20;
+
+      const calculatedMaxChars = Math.floor(
+        (containerWidth - paddingBuffer) / averageCharWidth
+      );
+
+      setMaxChars(calculatedMaxChars);
+    }
+  }, [selectedTags, multiselectOpen]);
 
   const updateTotalChars = (tags: TagType[]) => {
     const charCount = tags.reduce((total, tag) => total + tag.name.length, 0);
     setTotalChars(charCount);
   };
 
+  if (!selectedTags) return null;
+
   const handleClickMultiSelect = (tagName: string) => {
+    if (
+      selectedTags.length >= MAX_TAGS &&
+      !selectedTags.some((tag) => tag.name === tagName)
+    ) {
+      setFeedback(`You can only select up to ${MAX_TAGS} tags`);
+      setTimeout(() => setFeedback(null), FEEDBACK_DURATION);
+      
+      return;
+    }
+
     setSelectedTags((prevSelected) => {
       let newSelected: TagType[];
       if (prevSelected.some((selected: any) => selected.name === tagName)) {
@@ -78,7 +116,7 @@ const MultiSelect = ({
     const displayTags: TagType[] = [];
 
     for (const tag of selectedTags) {
-      if (charCount + tag.name.length + displayTags.length > 32) {
+      if (charCount + tag.name.length + displayTags.length > maxChars) {
         break;
       }
       displayTags.push(tag);
@@ -96,11 +134,16 @@ const MultiSelect = ({
     <MultiSelectWrapper ref={multiselectRef}>
       <div
         className="input"
-        onClick={() => setMultiselectOpen(!multiselectOpen)}
+        onClick={(e: any) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setMultiselectOpen(!multiselectOpen);
+        }}
       >
-        <div className="tags">
+        {feedback && <div className="feedback">{feedback}</div>}
+        <div className="tags" ref={tagsContainerRef}>
           {selectedTags.length > 0 ? (
-            totalChars < 30 ? (
+            totalChars < maxChars ? (
               getDisplayedTags().map((tag, index) => (
                 <Tag
                   key={index}
@@ -130,9 +173,15 @@ const MultiSelect = ({
                   ))}
                   <span>...</span>
                 </div>
-                <Tag
-                  text={`+${selectedTags.length - getDisplayedTags().length}`}
-                />
+                <div
+                  title="Delete all the tags"
+                  onClick={() => setSelectedTags([])}
+                >
+                  <Tag
+                    text={`+${selectedTags.length - getDisplayedTags().length}`}
+                    variant={2}
+                  />
+                </div>
               </div>
             )
           ) : (
@@ -153,6 +202,7 @@ const MultiSelect = ({
       </div>
       {multiselectOpen && (
         <div className="dropdown">
+          <SearchBar text={text} onChangeText={handleChangeText} />
           {tagsList.map((tag, index) => (
             <div key={index} className="button">
               <label

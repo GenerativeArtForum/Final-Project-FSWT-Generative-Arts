@@ -97,3 +97,22 @@ body {
   min-width: 50vw;
   box-sizing: border-box;
 }
+
+* {
+  outline: none;
+}
+
+.modal-open {
+  overflow: hidden;
+  height: 100vh;
+}
+
+code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #f4f4f4;
+  padding: 4px 6px;
+  border-radius: 4px;
+  display: block;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
