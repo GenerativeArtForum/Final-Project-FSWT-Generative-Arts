@@ -25,14 +25,15 @@ enum Status {
 }
 
 model User {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  clerk_id  String     @unique
-  role      RoleType   @default(USER)
-  threads   Thread[]   @relation("UserThreads")
-  responses Response[]
-  votes     Vote[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  clerk_id     String     @unique
+  role         RoleType   @default(USER)
+  threads      Thread[]   @relation("UserThreads")
+  responses    Response[]
+  votes        Vote[]
+  savedThreads Thread[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Thread {
@@ -45,9 +46,11 @@ model Thread {
   tags        Tag[]
   responses   Response[] @relation("ThreadResponses")
   views       View[]
-  status      Status     @default(PUBLISHED)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+
+  status    Status   @default(PUBLISHED)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
 }
 
 model Tag {

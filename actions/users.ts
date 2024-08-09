@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserByClerkId, createUser, getUser, getUsers } from "@/lib/users";
+import { getUserByClerkId, createUser, getUser, getUsers } from "@/db/users";
 
 export async function actionGetUsers() {
   const users = await getUsers();
