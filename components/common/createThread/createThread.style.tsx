@@ -7,7 +7,7 @@ export const CreateThreadWrapper = styled.form`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  max-width: 500px;
+  max-width: 600px;
   width: 100%;
   height: 50px;
   border-radius: 16px;

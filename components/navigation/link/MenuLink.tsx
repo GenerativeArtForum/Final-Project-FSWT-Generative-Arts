@@ -1,4 +1,4 @@
-import useThreadModal from "@/hooks/useThreadModal";
+import useModal from "@/hooks/useModal";
 import { MenuLinkWrapper } from "./MenuLink.style";
 import { Colors } from "@/constants/Colors";
 
@@ -14,7 +14,7 @@ const MenuLink = ({
   };
   currentPath: string | null;
 }) => {
-  const { setIsOpenModal } = useThreadModal();
+  const { setIsOpenModal, setActiveModal } = useModal();
 
   const isActive = currentPath === item.link;
 
@@ -24,6 +24,7 @@ const MenuLink = ({
     if (item.name === "create") {
       event.preventDefault();
       setIsOpenModal(true);
+      setActiveModal("newThread");
     }
   };
 

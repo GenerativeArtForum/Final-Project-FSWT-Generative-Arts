@@ -13,6 +13,6 @@ export const HomePageWrapper = styled.div`
     justify-content: center;
     gap: 1rem;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
   }
 `;

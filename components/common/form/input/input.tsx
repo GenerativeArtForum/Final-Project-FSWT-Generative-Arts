@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import TinyMCEEditor from "../../editor/editor";
 
 import { InputWrapper, InputWrapperArea } from "./input.style";

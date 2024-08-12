@@ -4,10 +4,15 @@ import CheckmarkIcon from "@/assets/icons/common/checkmark";
 import { ToastProvider } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import {
-  CustomToast,
-  CustomToastClose,
-  CustomToastTitle,
-  CustomToastViewport
+  ErrorToast,
+  ErrorToastClose,
+  ErrorToastTitle,
+  ErrorToastViewport,
+  SuccessToast,
+  SuccessToastClose,
+  SuccessToastTitle,
+  SuccessToastDescription,
+  ErrorToastDescription,
 } from "@/styles/toast.style";
 
 export const Toaster = () => {
@@ -15,25 +20,62 @@ export const Toaster = () => {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
-        return (
-          <CustomToast key={id} {...props}>
-            <div>
-              {title && (
-                <CustomToastTitle
-                  style={{ display: "flex", alignItems: "center", gap: "16px" }}
-                >
-                  {title}
-                  <CheckmarkIcon />
-                </CustomToastTitle>
-              )}
-            </div>
-            {action}
-            <CustomToastClose />
-          </CustomToast>
-        );
-      })}
-      <CustomToastViewport />
+      <ErrorToastViewport />
+      {toasts.length > 0 &&
+        toasts.map(
+          ({ id, title, description, action, toastName, ...props }) => {
+            if (toastName === "success") {
+              return (
+                <SuccessToast key={id} {...props}>
+                  <div>
+                    {title && (
+                      <SuccessToastTitle
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "16px",
+                        }}
+                      >
+                        {title}
+                        <CheckmarkIcon />
+                      </SuccessToastTitle>
+                    )}
+                    {description && (
+                      <SuccessToastDescription
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "16px",
+                        }}
+                      >
+                        {description}
+                        <CheckmarkIcon />
+                      </SuccessToastDescription>
+                    )}
+                  </div>
+                  {action}
+                  <SuccessToastClose />
+                </SuccessToast>
+              );
+            } else if (toastName === "error") {
+              return (
+                <ErrorToast key={id} {...props}>
+                  <div>
+                    {title && <ErrorToastTitle>{title}</ErrorToastTitle>}
+                    {description && ( // Check if description exists
+                      <ErrorToastDescription>
+                        {description}
+                      </ErrorToastDescription>
+                    )}
+                  </div>
+                  {action}
+                  <ErrorToastClose />
+                </ErrorToast>
+              );
+            }
+            return null;
+          }
+        )}
     </ToastProvider>
   );
 };

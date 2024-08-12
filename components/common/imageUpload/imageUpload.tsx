@@ -1,24 +1,45 @@
 import Image from "next/image";
-import { useState } from "react";
-import BinIcon from "../../../assets/icons/common/bin";
-import useThreadModal from "@/hooks/useThreadModal";
-import { ImageUploadWrapper } from "./imageUpload.style";
+
+import useModal from "@/hooks/useModal";
+
+import { useToast } from "@/components/ui/use-toast";
+
+import BinIcon from "../../../assets/icons/common/bin.svg";
 import UploadFileIcon from "../../../assets/icons/common/upload-file";
+
+import { ImageUploadWrapper } from "./imageUpload.style";
+
 import { TagColors } from "@/constants/Colors";
 
 const MAX_IMAGES = 4;
-const FEEDBACK_DURATION = 3000;
 
 const ImageUpload = () => {
-  const { images, setImages } = useThreadModal();
-  const [feedback, setFeedback] = useState<string | null>(null);
+  const { toast } = useToast();
+  const { images, setImages } = useModal();
+
+  const setToast = (
+    toastName: string,
+    title?: string,
+    description?: string,
+    duration?: number
+  ) => {
+    toast({
+      title,
+      toastName,
+      description,
+      duration,
+    });
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []) as File[];
 
     if (selectedFiles.length + images.length > MAX_IMAGES) {
-      setFeedback(`You can only upload ${MAX_IMAGES} images`);
-      setTimeout(() => setFeedback(null), FEEDBACK_DURATION);
+      setToast(
+        "error",
+        undefined,
+        `You can only upload ${MAX_IMAGES} images` || undefined
+      );
       return;
     }
 
@@ -44,7 +65,6 @@ const ImageUpload = () => {
         className="input"
         style={{ display: "none" }}
       />
-      {feedback && <div className="feedback">{feedback}</div>}
       <div className="image-preview">
         {images.map((image, index) => (
           <div className="image-container" key={index}>
@@ -55,12 +75,14 @@ const ImageUpload = () => {
               height={100}
               className="image"
             />
-            <BinIcon className="bin-icon" onClick={() => removeImage(index)} />
+            <div className="bin-icon" onClick={() => removeImage(index)}>
+              <Image src={BinIcon} alt="delete" />
+            </div>
           </div>
         ))}
       </div>
       <button className="upload-button" onClick={handleUploadButtonClick}>
-        <UploadFileIcon stroke={TagColors.text}/>
+        <UploadFileIcon stroke={TagColors.text} />
         Upload Images
       </button>
     </ImageUploadWrapper>

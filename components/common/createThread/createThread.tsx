@@ -1,6 +1,6 @@
 "use client";
 
-import useThreadModal from "@/hooks/useThreadModal";
+import useModal from "@/hooks/useModal";
 
 import Input from "../form/input/input";
 import SmallButton from "../smallButton/smallButton";
@@ -8,11 +8,12 @@ import SmallButton from "../smallButton/smallButton";
 import { CreateThreadWrapper } from "./createThread.style";
 
 const CreateThread = () => {
-  const { newThreadFormState, setIsOpenModal, setThreadData } =
-    useThreadModal();
+  const { newThreadFormState, activeModal, setActiveModal, setIsOpenModal, setThreadData } =
+    useModal();
 
   const newThreadModal = () => {
     setIsOpenModal(true);
+    setActiveModal("newThread");
   };
 
   return (

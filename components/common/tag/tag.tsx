@@ -1,4 +1,5 @@
-import BinIcon from "../../../assets/icons/common/bin";
+import Image from "next/image";
+import BinIcon from "../../../assets/icons/common/bin.svg";
 
 import { TagWrapper } from "./tag.style";
 
@@ -12,8 +13,12 @@ const Tag = ({
   onClick?: (e: any) => void;
 }) => {
   return (
-    <TagWrapper variant={variant}>
-      {variant === 2 && <BinIcon className="bin-icon" onClick={onClick} />}
+    <TagWrapper>
+      {variant === 2 && (
+        <div onClick={onClick} className="bin-icon">
+          <Image src={BinIcon} alt="delete" />
+        </div>
+      )}
       {text}
     </TagWrapper>
   );

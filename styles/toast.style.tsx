@@ -8,7 +8,7 @@ import {
 
 import { Colors } from "@/constants/Colors";
 
-export const CustomToast = styled(BaseToast)`
+export const SuccessToast = styled(BaseToast)`
   background-color: ${Colors.pureWhite};
   color: ${Colors.black};
   padding: 20px;
@@ -71,22 +71,59 @@ export const CustomToast = styled(BaseToast)`
   }
 `;
 
-export const CustomToastTitle = styled.div`
+export const SuccessToastTitle = styled.div`
   font-size: 14px;
   font-weight: 500;
 `;
 
-export const CustomToastDescription = styled.div`
-  font-size: 14px;
-`;
-
-export const CustomToastClose = styled(BaseToastClose)`
+export const SuccessToastClose = styled(BaseToastClose)`
   color: ${Colors.black};
 `;
 
-export const CustomToastViewport = styled(BaseToastViewport)`
+export const SuccessToastViewport = styled(BaseToastViewport)`
   top: 20px;
-  :20px ;
   position: fixed;
   z-index: 9999;
+`;
+
+export const ErrorToastViewport = styled(BaseToastViewport)`
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+`;
+
+export const ErrorToast = styled(BaseToast)`
+  background-color: ${Colors.red};
+  color: ${Colors.white};
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid ${Colors.lightgray};
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: row;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+`;
+
+export const ErrorToastTitle = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+`;
+
+export const ErrorToastClose = styled(BaseToastClose)`
+  color: ${Colors.white};
+`;
+
+export const SuccessToastDescription = styled.div`
+  font-size: 14px;
+  color: ${Colors.black};
+`;
+
+export const ErrorToastDescription = styled.div`
+  font-size: 14px;
+  color: ${Colors.white};
 `;

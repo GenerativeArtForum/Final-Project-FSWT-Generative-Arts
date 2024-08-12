@@ -4,11 +4,11 @@ import CurrentTab from "../currentTab/currentTab";
 
 import { homeTabs } from "@/constants/TabsSwitchers";
 
-import useThreadModal from "@/hooks/useThreadModal";
+import useModal from "@/hooks/useModal";
 import { TabsSwitcherWrapper } from "./tabsSwitcher.style";
 
 const TabsSwitcher = () => {
-  const { feedDisplay, setFeedDisplay } = useThreadModal();
+  const { feedDisplay, setFeedDisplay } = useModal();
 
   return (
     <TabsSwitcherWrapper>

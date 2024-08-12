@@ -1,6 +1,6 @@
 "use client";
 
-import useThreadModal from "@/hooks/useThreadModal";
+import useModal from "@/hooks/useModal";
 
 import CreateThread from "@/components/common/createThread/createThread";
 import TabsSwitcher from "@/components/common/tabsSwitcher/tabsSwitcher";
@@ -8,7 +8,7 @@ import TabsSwitcher from "@/components/common/tabsSwitcher/tabsSwitcher";
 import { HomePageWrapper } from "./home.style";
 
 export default function Home() {
-  const { feedDisplay } = useThreadModal();
+  const { feedDisplay } = useModal();
 
   return (
     <HomePageWrapper>

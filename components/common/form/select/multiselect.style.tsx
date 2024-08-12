@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const MultiSelectWrapper = styled.div`
   position: relative;
   width: 100%;
-
+  
   .input {
     border: 1px solid ${Colors.lightgray};
     border-radius: 8px;
@@ -64,15 +64,18 @@ export const MultiSelectWrapper = styled.div`
     }
   }
 
+  .options {
+    padding-top: 8px;
+  }
+
   .dropdown {
-    position: absolute;
+    position: relative;
+    border: 1px solid ${Colors.lightgray};
     top: 100%;
     left: 0;
     width: 100%;
-    border: none;
     border-radius: 8px;
     background: white;
-    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
     z-index: 10;
 
     display: flex;
@@ -80,8 +83,15 @@ export const MultiSelectWrapper = styled.div`
     height: 300px;
     overflow-y: auto;
     padding: 8px;
+    padding-top: 0;
     margin-top: 4px;
-    margin-bottom: 10px;
+  }
+
+  .search-bar{
+    position: sticky;
+    top: 0;
+    background-color: ${Colors.pureWhite};
+    padding-top: 8px;
   }
 
   .checkbox-label {

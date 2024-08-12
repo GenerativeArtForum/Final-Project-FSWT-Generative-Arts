@@ -10,6 +10,7 @@ import {
 
 import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
 
+import { useToast } from "@/components/ui/use-toast";
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
 
 type FormField = {
@@ -27,15 +28,25 @@ type ThreadModalContextType = {
   formFields: FormField[];
   images: File[];
   content: string;
+  activeModal: string;
   setIsOpenModal: (isOpenModal: boolean) => void;
   setFeedDisplay: (feedDisplay: number) => void;
   setNewThreadFormState: (newThreadForm: NewThreadForm) => void;
   setThreadData: (name: keyof NewThreadForm, value: any) => void;
   validateThreadForm: () => boolean;
-  setError: (error: string | null) => void;
+  setError: (error: string) => void;
   setSelectedTags: (tags: TagType[]) => void;
   setImages: (images: File[]) => void;
+  setActiveModal: (activeModal: string) => void;
   setContent: (content: string) => void;
+  closeModal: (action: string, e: any) => void;
+  setToast: (
+    toastName: string,
+    title?: string,
+    description?: string,
+    duration?: number
+  ) => void;
+  cancelThread: (e: any) => void;
 };
 
 const ThreadModalContext = createContext<ThreadModalContextType>({
@@ -47,6 +58,7 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   formFields: [],
   images: [],
   content: "",
+  activeModal: "",
   setIsOpenModal: () => {},
   setFeedDisplay: () => {},
   setNewThreadFormState: () => {},
@@ -56,19 +68,40 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   setSelectedTags: () => {},
   setImages: () => {},
   setContent: () => {},
+  setActiveModal: () => {},
+  closeModal: () => {},
+  setToast: () => {},
+  cancelThread: () => {},
 });
 
-export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
+export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [activeModal, setActiveModal] = useState<string>("");
   const [feedDisplay, setFeedDisplay] = useState<number>(0);
   const [newThreadFormState, setNewThreadFormState] =
     useState<NewThreadForm>(InitialNewThreadForm);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<TagType[]>(
     newThreadFormState.tags || []
   );
   const [images, setImages] = useState<File[]>([]);
   const [content, setContent] = useState<string>("");
+
+  const { toast } = useToast();
+
+  const setToast = (
+    toastName: string,
+    title?: string,
+    description?: string,
+    duration?: number
+  ) => {
+    toast({
+      title,
+      toastName,
+      description,
+      duration,
+    });
+  };
 
   useEffect(() => {
     if (isOpenModal) {
@@ -95,7 +128,7 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
   ];
 
   const setThreadData = (name: keyof NewThreadForm, value: any) => {
-    setError(null);
+    setError("");
     setNewThreadFormState((prevState) => ({
       ...prevState,
       [name]: value,
@@ -103,26 +136,57 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const validateThreadForm = () => {
-    if (
-      newThreadFormState.question === "" ||
-      newThreadFormState.question === ""
-    ) {
-      setError("Please fill out all fields");
-      return false;
+    let errorMessage = "";
+    if (!newThreadFormState.question || !newThreadFormState.body) {
+      errorMessage = "Please fill out all fields";
     } else if (newThreadFormState.question.length < 5) {
-      setError("Question must be at least 5 characters");
-      return false;
+      errorMessage = "Question must be at least 5 characters";
     } else if (newThreadFormState.body.length < 10) {
-      setError("Body must be at least 10 characters");
-      return false;
+      errorMessage = "Body must be at least 10 characters";
     } else if (newThreadFormState.question.length > 100) {
-      setError("Question must be less than 100 characters");
-      return false;
+      errorMessage = "Question must be less than 100 characters";
     } else if (newThreadFormState.body.length > 1000) {
-      setError("Body must be less than 1000 characters");
-      return false;
+      errorMessage = "Body must be less than 1000 characters";
     }
+
+    if (errorMessage) {
+      setError(errorMessage);
+      setToast("error", undefined, errorMessage);
+      return false;
+    } else {
+      setError("");
+      setToast("", "", "");
+    }
+
     return true;
+  };
+
+  const closeModal = (action: string, e: any) => {
+    e.preventDefault();
+
+    if (action === "submit") {
+      const canContinue = validateThreadForm();
+      if (canContinue) {
+        toast({
+          toastName: "success",
+          description: "Thread created successfully",
+        });
+      } else {
+        return;
+      }
+    }
+    setIsOpenModal(false);
+    setActiveModal("");
+    setError("");
+    setContent("");
+    setNewThreadFormState(InitialNewThreadForm);
+    setSelectedTags([]);
+    setImages([]);
+  };
+
+  const cancelThread = (e: any) => {
+    e.preventDefault();
+    setActiveModal("confirm");
   };
 
   return (
@@ -136,6 +200,7 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
         formFields,
         images,
         content,
+        activeModal,
         setIsOpenModal,
         setFeedDisplay,
         setNewThreadFormState,
@@ -145,6 +210,10 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
         setSelectedTags,
         setImages,
         setContent,
+        setActiveModal,
+        closeModal,
+        setToast,
+        cancelThread,
       }}
     >
       {children}
@@ -152,6 +221,6 @@ export const ThreadModalProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const useThreadModal = () => useContext(ThreadModalContext);
+const useModal = () => useContext(ThreadModalContext);
 
-export default useThreadModal;
+export default useModal;

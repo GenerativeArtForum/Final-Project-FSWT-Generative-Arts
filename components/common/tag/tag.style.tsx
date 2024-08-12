@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { Colors, TagColors } from "@/constants/Colors";
 
-export const TagWrapper = styled.div<{ variant?: number }>`
+export const TagWrapper = styled.div`
   border: 1px solid ${TagColors.border};
   background-color: ${TagColors.background};
   color: ${TagColors.text};

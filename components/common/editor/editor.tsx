@@ -13,6 +13,7 @@ const TinyMCEEditor = ({
       value={content}
       init={{
         height: 400,
+        maxWidth: "50vw",
         menubar: false,
         plugins: [
           "advlist autolink lists link image charmap print preview anchor",

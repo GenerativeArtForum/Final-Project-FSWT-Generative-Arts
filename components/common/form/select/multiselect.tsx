@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import useSearch from "@/hooks/useSearch";
 
+import { useToast } from "@/components/ui/use-toast";
 import Tag from "../../tag/tag";
 import SearchBar from "../searchBar/searchBar";
 import { MultiSelectWrapper } from "./multiselect.style";
@@ -11,10 +12,8 @@ import DownArrow from "../../../../assets/icons/common/down-arrow.svg";
 import UpArrow from "../../../../assets/icons/common/up-arrow.svg";
 
 import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
-import { useToast } from "@/components/ui/use-toast";
 
 const MAX_TAGS = 6;
-const FEEDBACK_DURATION = 3000;
 
 const MultiSelect = ({
   tagsList,
@@ -29,15 +28,29 @@ const MultiSelect = ({
   setThreadData: (name: keyof NewThreadForm, value: TagType[]) => void;
   setSelectedTags: (tags: TagType[]) => void;
 }) => {
+  const { toast } = useToast();
+
   const [multiselectOpen, setMultiselectOpen] = useState<boolean>(false);
   const [totalChars, setTotalChars] = useState<number>(0);
   const [maxChars, setMaxChars] = useState<number>(32);
-  const [feedback, setFeedback] = useState<string | null>(null);
   const multiselectRef = useRef<HTMLDivElement | null>(null);
   const tagsContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { text, handleChangeText } = useSearch();
-  const { toast } = useToast();
+
+  const setToast = (
+    toastName: string,
+    title?: string,
+    description?: string,
+    duration?: number
+  ) => {
+    toast({
+      title,
+      toastName,
+      description,
+      duration,
+    });
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -82,9 +95,12 @@ const MultiSelect = ({
       selectedTags.length >= MAX_TAGS &&
       !selectedTags.some((tag) => tag.name === tagName)
     ) {
-      setFeedback(`You can only select up to ${MAX_TAGS} tags`);
-      setTimeout(() => setFeedback(null), FEEDBACK_DURATION);
-      
+      setToast(
+        "error",
+        undefined,
+        `You can only select up to ${MAX_TAGS} tags` || undefined
+      );
+
       return;
     }
 
@@ -140,7 +156,6 @@ const MultiSelect = ({
           setMultiselectOpen(!multiselectOpen);
         }}
       >
-        {feedback && <div className="feedback">{feedback}</div>}
         <div className="tags" ref={tagsContainerRef}>
           {selectedTags.length > 0 ? (
             totalChars < maxChars ? (
@@ -202,25 +217,32 @@ const MultiSelect = ({
       </div>
       {multiselectOpen && (
         <div className="dropdown">
-          <SearchBar text={text} onChangeText={handleChangeText} />
-          {tagsList.map((tag, index) => (
-            <div key={index} className="button">
-              <label
-                className={`checkbox-label ${
-                  isTagSelected(tag) ? "selected" : ""
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={isTagSelected(tag)}
-                  onChange={() => handleClickMultiSelect(tag)}
-                ></input>
-                <button value={tag} onClick={() => handleClickMultiSelect(tag)}>
-                  {tag}
-                </button>
-              </label>
-            </div>
-          ))}
+          <div className="search-bar">
+            <SearchBar text={text} onChangeText={handleChangeText} />
+          </div>
+          <div className="options">
+            {tagsList.map((tag, index) => (
+              <div key={index} className="button">
+                <label
+                  className={`checkbox-label ${
+                    isTagSelected(tag) ? "selected" : ""
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isTagSelected(tag)}
+                    onChange={() => handleClickMultiSelect(tag)}
+                  ></input>
+                  <button
+                    value={tag}
+                    onClick={() => handleClickMultiSelect(tag)}
+                  >
+                    {tag}
+                  </button>
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </MultiSelectWrapper>

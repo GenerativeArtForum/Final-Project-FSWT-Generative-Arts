@@ -5,11 +5,8 @@ const useSearch = () => {
 
   const handleChangeText = (value: string) => {
     setText(value);
+    console.log(value);
   };
-
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
 
   return {
     text,
