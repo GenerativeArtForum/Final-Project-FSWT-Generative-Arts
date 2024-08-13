@@ -12,4 +12,5 @@ export const TabsSwitcherWrapper = styled.div`
     background: linear-gradient(white 75%, transparent 100%);
     padding: 30px 0 10px 0;
     width: 100%;
+    z-index: 100;
 `;
