@@ -2,22 +2,22 @@
 
 import { getUserByClerkId, createUser, getUser, getUsers } from "@/db/users";
 
-export async function actionGetUsers() {
+export async function getUsersAction() {
   const users = await getUsers();
   return users;
 }
 
-export async function actionGetOneUser(id: string) {
+export async function getUserAction(id: string) {
   const user = await getUser(id);
   return user;
 }
 
-export async function actionGetUserByClerkId(clerk_id: string) {
+export async function getUserByClerkIdAction(clerk_id: string) {
   const user = await getUserByClerkId(clerk_id);
   return user;
 }
 
-export async function actionCreateUser(clerk_id: string) {
+export async function createUserAction(clerk_id: string) {
   const user = await createUser(clerk_id);
   return user;
 }

@@ -1,8 +1,10 @@
 import { db } from "@/db/db";
 
-export type User = {
+export type Thread = {
   id: string;
-  clerk_id: string;
+  title: string;
+  description: string;
+  userId: string;
 };
 
 export async function getThreads() {
@@ -25,10 +27,10 @@ export async function createThread(
 ) {
   return await db.thread.create({
     data: {
-      id: id,
-      title: title,
-      description: description,
-      userId: userId,
+      id,
+      title,
+      description,
+      userId,
     },
   });
 }
@@ -44,9 +46,9 @@ export async function updateThread(
       id: id,
     },
     data: {
-      title: title,
-      description: description,
-      userId: userId,
+      title,
+      description,
+      userId,
     },
   });
 }
@@ -54,7 +56,7 @@ export async function updateThread(
 export async function deleteThread(id: string) {
   return await db.thread.delete({
     where: {
-      id: id,
+      id,
     },
   });
 }
