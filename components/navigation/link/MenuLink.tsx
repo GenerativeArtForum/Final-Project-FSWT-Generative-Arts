@@ -23,13 +23,18 @@ const MenuLink = ({
   const isActive = currentPath === item.link;
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    if(isSignedIn){
+    if (isSignedIn) {
       if (item.name === "create") {
         e.preventDefault();
         setIsOpenModal(true);
         setActiveModal("newThread");
       }
-    } else if(!isSignedIn && (item.name === "profile" || item.name === "saved" || item.name === "create")){
+    } else if (
+      !isSignedIn &&
+      (item.name === "profile" ||
+        item.name === "saved" ||
+        item.name === "create")
+    ) {
       e.preventDefault();
       setIsOpenModal(true);
       setActiveModal("login");

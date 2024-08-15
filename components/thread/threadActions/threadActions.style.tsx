@@ -1,5 +1,6 @@
-import { Colors } from "@/constants/Colors";
 import styled from "styled-components";
+
+import { Colors } from "@/constants/Colors";
 
 export const ThreadActionsWrapper = styled.div`
   display: flex;

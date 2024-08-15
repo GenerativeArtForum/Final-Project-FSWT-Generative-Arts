@@ -1,11 +1,11 @@
 "use client";
 
 import useModal from "@/hooks/useModal";
+import { useUser } from "@clerk/nextjs";
 
 import Input from "../form/input/input";
 import SmallButton from "../smallButton/smallButton";
 
-import { useUser } from "@clerk/nextjs";
 import { CreateThreadWrapper } from "./createThread.style";
 
 const CreateThread = () => {

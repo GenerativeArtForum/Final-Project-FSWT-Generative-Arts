@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const MultiSelectWrapper = styled.div`
   position: relative;
   width: 100%;
-  
+
   .input {
     border: 1px solid ${Colors.lightgray};
     border-radius: 8px;
@@ -87,7 +87,7 @@ export const MultiSelectWrapper = styled.div`
     margin-top: 4px;
   }
 
-  .search-bar{
+  .search-bar {
     position: sticky;
     top: 0;
     background-color: ${Colors.pureWhite};

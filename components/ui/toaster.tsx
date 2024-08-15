@@ -6,13 +6,13 @@ import { useToast } from "@/components/ui/use-toast";
 import {
   ErrorToast,
   ErrorToastClose,
+  ErrorToastDescription,
   ErrorToastTitle,
   ErrorToastViewport,
   SuccessToast,
   SuccessToastClose,
-  SuccessToastTitle,
   SuccessToastDescription,
-  ErrorToastDescription,
+  SuccessToastTitle,
 } from "@/styles/toast.style";
 
 export const Toaster = () => {

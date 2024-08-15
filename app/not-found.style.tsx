@@ -1,20 +1,21 @@
-import { Colors } from "@/constants/Colors";
-import { PageWrapperStyles } from "@/styles/pageWrapperStyles";
 import styled from "styled-components";
+
+import { Colors } from "@/constants/Colors";
+
+import { PageWrapperStyles } from "@/styles/pageWrapperStyles";
 
 export const NotFoundPageWrapper = styled.div`
   ${PageWrapperStyles}
 
-  margin-top: 5vw;
   text-align: center;
-  padding: 0 32px;
-
   gap: 16px;
+  padding: 0 32px;
+  margin-top: 5vw;
 
   h1 {
     font-size: 96px;
-    color: ${Colors.blue};
     font-weight: 700;
+    color: ${Colors.blue};
     padding: 0;
     margin-bottom: -48px;
   }

@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { PageWrapperStyles } from "@/styles/pageWrapperStyles";
 
+import { PageWrapperStyles } from "@/styles/pageWrapperStyles";
 
 export const HomePageWrapper = styled.div`
   ${PageWrapperStyles}
+  
   margin-top: 0px;
 
   .container {

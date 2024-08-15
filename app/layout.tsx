@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { ReactNode } from "react";
 
 import { ClerkProvider } from "@clerk/nextjs";
-
 import { ModalProvider } from "@/hooks/useModal";
 
 import Menu from "@/components/navigation/menu/Menu";

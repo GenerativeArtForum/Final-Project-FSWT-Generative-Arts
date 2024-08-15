@@ -8,7 +8,7 @@ import { SignInButton } from "@clerk/nextjs";
 import { LoginModalWrapper } from "./loginModal.style";
 
 const LoginModal = () => {
-  const { closeModal, setActiveModal } = useModal();
+  const { closeModal } = useModal();
   return (
     <LoginModalWrapper>
       <div className="form-container">

@@ -1,5 +1,6 @@
-import { Colors, TagColors } from "@/constants/Colors";
 import styled from "styled-components";
+
+import { Colors, TagColors } from "@/constants/Colors";
 
 export const ButtonWrapper = styled.button<{ variant: number }>`
   background-color: ${({ variant }) =>

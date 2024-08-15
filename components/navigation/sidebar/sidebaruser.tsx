@@ -1,6 +1,12 @@
 import Link from "next/link";
 
-const SideBarUser = ({index, speaker}: {index: number; speaker: {username: string, tag: string}}) => {
+const SideBarUser = ({
+  index,
+  speaker,
+}: {
+  index: number;
+  speaker: { username: string; tag: string };
+}) => {
   return (
     <Link href={`/user/${index}`} key={index} className="user-container">
       <div className="user-data">

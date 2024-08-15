@@ -1,7 +1,9 @@
 "use client";
 
-import SearchBar from "@/components/common/form/searchBar/searchBar";
 import useSearch from "@/hooks/useSearch";
+
+import SearchBar from "@/components/common/form/searchBar/searchBar";
+
 import { NotFoundPageWrapper } from "./not-found.style";
 
 const Home = () => {

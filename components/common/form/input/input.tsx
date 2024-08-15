@@ -1,7 +1,6 @@
 "use client";
 
 import TinyMCEEditor from "../../editor/editor";
-
 import { InputWrapper, InputWrapperArea } from "./input.style";
 
 const Input = ({

@@ -1,5 +1,6 @@
-import { Colors } from "@/constants/Colors";
 import styled from "styled-components";
+
+import { Colors } from "@/constants/Colors";
 
 export const InputWrapper = styled.input<{ variant?: number }>`
   border: ${(props) =>
@@ -26,6 +27,6 @@ export const InputWrapperArea = styled.div<{ variant?: number }>`
   }
 
   span {
-      font-size: 14px;
+    font-size: 14px;
   }
 `;

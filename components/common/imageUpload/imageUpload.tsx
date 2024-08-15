@@ -7,9 +7,9 @@ import { useToast } from "@/components/ui/use-toast";
 import BinIcon from "../../../assets/icons/common/bin.svg";
 import UploadFileIcon from "../../../assets/icons/common/upload-file";
 
-import { ImageUploadWrapper } from "./imageUpload.style";
-
 import { TagColors } from "@/constants/Colors";
+
+import { ImageUploadWrapper } from "./imageUpload.style";
 
 const MAX_IMAGES = 4;
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const useSearch = () => {
   const [text, setText] = useState<string>("");

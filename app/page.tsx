@@ -4,7 +4,6 @@ import useModal from "@/hooks/useModal";
 
 import CreateThread from "@/components/common/createThread/createThread";
 import TabsSwitcher from "@/components/common/tabsSwitcher/tabsSwitcher";
-
 import Thread from "@/components/thread/threadComponent/threadComponent";
 
 import { HomePageWrapper } from "./home.style";

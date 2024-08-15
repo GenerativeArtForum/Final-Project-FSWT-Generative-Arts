@@ -1,5 +1,3 @@
-"use client";
-
 import { UserProfileWrapper } from "./userProfile.style";
 
 export const userData = {

@@ -108,6 +108,31 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [content, setContent] = useState<string>("");
   const [shareLink, setShareLink] = useState<string>("");
 
+  const responseFields: {
+    name: keyof NewResponseForm;
+    placeholder: string;
+    type: string;
+  }[] = [
+    {
+      name: "body",
+      placeholder: "Response body",
+      type: "textarea",
+    },
+  ];
+
+  const formFields: {
+    name: keyof NewThreadForm;
+    placeholder: string;
+    type: string;
+  }[] = [
+    { name: "question", placeholder: "Thread question", type: "text" },
+    {
+      name: "body",
+      placeholder: "Thread body",
+      type: "textarea",
+    },
+  ];
+
   const { toast } = useToast();
 
   const setToast = (
@@ -135,30 +160,13 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [isOpenModal]);
 
-  const formFields: {
-    name: keyof NewThreadForm;
-    placeholder: string;
-    type: string;
-  }[] = [
-    { name: "question", placeholder: "Thread question", type: "text" },
-    {
-      name: "body",
-      placeholder: "Thread body",
-      type: "textarea",
-    },
-  ];
-
-  const responseFields: {
-    name: keyof NewResponseForm;
-    placeholder: string;
-    type: string;
-  }[] = [
-    {
-      name: "body",
-      placeholder: "Response body",
-      type: "textarea",
-    },
-  ];
+  useEffect(() => {
+    if (isOpenModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isOpenModal]);
 
   const setThreadData = (name: keyof NewThreadForm, value: any) => {
     setError("");
@@ -223,14 +231,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     setPrevActiveModal(activeModal);
     setActiveModal("confirm");
   };
-
-  useEffect(() => {
-    if (isOpenModal) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-  }, [isOpenModal]);
 
   return (
     <ThreadModalContext.Provider

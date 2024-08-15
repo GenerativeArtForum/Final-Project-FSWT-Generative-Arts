@@ -1,18 +1,23 @@
-import Tag from "@/components/common/tag/tag";
-import ThreadUser from "../threadUser/threadUser";
-import ThreadActions from "../threadActions/threadActions";
+import Link from "next/link";
 
+import Tag from "@/components/common/tag/tag";
+import ThreadActions from "../threadActions/threadActions";
+import ThreadUser from "../threadUser/threadUser";
 import { ThreadType } from "@/types/thread/thread";
 
 import { ThreadWrapper } from "./threadComponent.style";
-import Link from "next/link";
 
 const Thread = ({ thread }: { thread: ThreadType }) => {
   return (
     <ThreadWrapper>
       <div className="thread-header">
-        <Link className="title" href={`/thread/${thread.id}`}>{thread.question}</Link>
-        <ThreadUser thread={thread} isFollowing={thread.user.isFollowing ? true : undefined} />
+        <Link className="title" href={`/thread/${thread.id}`}>
+          {thread.question}
+        </Link>
+        <ThreadUser
+          thread={thread}
+          isFollowing={thread.user.isFollowing ? true : undefined}
+        />
       </div>
       <div className="tags">
         {thread.tags.map((tag) => (
@@ -25,7 +30,7 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
           <span>{thread.responses} Responses</span>
           <span>{thread.views} Views</span>
         </div>
-        <ThreadActions id={thread.id}/>
+        <ThreadActions id={thread.id} />
       </div>
     </ThreadWrapper>
   );

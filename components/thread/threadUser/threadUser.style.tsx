@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 import { Colors, TagColors } from "@/constants/Colors";
 
-export const ThreadUserWrapper = styled.div<{ isfollowing: boolean | undefined }>`
+export const ThreadUserWrapper = styled.div<{
+  isfollowing: boolean | undefined;
+}>`
   display: flex;
   flex-direction: row;
   align-items: flex-start;

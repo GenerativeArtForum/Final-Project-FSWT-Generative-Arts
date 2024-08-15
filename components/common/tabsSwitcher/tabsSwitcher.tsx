@@ -1,12 +1,13 @@
 "use client";
 
+import useModal from "@/hooks/useModal";
+import { useUser } from "@clerk/nextjs";
+
 import CurrentTab from "../currentTab/currentTab";
 
 import { homeTabs } from "@/constants/TabsSwitchers";
 
-import useModal from "@/hooks/useModal";
 import { TabsSwitcherWrapper } from "./tabsSwitcher.style";
-import { useUser } from "@clerk/nextjs";
 
 const TabsSwitcher = () => {
   const { feedDisplay, setIsOpenModal, setFeedDisplay, setActiveModal } =

@@ -2,7 +2,10 @@ import styled from "styled-components";
 
 import { Colors } from "@/constants/Colors";
 
-export const SmallButtonWrapper = styled.div<{ variant: number, hasText: boolean | undefined }>`
+export const SmallButtonWrapper = styled.div<{
+  variant: number;
+  hasText: boolean | undefined;
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,9 +16,9 @@ export const SmallButtonWrapper = styled.div<{ variant: number, hasText: boolean
   height: 30px;
   border-radius: 10px;
   cursor: pointer;
-  opacity: ${({ hasText }) => hasText !== undefined ? (hasText ? 1 : 0) : undefined};
+  opacity: ${({ hasText }) =>
+    hasText !== undefined ? (hasText ? 1 : 0) : undefined};
   transition: 0.15s ease-in;
-
 
   &:hover {
     transform: scale(1.05);

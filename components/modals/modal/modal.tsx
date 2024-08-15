@@ -11,7 +11,8 @@ import ShareModal from "../shareModal/shareModal";
 import { ModalWrapper } from "./modal.style";
 
 const Modal = () => {
-  const { activeModal, isOpenModal, shareLink, cancelThread, closeModal } = useModal();
+  const { activeModal, isOpenModal, shareLink, cancelThread, closeModal } =
+    useModal();
 
   return (
     <ModalWrapper isOpenModal={isOpenModal}>

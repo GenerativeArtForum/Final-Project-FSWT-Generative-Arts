@@ -1,5 +1,3 @@
-"use client";
-
 import Tag from "@/components/common/tag/tag";
 
 import { UserDataWrapper } from "./userData.style";
@@ -20,7 +18,9 @@ const UserData = () => {
 
   return (
     <UserDataWrapper>
-      {userData.bio && userData.bio !== "" && <p className="bio-text">{userData.bio}</p>}
+      {userData.bio && userData.bio !== "" && (
+        <p className="bio-text">{userData.bio}</p>
+      )}
       <div className="about">
         <p className="about-text">Talks about</p>
         <div className="tags">

@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import useSearch from "@/hooks/useSearch.tsx";
 import { usePathname } from "next/navigation";
-import { SideBarWrapper } from "./SideBar.style.tsx";
+import { useEffect, useState } from "react";
+
+import SearchBar from "@/components/common/form/searchBar/searchBar.tsx";
 import SideBarTag from "./sidebarTag.tsx";
 import SideBarUser from "./sidebaruser.tsx";
-import SearchBar from "@/components/common/form/searchBar/searchBar.tsx";
-import useSearch from "@/hooks/useSearch.tsx";
+
+import { SideBarWrapper } from "./SideBar.style.tsx";
 
 const sideTags = [
   "Processing",
@@ -42,12 +44,10 @@ const SideBar = () => {
   const [randomSideTags, setRandomSideTags] = useState<string[]>([]);
 
   useEffect(() => {
-    setRandomSideTags(
-      sideTags.sort(() => 0.5 - Math.random()).slice(0, 5)
-    );
+    setRandomSideTags(sideTags.sort(() => 0.5 - Math.random()).slice(0, 5));
 
     setSpeakers(
-      allSpeakers.map(speaker => ({
+      allSpeakers.map((speaker) => ({
         ...speaker,
         tag: sideTags[Math.floor(Math.random() * sideTags.length)],
       }))

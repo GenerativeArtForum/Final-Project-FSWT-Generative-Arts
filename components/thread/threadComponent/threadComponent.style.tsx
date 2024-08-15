@@ -1,5 +1,6 @@
-import { Colors } from "@/constants/Colors";
 import styled from "styled-components";
+
+import { Colors } from "@/constants/Colors";
 
 export const ThreadWrapper = styled.div`
   border: none;
