@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SideBarWrapper } from "./SideBar.style.tsx";
 import SideBarTag from "./sidebarTag.tsx";
@@ -7,7 +8,7 @@ import SideBarUser from "./sidebaruser.tsx";
 import SearchBar from "@/components/common/form/searchBar/searchBar.tsx";
 import useSearch from "@/hooks/useSearch.tsx";
 
-const tags = [
+const sideTags = [
   "Processing",
   "p5.js",
   "OpenFrameworks",
@@ -20,74 +21,49 @@ const tags = [
   "Creative Coding",
 ];
 
-const speakers = [
-  {
-    username: "JohnDoe",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "JaneSmith",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "MichaelJohnson",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "EmilyDavis",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "DavidWilson",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "SarahThompson",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "DanielMartinez",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "OliviaAnderson",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "MatthewTaylor",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
-  {
-    username: "SophiaThomas",
-    tag: tags[Math.floor(Math.random() * tags.length)],
-    image: "",
-  },
+const allSpeakers = [
+  { username: "JohnDoe", tag: "", image: "" },
+  { username: "JaneSmith", tag: "", image: "" },
+  { username: "MichaelJohnson", tag: "", image: "" },
+  { username: "EmilyDavis", tag: "", image: "" },
+  { username: "DavidWilson", tag: "", image: "" },
+  { username: "SarahThompson", tag: "", image: "" },
+  { username: "DanielMartinez", tag: "", image: "" },
+  { username: "OliviaAnderson", tag: "", image: "" },
+  { username: "MatthewTaylor", tag: "", image: "" },
+  { username: "SophiaThomas", tag: "", image: "" },
 ];
 
 const SideBar = () => {
   const { text, handleChangeText } = useSearch();
-
   const currentPath = usePathname();
+
+  const [speakers, setSpeakers] = useState(allSpeakers);
+  const [randomSideTags, setRandomSideTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    setRandomSideTags(
+      sideTags.sort(() => 0.5 - Math.random()).slice(0, 5)
+    );
+
+    setSpeakers(
+      allSpeakers.map(speaker => ({
+        ...speaker,
+        tag: sideTags[Math.floor(Math.random() * sideTags.length)],
+      }))
+    );
+  }, []);
 
   return (
     <SideBarWrapper>
       {currentPath !== "/search" && (
-      <div>
-        <SearchBar text={text} onChangeText={handleChangeText} variant={1} />
-      </div>
+        <div>
+          <SearchBar text={text} onChangeText={handleChangeText} variant={2} />
+        </div>
       )}
       <div className="side-tags-container">
         <h3>Popular today</h3>
-        {tags.slice(0, 5).map((tag, index) => (
+        {randomSideTags.map((tag, index) => (
           <SideBarTag tag={tag} key={index} />
         ))}
       </div>

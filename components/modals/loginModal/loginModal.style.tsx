@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { Colors } from "@/constants/Colors";
 
-export const ConfirmModalWrapper = styled.div`
+export const LoginModalWrapper = styled.div`
   .form-container {
     flex: 1;
     display: flex;
@@ -10,7 +10,7 @@ export const ConfirmModalWrapper = styled.div`
     width: 100%;
     overflow-y: auto;
     padding-bottom: 1rem;
-    padding:2REM;
+    padding: 2rem;
     max-height: 70vh;
     gap: 32px;
   }

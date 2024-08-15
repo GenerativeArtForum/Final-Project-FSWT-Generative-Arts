@@ -1,6 +1,9 @@
 import useModal from "@/hooks/useModal";
-import { MenuLinkWrapper } from "./MenuLink.style";
+import { useUser } from "@clerk/nextjs";
+
 import { Colors } from "@/constants/Colors";
+
+import { MenuLinkWrapper } from "./MenuLink.style";
 
 const MenuLink = ({
   item,
@@ -15,16 +18,21 @@ const MenuLink = ({
   currentPath: string | null;
 }) => {
   const { setIsOpenModal, setActiveModal } = useModal();
+  const { isSignedIn } = useUser();
 
   const isActive = currentPath === item.link;
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    if (item.name === "create") {
-      event.preventDefault();
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if(isSignedIn){
+      if (item.name === "create") {
+        e.preventDefault();
+        setIsOpenModal(true);
+        setActiveModal("newThread");
+      }
+    } else if(!isSignedIn && (item.name === "profile" || item.name === "saved" || item.name === "create")){
+      e.preventDefault();
       setIsOpenModal(true);
-      setActiveModal("newThread");
+      setActiveModal("login");
     }
   };
 

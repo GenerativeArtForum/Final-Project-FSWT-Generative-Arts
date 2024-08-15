@@ -3,7 +3,7 @@ import { Colors } from "@/constants/Colors";
 import styled from "styled-components";
 
 
-export const CurrentTabWrapper = styled.button<{isActive: boolean}>`
+export const CurrentTabWrapper = styled.button<{isActive: boolean | undefined}>`
     color: ${(props) => (props.isActive ? Colors.blue : Colors.lightBlack)};
     border-bottom: 1.5px solid ${(props) => (props.isActive ? Colors.blue : Colors.transparent)};
     padding: 0.25rem 0.67rem;

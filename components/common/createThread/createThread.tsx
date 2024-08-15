@@ -5,11 +5,22 @@ import useModal from "@/hooks/useModal";
 import Input from "../form/input/input";
 import SmallButton from "../smallButton/smallButton";
 
+import { useUser } from "@clerk/nextjs";
 import { CreateThreadWrapper } from "./createThread.style";
 
 const CreateThread = () => {
-  const { newThreadFormState, activeModal, setActiveModal, setIsOpenModal, setThreadData } =
+  const { newThreadFormState, setActiveModal, setIsOpenModal, setThreadData } =
     useModal();
+  const { isSignedIn } = useUser();
+
+  const buttonClicked = () => {
+    if (!isSignedIn) {
+      setIsOpenModal(true);
+      setActiveModal("login");
+    } else {
+      newThreadModal();
+    }
+  };
 
   const newThreadModal = () => {
     setIsOpenModal(true);
@@ -20,7 +31,7 @@ const CreateThread = () => {
     <CreateThreadWrapper
       onSubmit={(e: any) => {
         e.preventDefault();
-        newThreadModal();
+        buttonClicked();
       }}
     >
       <Input
@@ -29,7 +40,7 @@ const CreateThread = () => {
         onChange={(e) => setThreadData("question", e.target.value as any)}
         value={newThreadFormState.question}
       />
-      <SmallButton variant={1} icon="plus" onClick={newThreadModal} />
+      <SmallButton variant={1} icon="plus" onClick={buttonClicked} />
     </CreateThreadWrapper>
   );
 };

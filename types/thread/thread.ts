@@ -11,6 +11,7 @@ type User = {
 };
 
 export type ThreadType = {
+  id: number;
   question: string;
   user: User;
   date: string;

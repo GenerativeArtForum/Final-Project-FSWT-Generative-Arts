@@ -9,7 +9,7 @@ const CurrentTab = ({
   setFeedDisplay,
 }: {
   title: string;
-  isActive: boolean;
+  isActive: boolean | undefined;
   index: number;
   setFeedDisplay: (feedDisplay: number) => void;
 }) => {

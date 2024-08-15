@@ -4,20 +4,19 @@ import CrossIcon from "../../../../assets/icons/common/cross.svg";
 import SearchIcon from "../../../../assets/icons/common/search.svg";
 
 import { SearchBarWrapper } from "./searchBar.style";
+import SmallButton from "../../smallButton/smallButton";
 
 const SearchBar = ({
   text,
   variant,
-  large,
   onChangeText,
 }: {
   text: string;
   variant?: number | undefined;
-  large?: boolean | undefined;
   onChangeText: (value: string) => void;
 }) => {
   return (
-    <SearchBarWrapper variant={variant} large={large}>
+    <SearchBarWrapper variant={variant}>
       {variant === 1 && (
         <Image src={SearchIcon} alt="search" className="icon" />
       )}
@@ -27,10 +26,13 @@ const SearchBar = ({
         placeholder="Search"
         onChange={(e: any) => onChangeText(e.target.value)}
       />
-      {text !== "" && variant !== 1 && (
+      {text !== "" && variant === 0  && (
         <button className="cross" onClick={(e: any) => onChangeText("")}>
           <Image src={CrossIcon} alt="cross" />
         </button>
+      )}
+      {variant === 1  && (
+        <SmallButton variant={2} icon="arrowRight" onClick={()=> console.log('clicked')} hasText={text !== ''} />
       )}
     </SearchBarWrapper>
   );

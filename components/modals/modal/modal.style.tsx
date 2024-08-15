@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/Colors";
 import styled from "styled-components";
 
-export const ModalWrapper = styled.div<{ isOpenModal: boolean }>`
+export const ModalWrapper = styled.div<{ isOpenModal: boolean | undefined }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -10,11 +10,11 @@ export const ModalWrapper = styled.div<{ isOpenModal: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: ${({ isOpenModal }) => (isOpenModal ? 999 : -1)};
+  z-index: 999;
   opacity: ${({ isOpenModal }) => (isOpenModal ? 1 : 0)};
   pointer-events: ${({ isOpenModal }) => (isOpenModal ? "auto" : "none")};
   backdrop-filter: blur(2px);
-  transition: opacity 0.25s ease-in-out;
+  transition: opacity 0.15s ease-in-out;
 
   .background {
     position: absolute;
@@ -40,8 +40,11 @@ export const ModalWrapper = styled.div<{ isOpenModal: boolean }>`
     width: fit-content;
     background-color: ${Colors.pureWhite};
     border-radius: 16px;
+    transform: ${({ isOpenModal }) =>
+      isOpenModal ? "translateY(0)" : "translateY(5%)"};
     z-index: 2;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    transition: transform 0.15s ease-out, opacity 0.15s ease-in-out;
   }
 `;

@@ -5,14 +5,16 @@ import useModal from "@/hooks/useModal";
 import CreateThread from "@/components/common/createThread/createThread";
 import TabsSwitcher from "@/components/common/tabsSwitcher/tabsSwitcher";
 
-import { HomePageWrapper } from "./home.style";
 import Thread from "@/components/thread/threadComponent/threadComponent";
 
-export default function Home() {
+import { HomePageWrapper } from "./home.style";
+
+const Home = () => {
   const { feedDisplay } = useModal();
 
   const threadsData = [
     {
+      id: 1,
       question: "How to create a random noise texture in p5.js?",
       user: {
         id: 1,
@@ -30,6 +32,7 @@ export default function Home() {
       views: 310,
     },
     {
+      id: 2,
       question: "What are the best tools for creative coding in 2024?",
       user: {
         id: 2,
@@ -47,6 +50,7 @@ export default function Home() {
       views: 1200,
     },
     {
+      id: 3,
       question: "Generative art: Random vs. Perlin noise?",
       user: {
         id: 3,
@@ -64,6 +68,7 @@ export default function Home() {
       views: 450,
     },
     {
+      id: 4,
       question: "How to animate generative art in Processing?",
       user: {
         id: 4,
@@ -81,6 +86,7 @@ export default function Home() {
       views: 600,
     },
     {
+      id: 5,
       question: "What is the role of randomness in generative design?",
       user: {
         id: 5,
@@ -98,6 +104,7 @@ export default function Home() {
       views: 820,
     },
     {
+      id: 6,
       question: "Best resources to learn generative art with JavaScript?",
       user: {
         id: 6,
@@ -115,6 +122,7 @@ export default function Home() {
       views: 540,
     },
     {
+      id: 7,
       question: "How to create complex geometric patterns in generative art?",
       user: {
         id: 7,
@@ -132,6 +140,7 @@ export default function Home() {
       views: 980,
     },
     {
+      id: 8,
       question: "Creative coding with GLSL: Where to start?",
       user: {
         id: 8,
@@ -149,6 +158,7 @@ export default function Home() {
       views: 700,
     },
     {
+      id: 9,
       question: "Combining AI with generative art: Your experiences?",
       user: {
         id: 9,
@@ -166,6 +176,7 @@ export default function Home() {
       views: 1500,
     },
     {
+      id: 10,
       question: "How to use p5.js to create interactive generative art?",
       user: {
         id: 10,
@@ -197,7 +208,7 @@ export default function Home() {
       <TabsSwitcher />
       <CreateThread />
       <div className="container">
-        {feedDisplay === 1
+        {feedDisplay === 0
           ? followedThreads.map((thread, index) => (
               <Thread key={index} thread={thread} />
             ))
@@ -208,3 +219,5 @@ export default function Home() {
     </HomePageWrapper>
   );
 }
+
+export default Home;

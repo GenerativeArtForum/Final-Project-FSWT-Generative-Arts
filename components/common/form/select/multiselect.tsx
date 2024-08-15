@@ -218,7 +218,7 @@ const MultiSelect = ({
       {multiselectOpen && (
         <div className="dropdown">
           <div className="search-bar">
-            <SearchBar text={text} onChangeText={handleChangeText} />
+            <SearchBar text={text} onChangeText={handleChangeText} variant={0}/>
           </div>
           <div className="options">
             {tagsList.map((tag, index) => (

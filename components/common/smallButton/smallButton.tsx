@@ -6,17 +6,19 @@ const SmallButton = ({
   text,
   icon,
   variant,
+  hasText,
   onClick,
 }: {
   text?: string;
   icon?: string;
   variant: number;
+  hasText?: boolean;
   onClick: () => void;
 }) => {
   return (
-    <SmallButtonWrapper variant={variant} onClick={onClick}>
+    <SmallButtonWrapper variant={variant} onClick={onClick} hasText={hasText}>
       {icon && (
-        <Image src={CommonIcons[icon]} width={11} height={11} alt={icon} />
+        <Image src={CommonIcons[icon]} width={variant === 2 ? 14 : 11} height={variant === 2 ? 14 : 11} alt={icon} />
       )}
     </SmallButtonWrapper>
   );

@@ -13,7 +13,6 @@ const SearchPage = () => {
           text={text}
           onChangeText={handleChangeText}
           variant={1}
-          large={true}
         />
       </div>
     </SearchPageWrapper>

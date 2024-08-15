@@ -8,9 +8,12 @@ import {
   useState,
 } from "react";
 
+import { useToast } from "@/components/ui/use-toast";
+
+import { NewResponseForm } from "@/types/forms/newResponseForm";
 import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
 
-import { useToast } from "@/components/ui/use-toast";
+import { InitialNewResponseForm } from "@/data/forms/InitialNewResponseForm";
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
 
 type FormField = {
@@ -20,24 +23,30 @@ type FormField = {
 };
 
 type ThreadModalContextType = {
-  isOpenModal: boolean;
+  isOpenModal: boolean | undefined;
   feedDisplay: number;
   newThreadFormState: NewThreadForm;
+  newResponseFormState: NewResponseForm;
   error: string | null;
   selectedTags: TagType[] | null;
   formFields: FormField[];
+  responseFields: FormField[];
   images: File[];
   content: string;
   activeModal: string;
-  setIsOpenModal: (isOpenModal: boolean) => void;
+  prevActiveModal: string;
+  shareLink: string;
+  setIsOpenModal: (isOpenModal: boolean | undefined) => void;
   setFeedDisplay: (feedDisplay: number) => void;
   setNewThreadFormState: (newThreadForm: NewThreadForm) => void;
+  setNewResponseFormState: (newResponseForm: NewResponseForm) => void;
   setThreadData: (name: keyof NewThreadForm, value: any) => void;
   validateThreadForm: () => boolean;
   setError: (error: string) => void;
   setSelectedTags: (tags: TagType[]) => void;
   setImages: (images: File[]) => void;
   setActiveModal: (activeModal: string) => void;
+  setPrevActiveModal: (prevActiveModal: string) => void;
   setContent: (content: string) => void;
   closeModal: (action: string, e: any) => void;
   setToast: (
@@ -47,21 +56,27 @@ type ThreadModalContextType = {
     duration?: number
   ) => void;
   cancelThread: (e: any) => void;
+  setShareLink: (link: string) => void;
 };
 
 const ThreadModalContext = createContext<ThreadModalContextType>({
   isOpenModal: false,
   feedDisplay: 1,
   newThreadFormState: InitialNewThreadForm,
+  newResponseFormState: InitialNewResponseForm,
   error: null,
   selectedTags: null,
   formFields: [],
+  responseFields: [],
   images: [],
   content: "",
   activeModal: "",
+  prevActiveModal: "",
+  shareLink: "",
   setIsOpenModal: () => {},
   setFeedDisplay: () => {},
   setNewThreadFormState: () => {},
+  setNewResponseFormState: () => {},
   setThreadData: () => {},
   validateThreadForm: () => false,
   setError: () => {},
@@ -69,23 +84,29 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   setImages: () => {},
   setContent: () => {},
   setActiveModal: () => {},
+  setPrevActiveModal: () => {},
   closeModal: () => {},
   setToast: () => {},
   cancelThread: () => {},
+  setShareLink: () => {},
 });
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useState<boolean | undefined>(false);
   const [activeModal, setActiveModal] = useState<string>("");
-  const [feedDisplay, setFeedDisplay] = useState<number>(0);
+  const [prevActiveModal, setPrevActiveModal] = useState<string>("");
+  const [feedDisplay, setFeedDisplay] = useState<number>(1);
   const [newThreadFormState, setNewThreadFormState] =
     useState<NewThreadForm>(InitialNewThreadForm);
+  const [newResponseFormState, setNewResponseFormState] =
+    useState<NewResponseForm>(InitialNewResponseForm);
   const [error, setError] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<TagType[]>(
     newThreadFormState.tags || []
   );
   const [images, setImages] = useState<File[]>([]);
   const [content, setContent] = useState<string>("");
+  const [shareLink, setShareLink] = useState<string>("");
 
   const { toast } = useToast();
 
@@ -123,6 +144,18 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     {
       name: "body",
       placeholder: "Thread body",
+      type: "textarea",
+    },
+  ];
+
+  const responseFields: {
+    name: keyof NewResponseForm;
+    placeholder: string;
+    type: string;
+  }[] = [
+    {
+      name: "body",
+      placeholder: "Response body",
       type: "textarea",
     },
   ];
@@ -176,6 +209,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
       }
     }
     setIsOpenModal(false);
+    setPrevActiveModal("");
     setActiveModal("");
     setError("");
     setContent("");
@@ -186,8 +220,17 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
   const cancelThread = (e: any) => {
     e.preventDefault();
+    setPrevActiveModal(activeModal);
     setActiveModal("confirm");
   };
+
+  useEffect(() => {
+    if (isOpenModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [isOpenModal]);
 
   return (
     <ThreadModalContext.Provider
@@ -195,15 +238,20 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         isOpenModal,
         feedDisplay,
         newThreadFormState,
+        newResponseFormState,
         error,
         selectedTags,
         formFields,
+        responseFields,
         images,
         content,
         activeModal,
+        prevActiveModal,
+        shareLink,
         setIsOpenModal,
         setFeedDisplay,
         setNewThreadFormState,
+        setNewResponseFormState,
         setThreadData,
         validateThreadForm,
         setError,
@@ -211,9 +259,11 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         setImages,
         setContent,
         setActiveModal,
+        setPrevActiveModal,
         closeModal,
         setToast,
         cancelThread,
+        setShareLink,
       }}
     >
       {children}

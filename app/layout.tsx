@@ -11,6 +11,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 import Modal from "@/components/modals/modal/modal";
 import "./globals.css";
+import StyledComponentsRegistry from "./styled-components/registry";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,19 +25,21 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <ModalProvider>
-        <html lang="en">
-          <body>
-            <Modal />
-            <Toaster />
-            <div className="app-sections">
-              <Menu />
-              <div className="content">{children}</div>
-              <SideBar />
-            </div>
-          </body>
-        </html>
-      </ModalProvider>
+      <StyledComponentsRegistry>
+        <ModalProvider>
+          <html lang="en">
+            <body>
+              <Modal />
+              <Toaster />
+              <div className="app-sections">
+                <Menu />
+                <div className="content">{children}</div>
+                <SideBar />
+              </div>
+            </body>
+          </html>
+        </ModalProvider>
+      </StyledComponentsRegistry>
     </ClerkProvider>
   );
 }
