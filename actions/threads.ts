@@ -19,12 +19,11 @@ export async function actionGetThread(id: string) {
 }
 
 export async function actionCreateThread(
-  id: string,
   title: string,
   description: string,
   userId: string
 ) {
-  const thread = await createThread(id, title, description, userId);
+  const thread = await createThread(title, description, userId);
   return thread;
 }
 

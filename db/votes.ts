@@ -7,11 +7,11 @@ export type Vote = {
   value: "UP" | "DOWN";
 };
 
-export async function getVotes(): Promise<Vote[]> {
+export async function getVotes() {
   return db.vote.findMany();
 }
 
-export async function getVote(id: string): Promise<Vote | null> {
+export async function getVote(id: string) {
   return db.vote.findUnique({
     where: { id },
   });
@@ -21,7 +21,7 @@ export async function createVote(
   responseId: string,
   userId: string,
   value: "UP" | "DOWN"
-): Promise<Vote> {
+) {
   return db.vote.create({
     data: {
       responseId,
@@ -31,17 +31,14 @@ export async function createVote(
   });
 }
 
-export async function updateVote(
-  id: string,
-  value: "UP" | "DOWN"
-): Promise<Vote> {
+export async function updateVote(id: string, value: "UP" | "DOWN") {
   return db.vote.update({
     where: { id },
     data: { value },
   });
 }
 
-export async function deleteVote(id: string): Promise<Vote> {
+export async function deleteVote(id: string) {
   return db.vote.delete({
     where: { id },
   });

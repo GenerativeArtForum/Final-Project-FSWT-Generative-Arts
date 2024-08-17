@@ -20,14 +20,12 @@ export async function getThread(id: string) {
 }
 
 export async function createThread(
-  id: string,
   title: string,
   description: string,
   userId: string
 ) {
   return await db.thread.create({
     data: {
-      id,
       title,
       description,
       userId,

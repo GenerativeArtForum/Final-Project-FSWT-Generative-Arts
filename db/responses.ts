@@ -7,11 +7,11 @@ export type Response = {
   userId: string;
 };
 
-export async function getResponses(): Promise<Response[]> {
+export async function getResponses() {
   return db.response.findMany();
 }
 
-export async function getResponse(id: string): Promise<Response | null> {
+export async function getResponse(id: string) {
   return db.response.findUnique({
     where: { id },
   });
@@ -21,7 +21,7 @@ export async function createResponse(
   text: string,
   threadId: string,
   userId: string
-): Promise<Response> {
+) {
   return db.response.create({
     data: {
       text,
@@ -31,17 +31,14 @@ export async function createResponse(
   });
 }
 
-export async function updateResponse(
-  id: string,
-  text: string
-): Promise<Response> {
+export async function updateResponse(id: string, text: string) {
   return db.response.update({
     where: { id },
     data: { text },
   });
 }
 
-export async function deleteResponse(id: string): Promise<Response> {
+export async function deleteResponse(id: string) {
   return db.response.delete({
     where: { id },
   });
