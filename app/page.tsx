@@ -1,13 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
+
 import useModal from "@/hooks/useModal";
+import useThreads from "@/hooks/useThreads";
 
 import CreateThread from "@/components/common/createThread/createThread";
 import TabsSwitcher from "@/components/common/tabsSwitcher/tabsSwitcher";
 import Thread from "@/components/thread/threadComponent/threadComponent";
 
-import useThreads from "@/hooks/useThreads";
-import { useEffect } from "react";
 import { HomePageWrapper } from "./home.style";
 
 const Home = () => {

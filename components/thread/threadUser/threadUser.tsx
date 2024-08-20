@@ -41,7 +41,7 @@ const ThreadUser = ({
         </div>
       </Link>
       <div className="user-image">
-        {thread.user.image !== "" ? (
+        {thread.user.image !== undefined && thread.user.image !== "" ? (
           <Link href={`/user/${thread.user.id}`}>
             <Image
               src={thread.user.image}

@@ -11,9 +11,21 @@ const UserPage = () => {
   const params = useParams();
   const userId = params.id;
 
+  const userData = {
+    username: "johndoe",
+    isFollowing: false,
+    followers: 100,
+    following: 200,
+    bio: "Creative coder passionate about generative arts Creative coder passionate about generative arts Creative coder passionate about generative arts",
+    tags: [
+      { id: 1, name: "Processing" },
+      { id: 2, name: "OpenFrameworks" },
+    ],
+  };
+
   return (
     <ProfilePageWrapper>
-      <UserProfile />
+      <UserProfile user={userData} ownProfile={false} />
       <UserData />
       <span>User ID: {userId}</span>
     </ProfilePageWrapper>

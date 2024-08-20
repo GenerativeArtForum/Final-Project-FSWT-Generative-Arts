@@ -16,7 +16,13 @@ const ConfirmModal = () => {
         <div>
           <h1>
             Do you want to cancel the{" "}
-            {prevActiveModal === "newThread" ? "thread" : "response"}?
+            {prevActiveModal === "newThread"
+              ? "thread"
+              : prevActiveModal === "newResponse"
+              ? "response"
+              : prevActiveModal === "editProfile"
+              ? "profile editing"
+              : "editing"}
           </h1>
           <span>This action cannot be undone</span>
         </div>
@@ -30,7 +36,13 @@ const ConfirmModal = () => {
           />
           <Button
             text={`Cancel the ${
-              prevActiveModal === "newThread" ? "thread" : "response"
+              prevActiveModal === "newThread"
+                ? "thread"
+                : prevActiveModal === "newResponse"
+                ? "response"
+                : prevActiveModal === "editProfile"
+                ? "editing"
+                : "editing"
             }`}
             variant={1}
             onClick={(e) => {

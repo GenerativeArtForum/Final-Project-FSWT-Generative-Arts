@@ -7,18 +7,16 @@ import Input from "@/components/common/form/input/input";
 import MultiSelect from "@/components/common/form/select/multiselect";
 import ImageUpload from "@/components/common/imageUpload/imageUpload";
 
-import { NewThreadModalWrapper } from "./newThreadModal.style";
+import { EditProfileModalWrapper } from "./editProfileModal.style";
 
-const NewThreadModal = () => {
+const EditProfileModal = () => {
   const {
-    newThreadFormState,
-    error,
+    editProfileFormState,
     selectedTags,
-    formFields,
+    editProfileFields,
     content,
-    setThreadData,
+    setProfileData,
     setSelectedTags,
-    setContent,
     closeModal,
     cancelThread,
   } = useModal();
@@ -45,21 +43,12 @@ const NewThreadModal = () => {
     "Artificial Intelligence",
   ];
 
-  const handleEditorChange = (content: string | any) => {
-    setContent(content);
-    setThreadData("body", content);
-  };
-
   return (
-    <NewThreadModalWrapper>
+    <EditProfileModalWrapper>
       <div className="form-container">
-        <h1>Create a new thread</h1>
-        <h2>
-          Please explain your question in detail and include relevant tags for
-          clarity
-        </h2>
+        <h1>Edit your profile</h1>
         <div className="form">
-          {formFields.map((field, index) => {
+          {editProfileFields.map((field, index) => {
             const fieldLabel =
               field.name[0].toUpperCase() + field.name.slice(1);
             return (
@@ -71,27 +60,26 @@ const NewThreadModal = () => {
                   type={field.type}
                   placeholder={field.placeholder}
                   onChange={(e) =>
-                    setThreadData(field.name, e.target.value as any)
+                    setProfileData(field.name, e.target.value as any)
                   }
                   content={field.type === "textarea" ? content : ""}
-                  value={newThreadFormState[field.name] as string}
-                  handleEditorChange={handleEditorChange}
+                  value={editProfileFormState[field.name] as string}
                 />
               </div>
             );
           })}
           <div className="input-container">
             <label className="input-label">Images</label>
-            <ImageUpload maxImages={4}/>
+            <ImageUpload maxImages={1} />
           </div>
           <div className="input-container">
             <label className="input-label">Tags</label>
             <MultiSelect
               tagsList={tagsList}
               placeholder="Add tags"
-              maxTags={6}
               selectedTags={selectedTags}
-              setThreadData={setThreadData}
+              maxTags={2}
+              setThreadData={setProfileData}
               setSelectedTags={setSelectedTags}
             />
           </div>
@@ -106,22 +94,15 @@ const NewThreadModal = () => {
           }}
         />
         <Button
-          text="Save as draft"
-          variant={3}
-          onClick={(e) => {
-            closeModal("close", e);
-          }}
-        />
-        <Button
-          text="Create thread"
+          text="Save"
           variant={1}
           onClick={(e) => {
             closeModal("submit", e);
           }}
         />
       </div>
-    </NewThreadModalWrapper>
+    </EditProfileModalWrapper>
   );
 };
 
-export default NewThreadModal;
+export default EditProfileModal;

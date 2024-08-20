@@ -3,17 +3,21 @@ type Tag = {
   name: string;
 };
 
-type User = {
-  id: number;
+export type UserType = {
+  id?: number;
   username: string;
-  image: string;
-  isFollowing: boolean;
+  image?: string;
+  isFollowing?: boolean;
+  followers?: number;
+  following?: number;
+  bio?: string;
+  tags?: Tag[];
 };
 
 export type ResponseType = {
   id: number;
   text: string;
-  user: User;
+  user: UserType;
   votes: number;
   personalVote: string | undefined;
   date: string;
@@ -22,7 +26,7 @@ export type ResponseType = {
 export type ThreadType = {
   id: number;
   question: string;
-  user: User;
+  user: UserType;
   date: string;
   tags: Tag[];
   body: string;

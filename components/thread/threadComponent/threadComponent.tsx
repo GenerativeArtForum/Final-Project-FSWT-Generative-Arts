@@ -3,6 +3,7 @@ import Link from "next/link";
 import Tag from "@/components/common/tag/tag";
 import ThreadActions from "../threadActions/threadActions";
 import ThreadUser from "../threadUser/threadUser";
+
 import { ThreadType } from "@/types/thread/thread";
 
 import { ThreadWrapper } from "./threadComponent.style";

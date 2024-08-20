@@ -11,21 +11,22 @@ import { MultiSelectWrapper } from "./multiselect.style";
 import DownArrow from "../../../../assets/icons/common/down-arrow.svg";
 import UpArrow from "../../../../assets/icons/common/up-arrow.svg";
 
+import { EditProfileForm } from "@/types/forms/editProfileForm";
 import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
-
-const MAX_TAGS = 6;
 
 const MultiSelect = ({
   tagsList,
   placeholder,
   selectedTags,
+  maxTags,
   setThreadData,
   setSelectedTags,
 }: {
   tagsList: string[];
   placeholder: string;
   selectedTags: TagType[] | null;
-  setThreadData: (name: keyof NewThreadForm, value: TagType[]) => void;
+  maxTags: number;
+  setThreadData: any;
   setSelectedTags: (tags: TagType[]) => void;
 }) => {
   const { toast } = useToast();
@@ -92,13 +93,13 @@ const MultiSelect = ({
 
   const handleClickMultiSelect = (tagName: string) => {
     if (
-      selectedTags.length >= MAX_TAGS &&
+      selectedTags.length >= maxTags &&
       !selectedTags.some((tag) => tag.name === tagName)
     ) {
       setToast(
         "error",
         undefined,
-        `You can only select up to ${MAX_TAGS} tags` || undefined
+        `You can only select up to ${maxTags} tags` || undefined
       );
 
       return;
