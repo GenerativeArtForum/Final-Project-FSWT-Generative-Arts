@@ -1,9 +1,13 @@
-export default function Saved() {
+"use client";
+
+import { SavedPageWrapper } from "./page.style";
+
+const SavedPage = () => {
   return (
-    <main>
-      <div>
-        <span>SAVED PAGE</span>
-      </div>
-    </main>
+    <SavedPageWrapper>
+      <span>SAVED PAGE</span>
+    </SavedPageWrapper>
   );
-}
+};
+
+export default SavedPage;

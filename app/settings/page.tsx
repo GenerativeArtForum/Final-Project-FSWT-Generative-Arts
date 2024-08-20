@@ -1,9 +1,13 @@
-export default function Settings() {
+"use client";
+
+import { SettingsPageWrapper } from "./page.style";
+
+const SettingsPage = () => {
   return (
-    <main>
-      <div>
-        <span>SETTINGS PAGE</span>
-      </div>
-    </main>
+    <SettingsPageWrapper>
+      <span>SETTINGS PAGE</span>
+    </SettingsPageWrapper>
   );
-}
+};
+
+export default SettingsPage;

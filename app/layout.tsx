@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import { ReactNode } from "react";
 
 import { ClerkProvider } from "@clerk/nextjs";
+import { ModalProvider } from "@/hooks/useModal";
 
 import Menu from "@/components/navigation/menu/Menu";
 import SideBar from "@/components/navigation/sidebar/SideBar";
+import { Toaster } from "@/components/ui/toaster";
 
+import Modal from "@/components/modals/modal/modal";
 import "./globals.css";
+import StyledComponentsRegistry from "./styled-components/registry";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,15 +24,21 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body>
-          <div className="app-sections">
-            <Menu />
-            <div className="content">{children}</div>
-            <SideBar />
-          </div>
-        </body>
-      </html>
+      <StyledComponentsRegistry>
+        <ModalProvider>
+          <html lang="en">
+            <body>
+              <Modal />
+              <Toaster />
+              <div className="app-sections">
+                <Menu />
+                <div className="content">{children}</div>
+                <SideBar />
+              </div>
+            </body>
+          </html>
+        </ModalProvider>
+      </StyledComponentsRegistry>
     </ClerkProvider>
   );
 }

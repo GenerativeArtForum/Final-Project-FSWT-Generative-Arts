@@ -1,9 +1,24 @@
-export default function Search() {
+"use client";
+
+import useSearch from "@/hooks/useSearch";
+
+import SearchBar from "@/components/common/form/searchBar/searchBar";
+
+import { SearchPageWrapper } from "./page.style";
+
+const SearchPage = () => {
+  const { text, handleChangeText } = useSearch();
   return (
-    <main>
-      <div>
-        <span>SEARCH PAGE</span>
+    <SearchPageWrapper>
+      <div className="container">
+        <SearchBar
+          text={text}
+          onChangeText={handleChangeText}
+          variant={1}
+        />
       </div>
-    </main>
+    </SearchPageWrapper>
   );
-}
+};
+
+export default SearchPage;
