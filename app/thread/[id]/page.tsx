@@ -37,6 +37,7 @@ const ThreadPage = () => {
           isFollowing: true,
           image: "",
         },
+        personalVote: "DOWN",
         votes: -2,
         date: "03/01/2023 10:30:15 AM",
       },
@@ -49,6 +50,7 @@ const ThreadPage = () => {
           isFollowing: false,
           image: "",
         },
+        personalVote: "DOWN",
         votes: 5,
         date: "03/01/2023 11:05:42 AM",
       },
@@ -61,6 +63,7 @@ const ThreadPage = () => {
           isFollowing: true,
           image: "",
         },
+        personalVote: undefined,
         votes: 3,
         date: "03/01/2023 11:20:09 AM",
       },
@@ -73,6 +76,7 @@ const ThreadPage = () => {
           isFollowing: true,
           image: "",
         },
+        personalVote: undefined,
         votes: 7,
         date: "03/01/2023 12:15:37 PM",
       },
@@ -85,6 +89,7 @@ const ThreadPage = () => {
           isFollowing: false,
           image: "",
         },
+        personalVote: "UP",
         votes: 2,
         date: "03/01/2023 12:30:55 PM",
       },
@@ -97,6 +102,7 @@ const ThreadPage = () => {
           isFollowing: true,
           image: "",
         },
+        personalVote: undefined,
         votes: 4,
         date: "03/01/2023 1:10:21 PM",
       },
@@ -109,6 +115,7 @@ const ThreadPage = () => {
           isFollowing: false,
           image: "",
         },
+        personalVote: undefined,
         votes: 1,
         date: "03/01/2023 1:45:48 PM",
       },
@@ -121,6 +128,7 @@ const ThreadPage = () => {
           isFollowing: true,
           image: "",
         },
+        personalVote: undefined,
         votes: 6,
         date: "03/01/2023 2:20:15 PM",
       },
@@ -133,6 +141,7 @@ const ThreadPage = () => {
           isFollowing: false,
           image: "",
         },
+        personalVote: "UP",
         votes: 3,
         date: "03/01/2023 2:45:42 PM",
       },
@@ -188,7 +197,9 @@ const ThreadPage = () => {
               <Response key={index} response={response} />
             ))}
           </div>
-          <button onClick={handleLoadMore} className="more-less">{loadMoreButtonText}</button>
+          <button onClick={handleLoadMore} className="more-less">
+            {loadMoreButtonText}
+          </button>
         </div>
       </div>
     </ThreadPageWrapper>

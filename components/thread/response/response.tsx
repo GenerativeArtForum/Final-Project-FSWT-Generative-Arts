@@ -10,7 +10,7 @@ const Response = ({ response }: { response: ResponseType }) => {
   return (
     <ResponseWrapper>
       <div className="body">
-        <Vote vote={response.votes} voteValue={response.id %3 === 0 ? 'up' : undefined}/>
+        <Vote vote={response.votes} voteValue={response.personalVote}/>
         <span className="text">{response.text}</span>
       </div>
       <div className="user">

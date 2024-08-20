@@ -15,6 +15,7 @@ export type ResponseType = {
   text: string;
   user: User;
   votes: number;
+  personalVote: string | undefined;
   date: string;
 };
 

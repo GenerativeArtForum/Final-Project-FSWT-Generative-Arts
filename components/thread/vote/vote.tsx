@@ -9,13 +9,13 @@ const Vote = ({
   voteValue,
 }: {
   vote: number;
-  voteValue: "up" | "down" | undefined;
+  voteValue: string | undefined;
 }) => {
   return (
     <VoteWrapper isPositive={vote > 0}>
-      <UpVote color={voteValue === "up" ? Colors.blue : Colors.lightBlack} className="vote"/>
+      <UpVote color={voteValue === "UP" ? Colors.blue : Colors.lightBlack} className="vote"/>
       <span>{vote}</span>
-      <DownVote color={voteValue === "down" ? Colors.blue : Colors.lightBlack} className="vote"/>
+      <DownVote color={voteValue === "DOWN" ? Colors.blue : Colors.lightBlack} className="vote"/>
     </VoteWrapper>
   );
 };
