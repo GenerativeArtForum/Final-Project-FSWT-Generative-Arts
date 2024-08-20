@@ -1,4 +1,4 @@
-import { prisma } from "@/db/db";
+import { db } from "@/db/db";
 
 export type User = {
   id: string;
@@ -6,25 +6,25 @@ export type User = {
 };
 
 export async function getUsers() {
-  return await prisma.user.findMany({
+  return await db.user.findMany({
     orderBy: { id: "asc" },
   });
 }
 
 export async function getUser(id: string) {
-  return await prisma.user.findUnique({
+  return await db.user.findUnique({
     where: { id },
   });
 }
 
 export async function getUserByClerkId(clerk_id: string) {
-  return await prisma.user.findUnique({
+  return await db.user.findUnique({
     where: { clerk_id },
   });
 }
 
 export async function createUser(clerk_id: string) {
-  return await prisma.user.create({
+  return await db.user.create({
     data: {
       clerk_id,
     },
