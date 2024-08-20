@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleType {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+enum VoteValue {
+  UP
+  DOWN
+}
+
+enum Status {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model User {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  clerk_id     String     @unique
+  role         RoleType   @default(USER)
+  threads      Thread[]   @relation("UserThreads")
+  responses    Response[]
+  votes        Vote[]
+  savedThreads Thread[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Thread {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  images      String[]   @default([])
+  user        User       @relation("UserThreads", fields: [userId], references: [id])
+  userId      String     @db.ObjectId
+  tags        Tag[]
+  responses   Response[] @relation("ThreadResponses")
+  views       View[]
+
+  status    Status   @default(PUBLISHED)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Tag {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  Thread   Thread? @relation(fields: [threadId], references: [id])
+  threadId String? @db.ObjectId
+}
+
+model Response {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  thread    Thread   @relation("ThreadResponses", fields: [threadId], references: [id], onDelete: Cascade)
+  threadId  String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @db.ObjectId
+  votes     Vote[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([threadId])
+  @@index([userId])
+}
+
+model Vote {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  response   Response  @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  responseId String    @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String    @db.ObjectId
+  value      VoteValue
+  createdAt  DateTime  @default(now())
+
+  @@unique([responseId, userId])
+}
+
+model View {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  threadId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+}
