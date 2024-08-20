@@ -27,7 +27,7 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
       <span>{thread.body}</span>
       <div className="thread-footer">
         <div className="data">
-          <span>{thread.responses} Responses</span>
+          <span>{Number(thread.responses)} Responses</span>
           <span>{thread.views} Views</span>
         </div>
         <ThreadActions id={thread.id} />

@@ -8,7 +8,7 @@ export const ThreadUserWrapper = styled.div<{
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
   flex: 1;
 

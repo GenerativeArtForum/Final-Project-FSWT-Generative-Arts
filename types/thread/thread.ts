@@ -10,6 +10,14 @@ type User = {
   isFollowing: boolean;
 };
 
+export type ResponseType = {
+  id: number;
+  text: string;
+  user: User;
+  votes: number;
+  date: string;
+};
+
 export type ThreadType = {
   id: number;
   question: string;
@@ -17,6 +25,6 @@ export type ThreadType = {
   date: string;
   tags: Tag[];
   body: string;
-  responses: number;
+  responses: number | ResponseType[];
   views: number;
 };
