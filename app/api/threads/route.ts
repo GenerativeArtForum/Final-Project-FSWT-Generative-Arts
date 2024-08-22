@@ -43,8 +43,13 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { title, description, userId } = await req.json();
-    const newThread = await actionCreateThread(title, description, userId);
+    const { title, description, userId, tagIds } = await req.json();
+    const newThread = await actionCreateThread(
+      title,
+      description,
+      userId,
+      tagIds
+    );
     return NextResponse.json(newThread, { status: 201 });
   } catch (error) {
     return NextResponse.json(
@@ -66,12 +71,13 @@ export async function PUT(req: Request) {
   }
 
   try {
-    const { title, description, userId } = await req.json();
+    const { title, description, userId, tagIds } = await req.json();
     const updatedThread = await actionUpdateThread(
       id,
       title,
       description,
-      userId
+      userId,
+      tagIds
     );
     return NextResponse.json(updatedThread, { status: 200 });
   } catch (error) {

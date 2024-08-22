@@ -5,6 +5,7 @@ export type Thread = {
   title: string;
   description: string;
   userId: string;
+  tagIds: string[];
 };
 
 export async function getThreads() {
@@ -22,13 +23,15 @@ export async function getThread(id: string) {
 export async function createThread(
   title: string,
   description: string,
-  userId: string
+  userId: string,
+  tagIds: string[]
 ) {
   return await db.thread.create({
     data: {
       title,
       description,
       userId,
+      tagIds,
     },
   });
 }
@@ -37,7 +40,8 @@ export async function updateThread(
   id: string,
   title: string,
   description: string,
-  userId: string
+  userId: string,
+  tagIds: string[]
 ) {
   return await db.thread.update({
     where: {
@@ -47,6 +51,7 @@ export async function updateThread(
       title,
       description,
       userId,
+      tagIds,
     },
   });
 }
