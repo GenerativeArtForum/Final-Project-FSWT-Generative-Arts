@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
-import { Colors } from "@/constants/Colors";
+import { Colors, TagColors } from "@/constants/Colors";
 
-export const UserProfileWrapper = styled.div`
+export const UserProfileWrapper = styled.div<{
+  isFollowing: boolean | undefined;
+}>`
   position: relative;
   width: calc(100% + 2px);
   min-height: 200px;
@@ -30,6 +32,14 @@ export const UserProfileWrapper = styled.div`
     margin-top: 75px;
   }
 
+  .first-row {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
   .username {
     height: 100%;
     font-size: 20px;
@@ -47,5 +57,13 @@ export const UserProfileWrapper = styled.div`
     font-size: 12px;
     font-family: "Inter", sans-serif;
     font-weight: 400;
+  }
+
+  .follow-button {
+    background-color: ${(props) =>
+      props.isFollowing ? TagColors.background : Colors.pureWhite};
+    border: 1px solid
+      ${(props) => (props.isFollowing ? TagColors.border : Colors.gray)};
+    border-radius: 25%;
   }
 `;

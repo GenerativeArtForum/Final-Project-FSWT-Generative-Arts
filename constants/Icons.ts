@@ -7,4 +7,5 @@ export const CommonIcons: { [key: string]: any } = {
   whatsapp: require("../assets/icons/social/whatsapp.svg"),
   telegram: require("../assets/icons/social/telegram.svg"),
   linkedin: require("../assets/icons/social/linkedin.svg"),
+  edit: require("../assets/icons/common/edit.svg"),
 };

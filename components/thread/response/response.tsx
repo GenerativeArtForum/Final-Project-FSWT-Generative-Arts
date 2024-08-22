@@ -1,8 +1,12 @@
-import { ResponseType } from "@/types/thread/thread";
-import { calculateTimeAgo } from "@/utils/date";
 import Link from "next/link";
-import { ResponseWrapper } from "./response.style";
+
 import Vote from "../vote/vote";
+
+import { ResponseType } from "@/types/thread/thread";
+
+import { calculateTimeAgo } from "@/utils/date";
+
+import { ResponseWrapper } from "./response.style";
 
 const Response = ({ response }: { response: ResponseType }) => {
   const dateSincePosted = calculateTimeAgo(response.date);
@@ -10,7 +14,7 @@ const Response = ({ response }: { response: ResponseType }) => {
   return (
     <ResponseWrapper>
       <div className="body">
-        <Vote vote={response.votes} voteValue={response.personalVote}/>
+        <Vote vote={response.votes} voteValue={response.personalVote} />
         <span className="text">{response.text}</span>
       </div>
       <div className="user">

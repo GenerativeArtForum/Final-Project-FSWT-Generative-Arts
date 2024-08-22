@@ -1,5 +1,6 @@
-import { Colors } from "@/constants/Colors";
 import styled from "styled-components";
+
+import { Colors } from "@/constants/Colors";
 
 export const VoteWrapper = styled.div<{ isPositive: boolean }>`
   margin-top: 8px;

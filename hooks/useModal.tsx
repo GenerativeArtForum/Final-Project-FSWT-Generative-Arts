@@ -10,9 +10,11 @@ import {
 
 import { useToast } from "@/components/ui/use-toast";
 
+import { EditProfileForm } from "@/types/forms/editProfileForm";
 import { NewResponseForm } from "@/types/forms/newResponseForm";
 import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
 
+import { InitialEditProfileForm } from "@/data/forms/InitialEditProfileForm";
 import { InitialNewResponseForm } from "@/data/forms/InitialNewResponseForm";
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
 
@@ -22,26 +24,43 @@ type FormField = {
   type: string;
 };
 
+type ResponseField = {
+  name: keyof NewResponseForm;
+  placeholder: string;
+  type: string;
+};
+
+type ProfileField = {
+  name: keyof EditProfileForm;
+  placeholder: string;
+  type: string;
+};
+
 type ThreadModalContextType = {
   isOpenModal: boolean | undefined;
   feedDisplay: number;
   newThreadFormState: NewThreadForm;
   newResponseFormState: NewResponseForm;
+  editProfileFormState: EditProfileForm;
   error: string | null;
   selectedTags: TagType[] | null;
   formFields: FormField[];
-  responseFields: FormField[];
+  responseFields: ResponseField[];
+  editProfileFields: ProfileField[];
   images: File[];
   content: string;
   activeModal: string;
   prevActiveModal: string;
   shareLink: string;
+  setProfileData: (name: keyof EditProfileForm, value: any) => void;
+  setResponseData: (name: keyof NewResponseForm, value: any) => void;
   setIsOpenModal: (isOpenModal: boolean | undefined) => void;
   setFeedDisplay: (feedDisplay: number) => void;
   setNewThreadFormState: (newThreadForm: NewThreadForm) => void;
   setNewResponseFormState: (newResponseForm: NewResponseForm) => void;
+  setEditProfileFormState: (editProfileForm: EditProfileForm) => void;
   setThreadData: (name: keyof NewThreadForm, value: any) => void;
-  validateThreadForm: () => boolean;
+  validateThreadForm: () => { isValid: boolean; successMessage: string };
   setError: (error: string) => void;
   setSelectedTags: (tags: TagType[]) => void;
   setImages: (images: File[]) => void;
@@ -64,21 +83,26 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   feedDisplay: 1,
   newThreadFormState: InitialNewThreadForm,
   newResponseFormState: InitialNewResponseForm,
+  editProfileFormState: InitialEditProfileForm,
   error: null,
   selectedTags: null,
   formFields: [],
   responseFields: [],
+  editProfileFields: [],
   images: [],
   content: "",
   activeModal: "",
   prevActiveModal: "",
   shareLink: "",
+  setProfileData: () => {},
+  setResponseData: () => {},
   setIsOpenModal: () => {},
   setFeedDisplay: () => {},
   setNewThreadFormState: () => {},
   setNewResponseFormState: () => {},
+  setEditProfileFormState: () => {},
   setThreadData: () => {},
-  validateThreadForm: () => false,
+  validateThreadForm: () => ({ isValid: false, successMessage: "" }),
   setError: () => {},
   setSelectedTags: () => {},
   setImages: () => {},
@@ -100,6 +124,8 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     useState<NewThreadForm>(InitialNewThreadForm);
   const [newResponseFormState, setNewResponseFormState] =
     useState<NewResponseForm>(InitialNewResponseForm);
+  const [editProfileFormState, setEditProfileFormState] =
+    useState<EditProfileForm>(InitialEditProfileForm);
   const [error, setError] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<TagType[]>(
     newThreadFormState.tags || []
@@ -107,6 +133,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [images, setImages] = useState<File[]>([]);
   const [content, setContent] = useState<string>("");
   const [shareLink, setShareLink] = useState<string>("");
+  const [successText, setSuccessText] = useState<string>("");
 
   const responseFields: {
     name: keyof NewResponseForm;
@@ -130,6 +157,23 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
       name: "body",
       placeholder: "Thread body",
       type: "textarea",
+    },
+  ];
+
+  const editProfileFields: {
+    name: keyof EditProfileForm;
+    placeholder: string;
+    type: string;
+  }[] = [
+    {
+      name: "username",
+      placeholder: "Username",
+      type: "text",
+    },
+    {
+      name: "bio",
+      placeholder: "Bio",
+      type: "text",
     },
   ];
 
@@ -176,42 +220,98 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
+  const setResponseData = (name: keyof NewResponseForm, value: any) => {
+    setError("");
+    setNewResponseFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const setProfileData = (name: keyof EditProfileForm, value: any) => {
+    setError("");
+    setEditProfileFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const validateThreadForm = () => {
     let errorMessage = "";
-    if (!newThreadFormState.question || !newThreadFormState.body) {
-      errorMessage = "Please fill out all fields";
-    } else if (newThreadFormState.question.length < 5) {
-      errorMessage = "Question must be at least 5 characters";
-    } else if (newThreadFormState.body.length < 10) {
-      errorMessage = "Body must be at least 10 characters";
-    } else if (newThreadFormState.question.length > 100) {
-      errorMessage = "Question must be less than 100 characters";
-    } else if (newThreadFormState.body.length > 1000) {
-      errorMessage = "Body must be less than 1000 characters";
+    let successMessage = "";
+
+    if (activeModal === "newThread") {
+      if (!newThreadFormState.question || !newThreadFormState.body) {
+        errorMessage = "Please fill out all fields";
+      } else if (newThreadFormState.question.length < 5) {
+        errorMessage = "Question must be at least 5 characters";
+      } else if (newThreadFormState.body.length < 10) {
+        errorMessage = "Body must be at least 10 characters";
+      } else if (newThreadFormState.question.length > 100) {
+        errorMessage = "Question must be less than 100 characters";
+      } else if (newThreadFormState.body.length > 1000) {
+        errorMessage = "Body must be less than 1000 characters";
+      }
+
+      if (errorMessage) {
+        setError(errorMessage);
+        setToast("error", undefined, errorMessage);
+        return { isValid: false, successMessage: "" };
+      } else {
+        successMessage = "Thread created successfully";
+        setError("");
+        setToast("", "", "");
+      }
+    } else if (activeModal === "newResponse") {
+      if (!newResponseFormState.body) {
+        errorMessage = "Please fill the response body";
+      } else if (newResponseFormState.body.length > 1000) {
+        errorMessage = "Response must be less than 1000 characters";
+      }
+
+      if (errorMessage) {
+        setError(errorMessage);
+        setToast("error", undefined, errorMessage);
+        return { isValid: false, successMessage: "" };
+      } else {
+        successMessage = "Response submitted successfully";
+        setError("");
+        setToast("", "", "");
+      }
+      successMessage = "Response submitted successfully";
+    } else if (activeModal === "editProfile") {
+      if (!editProfileFormState.username) {
+        errorMessage = "Please enter a username";
+      }
+
+      if (errorMessage) {
+        setError(errorMessage);
+        setToast("error", undefined, errorMessage);
+        return { isValid: false, successMessage: "" };
+      } else {
+        successMessage = "Profile info updated successfully";
+        setError("");
+        setToast("", "", "");
+      }
     }
 
-    if (errorMessage) {
-      setError(errorMessage);
-      setToast("error", undefined, errorMessage);
-      return false;
-    } else {
-      setError("");
-      setToast("", "", "");
-    }
+    return { isValid: true, successMessage };
+  };
 
-    return true;
+  const handleSuccessMessage = (message: string) => {
+    toast({
+      toastName: "success",
+      description: message,
+    });
   };
 
   const closeModal = (action: string, e: any) => {
     e.preventDefault();
 
     if (action === "submit") {
-      const canContinue = validateThreadForm();
-      if (canContinue) {
-        toast({
-          toastName: "success",
-          description: "Thread created successfully",
-        });
+      const { isValid, successMessage } = validateThreadForm();
+      if (isValid) {
+        handleSuccessMessage(successMessage);
       } else {
         return;
       }
@@ -222,6 +322,8 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     setError("");
     setContent("");
     setNewThreadFormState(InitialNewThreadForm);
+    setNewResponseFormState(InitialNewResponseForm);
+    setEditProfileFormState(InitialEditProfileForm);
     setSelectedTags([]);
     setImages([]);
   };
@@ -239,19 +341,24 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         feedDisplay,
         newThreadFormState,
         newResponseFormState,
+        editProfileFormState,
         error,
         selectedTags,
         formFields,
         responseFields,
+        editProfileFields,
         images,
         content,
         activeModal,
         prevActiveModal,
         shareLink,
+        setProfileData,
+        setResponseData,
         setIsOpenModal,
         setFeedDisplay,
         setNewThreadFormState,
         setNewResponseFormState,
+        setEditProfileFormState,
         setThreadData,
         validateThreadForm,
         setError,

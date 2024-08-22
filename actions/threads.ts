@@ -21,9 +21,10 @@ export async function actionGetThread(id: string) {
 export async function actionCreateThread(
   title: string,
   description: string,
-  userId: string
+  userId: string,
+  tagIds: string[]
 ) {
-  const thread = await createThread(title, description, userId);
+  const thread = await createThread(title, description, userId, tagIds);
   return thread;
 }
 
@@ -31,9 +32,10 @@ export async function actionUpdateThread(
   id: string,
   title: string,
   description: string,
-  userId: string
+  userId: string,
+  tagIds: string[]
 ) {
-  const thread = await updateThread(id, title, description, userId);
+  const thread = await updateThread(id, title, description, userId, tagIds);
   return thread;
 }
 
