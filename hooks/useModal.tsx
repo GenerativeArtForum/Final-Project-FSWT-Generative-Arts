@@ -43,7 +43,7 @@ type ThreadModalContextType = {
   newResponseFormState: NewResponseForm;
   editProfileFormState: EditProfileForm;
   error: string | null;
-  selectedTags: TagType[] | null;
+  selectedTags: TagType[];
   formFields: FormField[];
   responseFields: ResponseField[];
   editProfileFields: ProfileField[];
@@ -85,7 +85,7 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   newResponseFormState: InitialNewResponseForm,
   editProfileFormState: InitialEditProfileForm,
   error: null,
-  selectedTags: null,
+  selectedTags: [],
   formFields: [],
   responseFields: [],
   editProfileFields: [],

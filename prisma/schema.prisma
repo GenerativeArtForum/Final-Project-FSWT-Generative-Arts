@@ -46,18 +46,15 @@ model Thread {
   tagIds      String[]   @db.ObjectId
   responses   Response[] @relation("ThreadResponses")
   views       View[]
-
-  status    Status   @default(PUBLISHED)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User     @relation(fields: [userId], references: [id])
+  status      Status     @default(PUBLISHED)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  User        User       @relation(fields: [userId], references: [id])
 }
 
 model Tag {
   id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String
-
-  @@index([name])
 }
 
 model Response {

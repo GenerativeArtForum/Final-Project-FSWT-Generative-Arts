@@ -1,5 +1,5 @@
-type Tag = {
-  id: number;
+export type TagType = {
+  id: string;
   name: string;
 };
 
@@ -11,7 +11,7 @@ export type UserType = {
   followers?: number;
   following?: number;
   bio?: string;
-  tags?: Tag[];
+  tags?: TagType[];
 };
 
 export type ResponseType = {
@@ -25,11 +25,11 @@ export type ResponseType = {
 
 export type ThreadType = {
   id: number;
-  question: string;
+  title: string;
   user: UserType;
   date: string;
-  tags: Tag[];
-  body: string;
+  tags: TagType[];
+  description: string;
   responses: number | ResponseType[];
   views: number;
 };

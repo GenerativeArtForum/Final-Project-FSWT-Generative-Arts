@@ -215,7 +215,7 @@ const Home = () => {
       <TabsSwitcher />
       <CreateThread />
       <div className="container">
-        {loading ? (
+        {/* {loading ? (
           <span>Loading...</span>
         ) : error ? (
           <span>Server error, please try again.</span>
@@ -227,6 +227,11 @@ const Home = () => {
           notFollowedThreads.map((thread, index) => (
             <Thread key={index} thread={thread} />
           ))
+        )} */}
+        {loading ? (
+          <span>Loading...</span>
+        ) : (
+          threads.map((thread, index) => <Thread key={index} thread={thread} />)
         )}
       </div>
     </HomePageWrapper>

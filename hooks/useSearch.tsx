@@ -5,11 +5,11 @@ const useSearch = () => {
 
   const handleChangeText = (value: string) => {
     setText(value);
-    console.log(value);
   };
 
   return {
     text,
+    setText,
     handleChangeText,
   };
 };
