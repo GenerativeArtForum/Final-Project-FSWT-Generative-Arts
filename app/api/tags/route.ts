@@ -10,6 +10,9 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "10");
+  const search = searchParams.get("search") || "";
 
   if (id) {
     try {
@@ -27,7 +30,7 @@ export async function GET(req: Request) {
     }
   } else {
     try {
-      const tags = await actionGetTags();
+      const tags = await actionGetTags({ page, limit, search });
       return NextResponse.json(tags, { status: 200 });
     } catch (error) {
       return NextResponse.json(

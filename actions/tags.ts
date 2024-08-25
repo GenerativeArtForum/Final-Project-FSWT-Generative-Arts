@@ -2,8 +2,16 @@
 
 import { createTag, deleteTag, getTag, getTags, updateTag } from "@/db/tags";
 
-export async function actionGetTags() {
-  const tags = await getTags();
+export async function actionGetTags({
+  page = 1,
+  limit = 20,
+  search = "",
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+}) {
+  const tags = await getTags({ page, limit, search });
   return tags;
 }
 

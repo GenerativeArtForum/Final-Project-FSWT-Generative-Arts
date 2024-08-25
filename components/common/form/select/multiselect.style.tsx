@@ -134,4 +134,26 @@ export const MultiSelectWrapper = styled.div`
     transition: opacity 0.5s ease;
     opacity: 0.9;
   }
+
+  .tag-not-found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-weight: 500;
+    }
+
+    button {
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid ${Colors.transparent};
+      transition: 0.25s ease;
+
+      &:hover {
+        color: ${Colors.blue};
+        border-bottom: 1.5px solid ${Colors.lightBlue};
+      }
+    }
+  }
 `;

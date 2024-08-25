@@ -9,15 +9,44 @@ export type Thread = {
 };
 
 export async function getThreads() {
-  return await db.thread.findMany({
+  const threads = await db.thread.findMany({
     orderBy: { id: "asc" },
   });
+
+  const populatedThreads = await Promise.all(
+    threads.map(async (thread) => {
+      const tags = await db.tag.findMany({
+        where: {
+          id: { in: thread.tagIds },
+        },
+      });
+      return {
+        ...thread,
+        tags,
+      };
+    })
+  );
+
+  return populatedThreads;
 }
 
 export async function getThread(id: string) {
-  return await db.thread.findUnique({
+  const thread = await db.thread.findUnique({
     where: { id },
   });
+
+  if (!thread) return null;
+
+  const tags = await db.tag.findMany({
+    where: {
+      id: { in: thread.tagIds },
+    },
+  });
+
+  return {
+    ...thread,
+    tags,
+  };
 }
 
 export async function createThread(

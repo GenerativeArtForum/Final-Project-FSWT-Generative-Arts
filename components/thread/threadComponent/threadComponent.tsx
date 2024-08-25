@@ -13,23 +13,23 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
     <ThreadWrapper>
       <div className="thread-header">
         <Link className="title" href={`/thread/${thread.id}`}>
-          {thread.question}
+          {thread.title}
         </Link>
-        <ThreadUser
+        {/* <ThreadUser
           thread={thread}
           isFollowing={thread.user.isFollowing ? true : undefined}
-        />
+        /> */}
       </div>
       <div className="tags">
-        {thread.tags.map((tag) => (
+        {thread.tags.slice(0,5).map((tag) => (
           <Tag key={tag.id} text={tag.name} />
         ))}
       </div>
-      <span>{thread.body}</span>
+      <span>{thread.description}</span>
       <div className="thread-footer">
         <div className="data">
-          <span>{Number(thread.responses)} Responses</span>
-          <span>{thread.views} Views</span>
+          <span>{thread.responses ? Number(thread.responses) : '0'} Responses</span>
+          <span>{thread.views ? thread.views : '0'} Views</span>
         </div>
         <ThreadActions id={thread.id} />
       </div>

@@ -5,9 +5,29 @@ export type Tag = {
   name: string;
 };
 
-export async function getTags() {
+export async function getTags({
+  page = 1,
+  limit = 20,
+  search = "",
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+}) {
+  const skip = (page - 1) * limit;
+
   return await db.tag.findMany({
-    orderBy: { id: "asc" },
+    where: {
+      name: {
+        contains: search,
+        mode: "insensitive",
+      },
+    },
+    orderBy: {
+      id: "asc",
+    },
+    skip: skip,
+    take: limit,
   });
 }
 

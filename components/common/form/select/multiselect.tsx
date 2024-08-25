@@ -2,7 +2,6 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 import useSearch from "@/hooks/useSearch";
-
 import { useToast } from "@/components/ui/use-toast";
 import Tag from "../../tag/tag";
 import SearchBar from "../searchBar/searchBar";
@@ -10,34 +9,34 @@ import { MultiSelectWrapper } from "./multiselect.style";
 
 import DownArrow from "../../../../assets/icons/common/down-arrow.svg";
 import UpArrow from "../../../../assets/icons/common/up-arrow.svg";
-
-import { EditProfileForm } from "@/types/forms/editProfileForm";
-import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
+import { TagType } from "@/types/thread/thread";
+import useThreads from "@/hooks/useThreads";
 
 const MultiSelect = ({
   tagsList,
   placeholder,
-  selectedTags,
+  selectedTags = [],
   maxTags,
   setThreadData,
   setSelectedTags,
+  setTagParams,
 }: {
-  tagsList: string[];
+  tagsList: TagType[];
   placeholder: string;
-  selectedTags: TagType[] | null;
+  selectedTags: TagType[];
   maxTags: number;
   setThreadData: any;
   setSelectedTags: (tags: TagType[]) => void;
+  setTagParams: (tagParams: string) => void;
 }) => {
   const { toast } = useToast();
-
   const [multiselectOpen, setMultiselectOpen] = useState<boolean>(false);
   const [totalChars, setTotalChars] = useState<number>(0);
   const [maxChars, setMaxChars] = useState<number>(32);
   const multiselectRef = useRef<HTMLDivElement | null>(null);
   const tagsContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { text, handleChangeText } = useSearch();
+  const { text, setText, handleChangeText } = useSearch();
 
   const setToast = (
     toastName: string,
@@ -52,6 +51,8 @@ const MultiSelect = ({
       duration,
     });
   };
+
+  const { createTag, fetchTags } = useThreads();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -89,31 +90,26 @@ const MultiSelect = ({
     setTotalChars(charCount);
   };
 
-  if (!selectedTags) return null;
-
-  const handleClickMultiSelect = (tagName: string) => {
+  const handleClickMultiSelect = (tag: TagType) => {
     if (
       selectedTags.length >= maxTags &&
-      !selectedTags.some((tag) => tag.name === tagName)
+      !selectedTags.some((selected) => selected.id === tag.id)
     ) {
       setToast(
         "error",
         undefined,
         `You can only select up to ${maxTags} tags` || undefined
       );
-
       return;
     }
 
     setSelectedTags((prevSelected) => {
-      let newSelected: TagType[];
-      if (prevSelected.some((selected: any) => selected.name === tagName)) {
-        newSelected = prevSelected.filter(
-          (selected: any) => selected.name !== tagName
-        );
-      } else {
-        newSelected = [...prevSelected, { _id: "", name: tagName }];
-      }
+      const isSelected = prevSelected.some(
+        (selected: any) => selected.id === tag.id
+      );
+      const newSelected = isSelected
+        ? prevSelected.filter((selected: any) => selected.id !== tag.id)
+        : [...prevSelected, tag];
 
       updateTotalChars(newSelected);
       setThreadData("tags", newSelected);
@@ -121,8 +117,10 @@ const MultiSelect = ({
     });
   };
 
-  const handleDeleteTag = (tagName: string) => {
-    const updatedTags = selectedTags.filter((tag) => tag.name !== tagName);
+  const handleDeleteTag = (tag: TagType) => {
+    const updatedTags = selectedTags.filter(
+      (selectedTag) => selectedTag.id !== tag.id
+    );
     setSelectedTags(updatedTags);
     updateTotalChars(updatedTags);
     setThreadData("tags", updatedTags);
@@ -143,8 +141,24 @@ const MultiSelect = ({
     return displayTags;
   };
 
-  const isTagSelected = (tagName: string) => {
-    return selectedTags.some((tag) => tag.name === tagName);
+  const isTagSelected = (tag: TagType) => {
+    return selectedTags.some((selected) => selected.id === tag.id);
+  };
+
+  useEffect(() => {
+    setTagParams(`?search=${text}&limit=20`);
+  }, [text]);
+
+  const addCustomTag = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const newTag = await createTag(text);
+      setSelectedTags((prevSelected) => [...prevSelected, newTag]);
+      setText(""); // Clear the input
+      fetchTags(); // Refresh tags list
+    } catch (e: any) {
+      setToast("error", "Failed to add tag", e.message);
+    }
   };
 
   return (
@@ -160,30 +174,30 @@ const MultiSelect = ({
         <div className="tags" ref={tagsContainerRef}>
           {selectedTags.length > 0 ? (
             totalChars < maxChars ? (
-              getDisplayedTags().map((tag, index) => (
+              getDisplayedTags().map((tag) => (
                 <Tag
-                  key={index}
+                  key={tag.id}
                   text={tag.name}
                   variant={2}
                   onClick={(e: any) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    handleDeleteTag(tag.name);
+                    handleDeleteTag(tag);
                   }}
                 />
               ))
             ) : (
               <div className="selected-options">
                 <div className="options-container">
-                  {getDisplayedTags().map((tag, index) => (
+                  {getDisplayedTags().map((tag) => (
                     <Tag
-                      key={index}
+                      key={tag.id}
                       text={tag.name}
                       variant={2}
                       onClick={(e: any) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        handleDeleteTag(tag.name);
+                        handleDeleteTag(tag);
                       }}
                     />
                   ))}
@@ -226,27 +240,34 @@ const MultiSelect = ({
             />
           </div>
           <div className="options">
-            {tagsList.map((tag, index) => (
-              <div key={index} className="button">
-                <label
-                  className={`checkbox-label ${
-                    isTagSelected(tag) ? "selected" : ""
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={isTagSelected(tag)}
-                    onChange={() => handleClickMultiSelect(tag)}
-                  ></input>
-                  <button
-                    value={tag}
-                    onClick={() => handleClickMultiSelect(tag)}
+            {tagsList.length > 0 ? (
+              tagsList.map((tag) => (
+                <div key={tag.id} className="button">
+                  <label
+                    className={`checkbox-label ${
+                      isTagSelected(tag) ? "selected" : ""
+                    }`}
                   >
-                    {tag}
-                  </button>
-                </label>
+                    <input
+                      type="checkbox"
+                      checked={isTagSelected(tag)}
+                      onChange={() => handleClickMultiSelect(tag)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleClickMultiSelect(tag)}
+                    >
+                      {tag.name}
+                    </button>
+                  </label>
+                </div>
+              ))
+            ) : (
+              <div className="tag-not-found">
+                <span>Tag not found</span>
+                <button onClick={addCustomTag}>Add '{text}' manually</button>
               </div>
-            ))}
+            )}
           </div>
         </div>
       )}

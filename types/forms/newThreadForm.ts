@@ -7,7 +7,7 @@ export type NewThreadForm = {
 }
 
 export type TagType = {
-    _id: string;
+    id: string;
     name: string;
 }
 
