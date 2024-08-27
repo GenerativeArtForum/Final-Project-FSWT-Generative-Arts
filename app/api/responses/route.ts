@@ -7,7 +7,6 @@ import {
   deleteResponseAction,
 } from "@/actions/responses";
 
-// GET: Fetch all responses or a specific response by ID
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
@@ -42,7 +41,6 @@ export async function GET(req: Request) {
   }
 }
 
-// POST: Create a new response
 export async function POST(req: Request) {
   try {
     const { text, threadId, userId } = await req.json();
@@ -56,7 +54,6 @@ export async function POST(req: Request) {
   }
 }
 
-// PUT: Update an existing response
 export async function PUT(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
@@ -80,7 +77,6 @@ export async function PUT(req: Request) {
   }
 }
 
-// DELETE: Delete a response
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");

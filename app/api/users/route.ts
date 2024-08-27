@@ -6,7 +6,6 @@ import {
   createUserAction,
 } from "@/actions/users";
 
-// GET: Fetch users or a specific user by ID
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
@@ -59,7 +58,6 @@ export async function GET(req: Request) {
   }
 }
 
-// POST: Create a new user
 export async function POST(req: Request) {
   try {
     const { clerk_id } = await req.json();

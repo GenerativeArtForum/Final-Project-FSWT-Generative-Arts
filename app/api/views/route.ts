@@ -6,7 +6,6 @@ import {
   deleteViewAction,
 } from "@/actions/views";
 
-// GET: Fetch all views or a specific view by ID
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
@@ -41,7 +40,6 @@ export async function GET(req: Request) {
   }
 }
 
-// POST: Create a new view
 export async function POST(req: Request) {
   try {
     const { threadId } = await req.json();
@@ -55,7 +53,6 @@ export async function POST(req: Request) {
   }
 }
 
-// DELETE: Delete a view
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");

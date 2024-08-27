@@ -7,7 +7,6 @@ import {
   deleteVoteAction,
 } from "@/actions/votes";
 
-// GET: Fetch all votes or a specific vote by ID
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
@@ -42,7 +41,6 @@ export async function GET(req: Request) {
   }
 }
 
-// POST: Create a new vote
 export async function POST(req: Request) {
   try {
     const { responseId, userId, value } = await req.json();
@@ -56,7 +54,6 @@ export async function POST(req: Request) {
   }
 }
 
-// PUT: Update an existing vote
 export async function PUT(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
@@ -80,7 +77,6 @@ export async function PUT(req: Request) {
   }
 }
 
-// DELETE: Delete a vote
 export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
