@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/common/button/button";
 import { checkUser } from "@/db/checkUser";
 import {
   ClerkLoaded,
@@ -11,6 +12,7 @@ import {
   useUser,
 } from "@clerk/nextjs";
 import { useEffect } from "react";
+import { Loader } from "lucide-react";
 
 export default function ClerkUser() {
   const { user } = useUser();
@@ -28,17 +30,17 @@ export default function ClerkUser() {
   }, [user]);
   return (
     <>
-      <ClerkLoading>Loading...</ClerkLoading>
+      <ClerkLoading>
+        {" "}
+        <Loader className="h-8 w-8 text-blue-500 animate-spin" />{" "}
+      </ClerkLoading>
       <ClerkLoaded>
         <SignedIn>
-          <UserButton></UserButton>
+          <UserButton />
         </SignedIn>
         <SignedOut>
           <SignInButton mode="modal">
-            <button className="text-slate-500 border bg-white rounded-full p-1 px-3 hover:bg-gray-100 transition duration-500">
-              {" "}
-              Login{" "}
-            </button>
+            <Button text="Login" variant={3} onClick={() => {}} />
           </SignInButton>
         </SignedOut>
       </ClerkLoaded>
