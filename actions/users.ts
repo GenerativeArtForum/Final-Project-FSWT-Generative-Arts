@@ -1,6 +1,12 @@
 "use server";
 
-import { getUserByClerkId, createUser, getUser, getUsers } from "@/db/users";
+import {
+  getUserByClerkId,
+  createUser,
+  getUser,
+  getUsers,
+  updateUser,
+} from "@/db/users";
 
 export async function getUsersAction() {
   const users = await getUsers();
@@ -23,5 +29,14 @@ export async function createUserAction(
   username: string
 ) {
   const user = await createUser(clerk_id, email, username);
+  return user;
+}
+
+export async function updateUserAction(
+  clerk_id: string,
+  email: string,
+  username: string
+) {
+  const user = await updateUser(clerk_id, email, username);
   return user;
 }

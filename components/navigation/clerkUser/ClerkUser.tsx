@@ -12,7 +12,11 @@ import {
 } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
-import { createUserAction } from "@/actions/users";
+import {
+  createUserAction,
+  getUserByClerkIdAction,
+  updateUserAction,
+} from "@/actions/users";
 
 export default function ClerkUser() {
   const { user } = useUser();
@@ -22,12 +26,22 @@ export default function ClerkUser() {
   }, [user]);
 
   const getLocalUser = async () => {
-    if (user && user.username) {
-      await createUserAction(
-        user.id,
-        user.emailAddresses[0].emailAddress,
-        user.username
-      );
+    if (user) {
+      const username = user.username ?? user.firstName ?? "";
+      const email = user.emailAddresses[0]?.emailAddress ?? "";
+
+      const existingUser = await getUserByClerkIdAction(user.id);
+
+      if (existingUser) {
+        if (
+          existingUser.email !== email ||
+          existingUser.username !== username
+        ) {
+          await updateUserAction(user.id, email, username);
+        }
+      } else {
+        await createUserAction(user.id, email, username);
+      }
     }
   };
   return (
