@@ -27,6 +27,8 @@ enum Status {
 model User {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   clerk_id     String     @unique
+  username     String?
+  email        String?
   role         RoleType   @default(USER)
   threads      Thread[]   @relation("UserThreads")
   responses    Response[]

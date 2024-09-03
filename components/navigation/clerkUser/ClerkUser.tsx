@@ -1,6 +1,6 @@
 "use client";
 
-import { checkUser } from "@/db/checkUser";
+import Button from "@/components/common/button/button";
 import {
   ClerkLoaded,
   ClerkLoading,
@@ -11,34 +11,52 @@ import {
   useUser,
 } from "@clerk/nextjs";
 import { useEffect } from "react";
+import { Loader } from "lucide-react";
+import {
+  createUserAction,
+  getUserByClerkIdAction,
+  updateUserAction,
+} from "@/actions/users";
 
 export default function ClerkUser() {
   const { user } = useUser();
 
   useEffect(() => {
-    if (user && user.id) {
-      const verifyUser = async () => {
-        await checkUser(user.id);
-      };
-
-      verifyUser().catch((error) => {
-        console.error("Error checking user:", error);
-      });
-    }
+    getLocalUser();
   }, [user]);
+
+  const getLocalUser = async () => {
+    if (user) {
+      const username = user.username ?? user.firstName ?? "";
+      const email = user.emailAddresses[0]?.emailAddress ?? "";
+
+      const existingUser = await getUserByClerkIdAction(user.id);
+
+      if (existingUser) {
+        if (
+          existingUser.email !== email ||
+          existingUser.username !== username
+        ) {
+          await updateUserAction(user.id, email, username);
+        }
+      } else {
+        await createUserAction(user.id, email, username);
+      }
+    }
+  };
   return (
     <>
-      <ClerkLoading>Loading...</ClerkLoading>
+      <ClerkLoading>
+        {" "}
+        <Loader className="h-8 w-8 text-blue-500 animate-spin" />{" "}
+      </ClerkLoading>
       <ClerkLoaded>
         <SignedIn>
-          <UserButton></UserButton>
+          <UserButton />
         </SignedIn>
         <SignedOut>
           <SignInButton mode="modal">
-            <button className="text-slate-500 border bg-white rounded-full p-1 px-3 hover:bg-gray-100 transition duration-500">
-              {" "}
-              Login{" "}
-            </button>
+            <Button text="Login" variant={3} onClick={() => {}} />
           </SignInButton>
         </SignedOut>
       </ClerkLoaded>
