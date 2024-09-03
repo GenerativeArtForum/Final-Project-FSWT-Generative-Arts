@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "@/components/common/button/button";
-import { checkUser } from "@/db/checkUser";
 import {
   ClerkLoaded,
   ClerkLoading,
@@ -13,21 +12,24 @@ import {
 } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
+import { createUserAction } from "@/actions/users";
 
 export default function ClerkUser() {
   const { user } = useUser();
 
   useEffect(() => {
-    if (user && user.id) {
-      const verifyUser = async () => {
-        await checkUser(user.id);
-      };
-
-      verifyUser().catch((error) => {
-        console.error("Error checking user:", error);
-      });
-    }
+    getLocalUser();
   }, [user]);
+
+  const getLocalUser = async () => {
+    if (user && user.username) {
+      await createUserAction(
+        user.id,
+        user.emailAddresses[0].emailAddress,
+        user.username
+      );
+    }
+  };
   return (
     <>
       <ClerkLoading>

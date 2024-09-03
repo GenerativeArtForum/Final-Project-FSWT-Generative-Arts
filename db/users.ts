@@ -23,10 +23,16 @@ export async function getUserByClerkId(clerk_id: string) {
   });
 }
 
-export async function createUser(clerk_id: string) {
+export async function createUser(
+  clerk_id: string,
+  email: string,
+  username: string
+) {
   return await db.user.create({
     data: {
       clerk_id,
+      email,
+      username,
     },
   });
 }

@@ -17,7 +17,11 @@ export async function getUserByClerkIdAction(clerk_id: string) {
   return user;
 }
 
-export async function createUserAction(clerk_id: string) {
-  const user = await createUser(clerk_id);
+export async function createUserAction(
+  clerk_id: string,
+  email: string,
+  username: string
+) {
+  const user = await createUser(clerk_id, email, username);
   return user;
 }
