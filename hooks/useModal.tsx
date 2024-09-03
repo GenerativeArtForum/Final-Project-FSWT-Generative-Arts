@@ -14,9 +14,12 @@ import { EditProfileForm } from "@/types/forms/editProfileForm";
 import { NewResponseForm } from "@/types/forms/newResponseForm";
 import { NewThreadForm, TagType } from "@/types/forms/newThreadForm";
 
+import { getUserByClerkIdAction } from "@/actions/users";
 import { InitialEditProfileForm } from "@/data/forms/InitialEditProfileForm";
 import { InitialNewResponseForm } from "@/data/forms/InitialNewResponseForm";
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
+import { useUser } from "@clerk/nextjs";
+import useThreads from "./useThreads";
 
 type FormField = {
   name: keyof NewThreadForm;
@@ -116,6 +119,9 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
 });
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useUser();
+  const { createThread } = useThreads();
+
   const [isOpenModal, setIsOpenModal] = useState<boolean | undefined>(false);
   const [activeModal, setActiveModal] = useState<string>("");
   const [prevActiveModal, setPrevActiveModal] = useState<string>("");
@@ -127,9 +133,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [editProfileFormState, setEditProfileFormState] =
     useState<EditProfileForm>(InitialEditProfileForm);
   const [error, setError] = useState<string>("");
-  const [selectedTags, setSelectedTags] = useState<TagType[]>(
-    newThreadFormState.tags || []
-  );
+  const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [images, setImages] = useState<File[]>([]);
   const [content, setContent] = useState<string>("");
   const [shareLink, setShareLink] = useState<string>("");
@@ -165,11 +169,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     placeholder: string;
     type: string;
   }[] = [
-    {
-      name: "username",
-      placeholder: "Username",
-      type: "text",
-    },
     {
       name: "bio",
       placeholder: "Bio",
@@ -214,11 +213,18 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
   const setThreadData = (name: keyof NewThreadForm, value: any) => {
     setError("");
-    setNewThreadFormState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setNewThreadFormState((prevState) => {
+      const updatedState = {
+        ...prevState,
+        [name]: value,
+      };
+      return updatedState;
+    });
   };
+
+  useEffect(() => {
+    console.log("New thread form state updated:", newThreadFormState);
+  }, [newThreadFormState]);
 
   const setResponseData = (name: keyof NewResponseForm, value: any) => {
     setError("");
@@ -305,12 +311,32 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const closeModal = (action: string, e: any) => {
+  useEffect(() => {
+    const fetchUserId = async () => {
+      if (user && !newThreadFormState.userId) {
+        try {
+          const fetchedUser = await getUserByClerkIdAction(user.id);
+          setNewThreadFormState((prevState) => ({
+            ...prevState,
+            userId: fetchedUser.id,
+          }));
+        } catch (error) {
+          console.error("Error fetching user by Clerk ID:", error);
+        }
+      }
+    };
+
+    fetchUserId();
+  }, [user, newThreadFormState.userId]);
+
+  const closeModal = async (action: string, e: any) => {
     e.preventDefault();
 
     if (action === "submit") {
       const { isValid, successMessage } = validateThreadForm();
       if (isValid) {
+        console.log(newThreadFormState);
+        await createThread(newThreadFormState);
         handleSuccessMessage(successMessage);
       } else {
         return;

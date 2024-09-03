@@ -6,7 +6,7 @@ export type TagType = {
 export type UserType = {
   id?: number;
   username: string;
-  image?: string;
+  imageUrl?: string;
   isFollowing?: boolean;
   followers?: number;
   following?: number;
@@ -27,9 +27,12 @@ export type ThreadType = {
   id: number;
   title: string;
   user: UserType;
+  userId: number | undefined;
   date: string;
   tags: TagType[];
   description: string;
   responses: number | ResponseType[];
   views: number;
+  createdAt: string;
+  updatedAt: string;
 };

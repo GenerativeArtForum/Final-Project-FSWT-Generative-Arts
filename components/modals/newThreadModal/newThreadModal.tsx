@@ -75,7 +75,7 @@ const NewThreadModal = () => {
             <MultiSelect
               tagsList={tags}
               placeholder="Add tags"
-              maxTags={6}
+              maxTags={4}
               selectedTags={selectedTags}
               setThreadData={setThreadData}
               setSelectedTags={setSelectedTags}

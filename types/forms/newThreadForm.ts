@@ -1,8 +1,9 @@
 export type NewThreadForm = {
     _id: string;
     question: string;
+    userId: string;
     body: string;
-    tags: TagType[];
+    tagIds: string[];
     images: ImageType[],
 }
 

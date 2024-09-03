@@ -62,7 +62,7 @@ const ThreadPage = () => {
             <Tag key={tag.id} text={tag.name} />
           ))}
         </div>
-        <span>{thread.description}</span>
+        <div dangerouslySetInnerHTML={{ __html: thread.description }} />
         <div className="thread-footer">
           <div className="data">
             <span>

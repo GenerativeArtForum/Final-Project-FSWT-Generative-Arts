@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
 import {
-  getUsersAction,
-  getUserAction,
-  getUserByClerkIdAction,
   createUserAction,
+  getUserAction,
+  getUsersAction,
 } from "@/actions/users";
+import { clerkClient } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -30,7 +30,7 @@ export async function GET(req: Request) {
     }
   } else if (clerkId) {
     try {
-      const user = await getUserByClerkIdAction(clerkId);
+      const user = await clerkClient.users.getUser(clerkId);
       if (user) {
         return NextResponse.json(user, { status: 200 });
       } else {

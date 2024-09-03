@@ -8,6 +8,7 @@ import MultiSelect from "@/components/common/form/select/multiselect";
 import ImageUpload from "@/components/common/imageUpload/imageUpload";
 
 import { EditProfileModalWrapper } from "./editProfileModal.style";
+import useThreads from "@/hooks/useThreads";
 
 const EditProfileModal = () => {
   const {
@@ -21,27 +22,7 @@ const EditProfileModal = () => {
     cancelThread,
   } = useModal();
 
-  const tagsList = [
-    "Processing",
-    "p5.js",
-    "OpenFrameworks",
-    "Cinder",
-    "Max/MSP",
-    "TouchDesigner",
-    "Shader Programming",
-    "Algorithmic Art",
-    "Generative Art",
-    "Creative Coding",
-    "Digital Art",
-    "Interactive Art",
-    "Data Visualization",
-    "Audiovisual Art",
-    "Computer Graphics",
-    "Virtual Reality",
-    "Augmented Reality",
-    "Machine Learning",
-    "Artificial Intelligence",
-  ];
+  const { tags, setTagParams } = useThreads();
 
   return (
     <EditProfileModalWrapper>
@@ -69,18 +50,15 @@ const EditProfileModal = () => {
             );
           })}
           <div className="input-container">
-            <label className="input-label">Images</label>
-            <ImageUpload maxImages={1} />
-          </div>
-          <div className="input-container">
             <label className="input-label">Tags</label>
             <MultiSelect
-              tagsList={tagsList}
+              tagsList={tags}
               placeholder="Add tags"
+              maxTags={4}
               selectedTags={selectedTags}
-              maxTags={2}
               setThreadData={setProfileData}
               setSelectedTags={setSelectedTags}
+              setTagParams={setTagParams}
             />
           </div>
         </div>

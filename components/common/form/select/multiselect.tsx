@@ -11,6 +11,7 @@ import DownArrow from "../../../../assets/icons/common/down-arrow.svg";
 import UpArrow from "../../../../assets/icons/common/up-arrow.svg";
 import { TagType } from "@/types/thread/thread";
 import useThreads from "@/hooks/useThreads";
+import { set } from "mongoose";
 
 const MultiSelect = ({
   tagsList,
@@ -112,7 +113,11 @@ const MultiSelect = ({
         : [...prevSelected, tag];
 
       updateTotalChars(newSelected);
-      setThreadData("tags", newSelected);
+
+      const tagIds = newSelected.map((tag: TagType) => tag.id);
+      console.log("Tag IDs:", tagIds);
+
+      setThreadData("tagIds", tagIds);
       return newSelected;
     });
   };
@@ -123,7 +128,10 @@ const MultiSelect = ({
     );
     setSelectedTags(updatedTags);
     updateTotalChars(updatedTags);
-    setThreadData("tags", updatedTags);
+    setThreadData(
+      "tagIds",
+      updatedTags.map((tag) => tag.id)
+    );
   };
 
   const getDisplayedTags = () => {
@@ -154,8 +162,8 @@ const MultiSelect = ({
     try {
       const newTag = await createTag(text);
       setSelectedTags((prevSelected) => [...prevSelected, newTag]);
-      setText(""); // Clear the input
-      fetchTags(); // Refresh tags list
+      setText("");
+      fetchTags();
     } catch (e: any) {
       setToast("error", "Failed to add tag", e.message);
     }
