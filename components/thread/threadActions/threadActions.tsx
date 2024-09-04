@@ -26,7 +26,7 @@ const ThreadActions = ({ id }: { id: number }) => {
       } else if (action === "share") {
         setIsOpenModal(true);
         setActiveModal("share");
-        setShareLink(`http://localhost:3000/thread/${id}`);
+        setShareLink(`${process.env.NEXT_PUBLIC_SHARE_URL}/thread/${id}`);
       }
     }
   };

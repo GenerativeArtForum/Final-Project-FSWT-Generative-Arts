@@ -7,4 +7,5 @@ export const InitialNewThreadForm: NewThreadForm = {
   body: "",
   tagIds: [],
   images: [],
+  status: "DRAFT",
 };

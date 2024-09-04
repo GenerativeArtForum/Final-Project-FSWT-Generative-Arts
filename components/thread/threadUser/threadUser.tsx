@@ -34,11 +34,10 @@ const ThreadUser = ({
     }
   };
 
-  if (user === null) return null;
-
-  const dateSincePosted = calculateTimeAgo(thread.createdAt);
+  if (!user) return null;
 
   const { imageUrl, username } = user;
+  const dateSincePosted = calculateTimeAgo(thread.createdAt);
 
   return (
     <ThreadUserWrapper isfollowing={isFollowing}>
@@ -64,7 +63,9 @@ const ThreadUser = ({
             <div className="image-fallback"></div>
           </Link>
         )}
-        {/* {isFollowing && (
+        {/* 
+        Uncomment and use the follow button if needed
+        {isFollowing && (
           <button className="follow-button" onClick={buttonClicked}>
             <Image
               src={isFollowing ? TickIcon : AddIcon}

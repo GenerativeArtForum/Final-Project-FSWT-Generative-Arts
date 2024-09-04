@@ -92,18 +92,18 @@ const NewThreadModal = () => {
             cancelThread(e);
           }}
         />
-        <Button
+        {/* <Button
           text="Save as draft"
           variant={3}
           onClick={(e) => {
-            closeModal("close", e);
+            closeModal("close", e, 'DRAFT');
           }}
-        />
+        /> */}
         <Button
           text="Create thread"
           variant={1}
           onClick={(e) => {
-            closeModal("submit", e);
+            closeModal("submit", e, 'PUBLISHED');
           }}
         />
       </div>

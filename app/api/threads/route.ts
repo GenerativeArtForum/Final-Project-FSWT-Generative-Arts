@@ -43,12 +43,13 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { title, description, userId, tagIds } = await req.json();
+    const { title, description, userId, tagIds, status } = await req.json();
     const newThread = await actionCreateThread(
       title,
       description,
       userId,
-      tagIds
+      tagIds,
+      status
     );
     return NextResponse.json(newThread, { status: 201 });
   } catch (error) {

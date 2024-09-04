@@ -22,9 +22,10 @@ export async function actionCreateThread(
   title: string,
   description: string,
   userId: string,
-  tagIds: string[]
+  tagIds: string[],
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
 ) {
-  const thread = await createThread(title, description, userId, tagIds);
+  const thread = await createThread(title, description, userId, tagIds, status);
   return thread;
 }
 
@@ -33,9 +34,10 @@ export async function actionUpdateThread(
   title: string,
   description: string,
   userId: string,
-  tagIds: string[]
+  tagIds: string[],
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
 ) {
-  const thread = await updateThread(id, title, description, userId, tagIds);
+  const thread = await updateThread(id, title, description, userId, tagIds, status);
   return thread;
 }
 

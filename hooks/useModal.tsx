@@ -70,7 +70,7 @@ type ThreadModalContextType = {
   setActiveModal: (activeModal: string) => void;
   setPrevActiveModal: (prevActiveModal: string) => void;
   setContent: (content: string) => void;
-  closeModal: (action: string, e: any) => void;
+  closeModal: (action: string, e: any, status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED') => void;
   setToast: (
     toastName: string,
     title?: string,
@@ -335,7 +335,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     if (action === "submit") {
       const { isValid, successMessage } = validateThreadForm();
       if (isValid) {
-        console.log(newThreadFormState);
         await createThread(newThreadFormState);
         handleSuccessMessage(successMessage);
       } else {

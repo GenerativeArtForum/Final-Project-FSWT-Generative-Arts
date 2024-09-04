@@ -25,12 +25,12 @@ const Menu = () => {
     { name: "create", label: "Create", link: "/create", icon: CreateIcon },
     { name: "saved", label: "Saved", link: "/saved", icon: SavedIcon },
     { name: "profile", label: "Profile", link: "/profile", icon: ProfileIcon },
-    {
-      name: "settings",
-      label: "Settings",
-      link: "/settings",
-      icon: SettingsIcon,
-    },
+    // {
+    //   name: "settings",
+    //   label: "Settings",
+    //   link: "/settings",
+    //   icon: SettingsIcon,
+    // },
   ];
 
   return (

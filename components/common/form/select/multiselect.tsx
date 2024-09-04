@@ -1,17 +1,16 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import useSearch from "@/hooks/useSearch";
 import { useToast } from "@/components/ui/use-toast";
+import useSearch from "@/hooks/useSearch";
 import Tag from "../../tag/tag";
 import SearchBar from "../searchBar/searchBar";
 import { MultiSelectWrapper } from "./multiselect.style";
 
+import useThreads from "@/hooks/useThreads";
+import { TagType } from "@/types/thread/thread";
 import DownArrow from "../../../../assets/icons/common/down-arrow.svg";
 import UpArrow from "../../../../assets/icons/common/up-arrow.svg";
-import { TagType } from "@/types/thread/thread";
-import useThreads from "@/hooks/useThreads";
-import { set } from "mongoose";
 
 const MultiSelect = ({
   tagsList,
@@ -169,6 +168,8 @@ const MultiSelect = ({
     }
   };
 
+  const isExactMatch = tagsList.some((tag) => tag.name === text);
+
   return (
     <MultiSelectWrapper ref={multiselectRef}>
       <div
@@ -249,31 +250,43 @@ const MultiSelect = ({
           </div>
           <div className="options">
             {tagsList.length > 0 ? (
-              tagsList.map((tag) => (
-                <div key={tag.id} className="button">
-                  <label
-                    className={`checkbox-label ${
-                      isTagSelected(tag) ? "selected" : ""
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isTagSelected(tag)}
-                      onChange={() => handleClickMultiSelect(tag)}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleClickMultiSelect(tag)}
+              <>
+                {tagsList.map((tag) => (
+                  <div key={tag.id} className="button">
+                    <label
+                      className={`checkbox-label ${
+                        isTagSelected(tag) ? "selected" : ""
+                      }`}
                     >
-                      {tag.name}
+                      <input
+                        type="checkbox"
+                        checked={isTagSelected(tag)}
+                        onChange={() => handleClickMultiSelect(tag)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleClickMultiSelect(tag)}
+                      >
+                        {tag.name}
+                      </button>
+                    </label>
+                  </div>
+                ))}
+                {!isExactMatch && text !== "" && (
+                  <div className="tag-not-found">
+                    <span>Add another tag?</span>
+                    <button onClick={addCustomTag}>
+                      Add &apos;{text}&apos; manually
                     </button>
-                  </label>
-                </div>
-              ))
+                  </div>
+                )}
+              </>
             ) : (
               <div className="tag-not-found">
                 <span>Tag not found</span>
-                <button onClick={addCustomTag}>Add '{text}' manually</button>
+                <button onClick={addCustomTag}>
+                  Add &apos;{text}&apos; manually
+                </button>
               </div>
             )}
           </div>

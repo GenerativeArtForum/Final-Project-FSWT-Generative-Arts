@@ -5,6 +5,7 @@ export type NewThreadForm = {
     body: string;
     tagIds: string[];
     images: ImageType[],
+    status: string;
 }
 
 export type TagType = {

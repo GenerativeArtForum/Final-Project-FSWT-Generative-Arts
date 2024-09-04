@@ -23,8 +23,21 @@ const useThreads = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
+
       const data = await response.json();
-      setThreads(data);
+
+      const threadsWithUserData = await Promise.all(
+        data.map(async (thread: ThreadType) => {
+          const clerkId = await getUserById(thread.userId);
+          const userData = await getClerkUserData(clerkId);
+          return {
+            ...thread,
+            user: userData,
+          };
+        })
+      );
+
+      setThreads(threadsWithUserData);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -42,8 +55,18 @@ const useThreads = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-      const data = await response.json();
-      setThread(data);
+      const thread = await response.json();
+
+      const userClerkId = await getUserById(thread.userId);
+      const userData = await getClerkUserData(userClerkId);
+
+      const threadWithUserData = {
+        ...thread,
+        user: userData,
+      };
+
+      setThread(threadWithUserData);
+      console.log(threadWithUserData);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -93,6 +116,7 @@ const useThreads = () => {
       description: thread.body,
       tagIds: thread.tagIds.length > 0 ? thread.tagIds : [],
       userId: thread.userId,
+      status: thread.status,
     };
 
     console.log(threadPayload);
