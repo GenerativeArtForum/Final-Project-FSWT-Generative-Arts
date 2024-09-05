@@ -60,8 +60,8 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { clerk_id } = await req.json();
-    const newUser = await createUserAction(clerk_id);
+    const { clerk_id, email, username } = await req.json();
+    const newUser = await createUserAction(clerk_id, email, username);
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
     return NextResponse.json(
