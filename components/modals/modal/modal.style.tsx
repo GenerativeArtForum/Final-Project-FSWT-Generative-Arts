@@ -1,8 +1,7 @@
 import styled from "styled-components";
-
 import { Colors } from "@/constants/Colors";
 
-export const ModalWrapper = styled.div<{ isOpenModal: boolean | undefined }>`
+export const ModalWrapper = styled.div<{ isOpen: boolean | undefined }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -12,8 +11,8 @@ export const ModalWrapper = styled.div<{ isOpenModal: boolean | undefined }>`
   align-items: center;
   justify-content: center;
   z-index: 999;
-  opacity: ${({ isOpenModal }) => (isOpenModal ? 1 : 0)};
-  pointer-events: ${({ isOpenModal }) => (isOpenModal ? "auto" : "none")};
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  pointer-events: ${({ isOpen }) => (isOpen ? "auto" : "none")};
   backdrop-filter: blur(2px);
   transition: opacity 0.15s ease-in-out;
 
@@ -41,8 +40,7 @@ export const ModalWrapper = styled.div<{ isOpenModal: boolean | undefined }>`
     width: fit-content;
     background-color: ${Colors.pureWhite};
     border-radius: 16px;
-    transform: ${({ isOpenModal }) =>
-      isOpenModal ? "translateY(0)" : "translateY(5%)"};
+    transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(5%)")};
     z-index: 2;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
     overflow: hidden;

@@ -9,6 +9,7 @@ export const Colors = {
   lighterBlue: "#ebf4ff",
   transparent: "transparent",
   lightgray: "#e5e7eb",
+  midGray: "#d1d5db",
   gray: "#444444",
   red: "#FF5C5C",
 };

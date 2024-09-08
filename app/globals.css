@@ -109,6 +109,7 @@ code {
   font-family: "Courier New", Courier, monospace;
   background-color: #f1f1f1;
   padding: 4px 6px;
+  margin: 8px 0;
   border-radius: 4px;
   display: block;
   white-space: pre-wrap;

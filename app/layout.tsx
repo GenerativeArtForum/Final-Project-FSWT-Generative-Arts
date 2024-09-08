@@ -26,7 +26,7 @@ export default function RootLayout({
     <ClerkProvider>
       <StyledComponentsRegistry>
         <ModalProvider>
-          <html lang="en">
+          <html lang="en" suppressHydrationWarning>
             <body>
               <Modal />
               <Toaster />

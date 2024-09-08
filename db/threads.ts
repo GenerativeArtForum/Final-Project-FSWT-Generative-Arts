@@ -6,11 +6,12 @@ export type Thread = {
   description: string;
   userId: string;
   tagIds: string[];
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
 };
 
 export async function getThreads() {
   const threads = await db.thread.findMany({
-    orderBy: { id: "asc" },
+    orderBy: { createdAt: "desc" },
   });
 
   const populatedThreads = await Promise.all(
@@ -53,7 +54,8 @@ export async function createThread(
   title: string,
   description: string,
   userId: string,
-  tagIds: string[]
+  tagIds: string[],
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
 ) {
   return await db.thread.create({
     data: {
@@ -61,6 +63,7 @@ export async function createThread(
       description,
       userId,
       tagIds,
+      status,
     },
   });
 }
@@ -70,7 +73,8 @@ export async function updateThread(
   title: string,
   description: string,
   userId: string,
-  tagIds: string[]
+  tagIds: string[],
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
 ) {
   return await db.thread.update({
     where: {
@@ -81,6 +85,7 @@ export async function updateThread(
       description,
       userId,
       tagIds,
+      status,
     },
   });
 }

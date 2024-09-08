@@ -1,35 +1,45 @@
+"use client";
+
 import Link from "next/link";
 
 import Tag from "@/components/common/tag/tag";
 import ThreadActions from "../threadActions/threadActions";
-import ThreadUser from "../threadUser/threadUser";
 
 import { ThreadType } from "@/types/thread/thread";
 
+import useThreads from "@/hooks/useThreads";
+import { useCallback, useEffect, useState } from "react";
 import { ThreadWrapper } from "./threadComponent.style";
+import ThreadUser from "../threadUser/threadUser";
 
-const Thread = ({ thread }: { thread: ThreadType }) => {
+const Thread = ({
+  thread,
+}: {
+  thread: ThreadType;
+}) => {
+
   return (
     <ThreadWrapper>
       <div className="thread-header">
         <Link className="title" href={`/thread/${thread.id}`}>
           {thread.title}
         </Link>
-        {/* <ThreadUser
-          thread={thread}
-          isFollowing={thread.user.isFollowing ? true : undefined}
-        /> */}
+        <ThreadUser id={thread.userId} user={thread.user} thread={thread} />
       </div>
-      <div className="tags">
-        {thread.tags.slice(0,5).map((tag) => (
-          <Tag key={tag.id} text={tag.name} />
-        ))}
-      </div>
-      <span>{thread.description}</span>
+      {thread.tags.length > 0 && (
+        <div className="tags">
+          {thread.tags.slice(0, 5).map((tag) => (
+            <Tag key={tag.id} text={tag.name} />
+          ))}
+        </div>
+      )}
+      <div dangerouslySetInnerHTML={{ __html: thread.description }} />
       <div className="thread-footer">
         <div className="data">
-          <span>{thread.responses ? Number(thread.responses) : '0'} Responses</span>
-          <span>{thread.views ? thread.views : '0'} Views</span>
+          <span>
+            {thread.responses ? Number(thread.responses) : "0"} Responses
+          </span>
+          {/* <span>{thread.views ? thread.views : "0"} Views</span> */}
         </div>
         <ThreadActions id={thread.id} />
       </div>

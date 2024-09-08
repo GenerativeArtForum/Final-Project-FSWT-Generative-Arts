@@ -40,7 +40,15 @@ const ThreadPage = () => {
   //   loadedResponses === maxResponses ? "Show Less" : "Load More";
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <ThreadPageWrapper>
+        <div className="container">
+          <div className="loading" style={{ height: "300px" }}></div>
+          <div className="loading" style={{ height: "50px" }}></div>
+          <div className="loading" style={{ height: "50px" }}></div>
+        </div>
+      </ThreadPageWrapper>
+    );
   }
 
   if (!thread) {
@@ -52,23 +60,20 @@ const ThreadPage = () => {
       <div className="container">
         <div className="thread-header">
           <h1 className="title">{thread.title}</h1>
-          {/* <ThreadUser
-            thread={thread}
-            isFollowing={thread.user.isFollowing ? true : undefined}
-          /> */}
+          <ThreadUser id={thread.userId} user={thread.user} thread={thread} />
         </div>
         <div className="tags">
           {thread.tags.slice(0, 5).map((tag) => (
             <Tag key={tag.id} text={tag.name} />
           ))}
         </div>
-        <span>{thread.description}</span>
+        <div dangerouslySetInnerHTML={{ __html: thread.description }} />
         <div className="thread-footer">
           <div className="data">
             <span>
               {thread.responses ? Number(thread.responses) : "0"} Responses
             </span>
-            <span>{thread.views ? thread.views : "0"} Views</span>
+            {/* <span>{thread.views ? thread.views : "0"} Views</span> */}
           </div>
           <ThreadActions id={thread.id} />
         </div>

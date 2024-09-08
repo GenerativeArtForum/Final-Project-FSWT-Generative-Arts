@@ -75,7 +75,7 @@ const NewThreadModal = () => {
             <MultiSelect
               tagsList={tags}
               placeholder="Add tags"
-              maxTags={6}
+              maxTags={4}
               selectedTags={selectedTags}
               setThreadData={setThreadData}
               setSelectedTags={setSelectedTags}
@@ -92,18 +92,18 @@ const NewThreadModal = () => {
             cancelThread(e);
           }}
         />
-        <Button
+        {/* <Button
           text="Save as draft"
           variant={3}
           onClick={(e) => {
-            closeModal("close", e);
+            closeModal("close", e, 'DRAFT');
           }}
-        />
+        /> */}
         <Button
           text="Create thread"
           variant={1}
           onClick={(e) => {
-            closeModal("submit", e);
+            closeModal("submit", e, 'PUBLISHED');
           }}
         />
       </div>

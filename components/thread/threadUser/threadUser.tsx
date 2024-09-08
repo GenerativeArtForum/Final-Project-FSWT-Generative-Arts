@@ -14,11 +14,15 @@ import { calculateTimeAgo } from "@/utils/date";
 import { ThreadUserWrapper } from "./threadUser.style";
 
 const ThreadUser = ({
+  id,
+  user,
   thread,
   isFollowing,
 }: {
+  id: number | undefined;
+  user: any;
   thread: ThreadType;
-  isFollowing: boolean | undefined;
+  isFollowing?: boolean | undefined;
 }) => {
   const { setIsOpenModal, setActiveModal } = useModal();
   const { isSignedIn } = useUser();
@@ -30,38 +34,47 @@ const ThreadUser = ({
     }
   };
 
-  const dateSincePosted = calculateTimeAgo(thread.date);
+  if (!user) return null;
+
+  const { imageUrl, username } = user;
+  const dateSincePosted = calculateTimeAgo(thread.createdAt);
 
   return (
     <ThreadUserWrapper isfollowing={isFollowing}>
-      <Link href={`/user/${thread.user.id}`}>
+      <Link href={`/user/${id}`}>
         <div className="user-data">
-          <span className="user-name">@{thread.user.username}</span>
+          <span className="user-name">@{username}</span>
           <span className="thread-date">{dateSincePosted}</span>
         </div>
       </Link>
       <div className="user-image">
-        {thread.user.image !== undefined && thread.user.image !== "" ? (
-          <Link href={`/user/${thread.user.id}`}>
+        {imageUrl ? (
+          <Link href={`/user/${id}`}>
             <Image
-              src={thread.user.image}
-              alt={thread.user.username}
+              src={imageUrl}
+              alt={username || "User image"}
               className="image"
+              width={36}
+              height={36}
             />
           </Link>
         ) : (
-          <Link href={`/user/${thread.user.id}`}>
+          <Link href={`/user/${id}`}>
             <div className="image-fallback"></div>
           </Link>
         )}
-        <button className="follow-button" onClick={buttonClicked}>
-          <Image
-            src={thread.user.isFollowing ? TickIcon : AddIcon}
-            alt={thread.user.isFollowing ? "following" : "not following"}
-            width={16}
-            height={16}
-          />
-        </button>
+        {/* 
+        Uncomment and use the follow button if needed
+        {isFollowing && (
+          <button className="follow-button" onClick={buttonClicked}>
+            <Image
+              src={isFollowing ? TickIcon : AddIcon}
+              alt={isFollowing ? "following" : "not following"}
+              width={16}
+              height={16}
+            />
+          </button>
+        )} */}
       </div>
     </ThreadUserWrapper>
   );

@@ -11,29 +11,17 @@ import { ProfilePageWrapper } from "./page.style";
 const ProfilePage = () => {
   const router = useRouter();
 
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
 
   if (!isSignedIn) {
     router.push("/");
     return null;
   }
 
-  const userData = {
-    id: 1,
-    username: "johndoe",
-    followers: 100,
-    following: 200,
-    bio: "Creative coder passionate about generative arts Creative coder passionate about generative arts Creative coder passionate about generative arts",
-    tags: [
-      { id: 1, name: "Processing" },
-      { id: 2, name: "OpenFrameworks" },
-    ],
-  };
-
   return (
     <ProfilePageWrapper>
-      <UserProfile user={userData} ownProfile={true} />
-      <UserData />
+      <UserProfile user={user} ownProfile={true} />
+      <UserData user={user} ownProfile={true} />
     </ProfilePageWrapper>
   );
 };
