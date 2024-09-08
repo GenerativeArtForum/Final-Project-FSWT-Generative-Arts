@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { TagType, ThreadType } from "@/types/thread/thread";
+import { ResponseType, TagType, ThreadType } from "@/types/thread/thread";
 import { NewThreadForm } from "@/types/forms/newThreadForm";
 import { clerkClient } from "@clerk/nextjs/server";
 
@@ -28,11 +28,31 @@ const useThreads = () => {
 
       const threadsWithUserData = await Promise.all(
         data.map(async (thread: ThreadType) => {
-          const clerkId = await getUserById(thread.userId);
-          const userData = await getClerkUserData(clerkId);
+          const threadUserId = thread.userId;
+          const threadUserClerkId = await getUserById(threadUserId);
+          const threadUserData = await getClerkUserData(threadUserClerkId);
+
+          const responsesWithUserData = Array.isArray(thread.responses)
+            ? await Promise.all(
+                thread.responses.map(async (response: ResponseType) => {
+                  const responseUserClerkId = await getUserById(
+                    response.userId
+                  );
+                  const responseUserData = await getClerkUserData(
+                    responseUserClerkId
+                  );
+                  return {
+                    ...response,
+                    user: responseUserData,
+                  };
+                })
+              )
+            : [];
+
           return {
             ...thread,
-            user: userData,
+            user: threadUserData,
+            responses: responsesWithUserData,
           };
         })
       );
@@ -60,13 +80,24 @@ const useThreads = () => {
       const userClerkId = await getUserById(thread.userId);
       const userData = await getClerkUserData(userClerkId);
 
+      const responsesWithUserData = await Promise.all(
+        thread.responses.map(async (response: ResponseType) => {
+          const responseUserClerkId = await getUserById(response.userId);
+          const responseUserData = await getClerkUserData(responseUserClerkId);
+          return {
+            ...response,
+            user: responseUserData,
+          };
+        })
+      );
+
       const threadWithUserData = {
         ...thread,
         user: userData,
+        responses: responsesWithUserData,
       };
 
       setThread(threadWithUserData);
-      console.log(threadWithUserData);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -94,7 +125,6 @@ const useThreads = () => {
   };
 
   const createTag = async (userTag: string) => {
-    console.log(userTag);
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tags`, {
       method: "POST",
       headers: {
@@ -119,8 +149,6 @@ const useThreads = () => {
       status: thread.status,
     };
 
-    console.log(threadPayload);
-
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/threads`, {
       method: "POST",
       headers: {
@@ -128,10 +156,6 @@ const useThreads = () => {
       },
       body: JSON.stringify(threadPayload),
     });
-
-    console.log(JSON.stringify(threadPayload));
-
-    console.log(response);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -142,7 +166,7 @@ const useThreads = () => {
     return await response.json();
   };
 
-  const getUserById = async (id: number | undefined) => {
+  const getUserById = async (id: number | string | undefined) => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/users?id=${id}`

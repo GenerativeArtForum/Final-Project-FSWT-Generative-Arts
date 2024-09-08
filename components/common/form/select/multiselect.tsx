@@ -114,7 +114,6 @@ const MultiSelect = ({
       updateTotalChars(newSelected);
 
       const tagIds = newSelected.map((tag: TagType) => tag.id);
-      console.log("Tag IDs:", tagIds);
 
       setThreadData("tagIds", tagIds);
       return newSelected;

@@ -2,6 +2,8 @@ import { NewResponseForm } from "@/types/forms/newResponseForm";
 
 export const InitialNewResponseForm: NewResponseForm = {
   _id: "",
-  body: "",
+  text: "",
+  userId: "",
+  threadId: "",
   images: [],
 };

@@ -21,7 +21,7 @@ const NewResponsetModal = () => {
 
   const handleEditorChange = (content: string | any) => {
     setContent(content);
-    setResponseData("body", content);
+    setResponseData("text", content);
   };
 
   return (

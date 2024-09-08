@@ -7,16 +7,10 @@ import ThreadActions from "../threadActions/threadActions";
 
 import { ThreadType } from "@/types/thread/thread";
 
-import useThreads from "@/hooks/useThreads";
-import { useCallback, useEffect, useState } from "react";
-import { ThreadWrapper } from "./threadComponent.style";
 import ThreadUser from "../threadUser/threadUser";
+import { ThreadWrapper } from "./threadComponent.style";
 
-const Thread = ({
-  thread,
-}: {
-  thread: ThreadType;
-}) => {
+const Thread = ({ thread }: { thread: ThreadType }) => {
 
   return (
     <ThreadWrapper>
@@ -37,7 +31,7 @@ const Thread = ({
       <div className="thread-footer">
         <div className="data">
           <span>
-            {thread.responses ? Number(thread.responses) : "0"} Responses
+          {Array.isArray(thread.responses) ? thread.responses.length : "0"} Responses
           </span>
           {/* <span>{thread.views ? thread.views : "0"} Views</span> */}
         </div>

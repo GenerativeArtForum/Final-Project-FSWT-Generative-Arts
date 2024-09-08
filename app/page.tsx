@@ -21,7 +21,7 @@ const Home = () => {
       <TabsSwitcher />
       <CreateThread />
       <div className="container">
-        {loading ? (
+        {loading || !threads ? (
           <div className="container">
             <div className="loading" style={{ height: "225px" }}></div>
             <div className="loading" style={{ height: "225px" }}></div>

@@ -18,9 +18,10 @@ export type ResponseType = {
   id: number;
   text: string;
   user: UserType;
-  votes: number;
-  personalVote: string | undefined;
-  date: string;
+  userId: number | string | undefined;
+  threadId: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ThreadType = {
