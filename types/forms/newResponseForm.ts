@@ -1,6 +1,8 @@
 export type NewResponseForm = {
     _id: string;
-    body: string;
+    text: string;
+    userId: string;
+    threadId: string;
     images: ImageType[],
 }
 

@@ -19,6 +19,7 @@ import { InitialEditProfileForm } from "@/data/forms/InitialEditProfileForm";
 import { InitialNewResponseForm } from "@/data/forms/InitialNewResponseForm";
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
 import { useUser } from "@clerk/nextjs";
+import useResponses from "./useResponses";
 import useThreads from "./useThreads";
 
 type FormField = {
@@ -70,7 +71,11 @@ type ThreadModalContextType = {
   setActiveModal: (activeModal: string) => void;
   setPrevActiveModal: (prevActiveModal: string) => void;
   setContent: (content: string) => void;
-  closeModal: (action: string, e: any, status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED') => void;
+  closeModal: (
+    action: string,
+    e: any,
+    status?: "DRAFT" | "PUBLISHED" | "ARCHIVED"
+  ) => void;
   setToast: (
     toastName: string,
     title?: string,
@@ -121,6 +126,7 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();
   const { createThread } = useThreads();
+  const { createResponse } = useResponses();
 
   const [isOpenModal, setIsOpenModal] = useState<boolean | undefined>(false);
   const [activeModal, setActiveModal] = useState<string>("");
@@ -145,7 +151,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     type: string;
   }[] = [
     {
-      name: "body",
+      name: "text",
       placeholder: "Response body",
       type: "textarea",
     },
@@ -223,7 +229,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    console.log("New thread form state updated:", newThreadFormState);
+    // console.log("New thread form state updated:", newThreadFormState);
   }, [newThreadFormState]);
 
   const setResponseData = (name: keyof NewResponseForm, value: any) => {
@@ -269,9 +275,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         setToast("", "", "");
       }
     } else if (activeModal === "newResponse") {
-      if (!newResponseFormState.body) {
+      if (!newResponseFormState.text) {
         errorMessage = "Please fill the response body";
-      } else if (newResponseFormState.body.length > 1000) {
+      } else if (newResponseFormState.text.length > 1000) {
         errorMessage = "Response must be less than 1000 characters";
       }
 
@@ -313,13 +319,19 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchUserId = async () => {
-      if (user && !newThreadFormState.userId) {
+      if (user) {
         try {
           const fetchedUser = await getUserByClerkIdAction(user.id);
-          setNewThreadFormState((prevState) => ({
-            ...prevState,
-            userId: fetchedUser.id,
-          }));
+          if (fetchedUser) {
+            setNewThreadFormState((prevState) => ({
+              ...prevState,
+              userId: fetchedUser.id,
+            }));
+            setNewResponseFormState((prevState) => ({
+              ...prevState,
+              userId: fetchedUser.id,
+            }));
+          }
         } catch (error) {
           console.error("Error fetching user by Clerk ID:", error);
         }
@@ -335,8 +347,13 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     if (action === "submit") {
       const { isValid, successMessage } = validateThreadForm();
       if (isValid) {
-        await createThread(newThreadFormState);
-        handleSuccessMessage(successMessage);
+        if (activeModal === "newThread") {
+          await createThread(newThreadFormState);
+          handleSuccessMessage(successMessage);
+        } else if (activeModal === "newResponse") {
+          await createResponse(newResponseFormState);
+          handleSuccessMessage(successMessage);
+        }
       } else {
         return;
       }
