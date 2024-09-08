@@ -1,7 +1,6 @@
 "use client";
 
 import useModal from "@/hooks/useModal";
-
 import ConfirmModal from "../confirmModal/confirmModal";
 import EditProfileModal from "../editProfileModal/editProfileModal";
 import LoginModal from "../loginModal/loginModal";
@@ -16,11 +15,15 @@ const Modal = () => {
     useModal();
 
   return (
-    <ModalWrapper isOpenModal={isOpenModal}>
+    <ModalWrapper isOpen={isOpenModal}>
       <div
         className="background"
         onClick={(e) => {
-          if (activeModal === "newThread" || activeModal === "newResponse" || activeModal === "editProfile") {
+          if (
+            activeModal === "newThread" ||
+            activeModal === "newResponse" ||
+            activeModal === "editProfile"
+          ) {
             cancelThread(e);
           } else {
             closeModal("close", e);
