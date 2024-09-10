@@ -2,6 +2,7 @@
 
 import { r2client } from "@/lib/R2";
 import { extname } from "path";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 
 function buf2hex(buffer: ArrayBuffer) { // buffer is an ArrayBuffer
@@ -11,6 +12,19 @@ function buf2hex(buffer: ArrayBuffer) { // buffer is an ArrayBuffer
 }
 
 export async function actionUploadImage(formData: FormData) {
+
+  // Check user authentication
+  const { userId } = auth();
+  if (!userId) {
+    throw new Error("Unauthorized: User not authenticated");
+  }
+
+  // Check if user's email is verified
+  const user = await clerkClient.users.getUser(userId);
+  if (!user.emailAddresses.some(email => email.verification?.status === "verified")) {
+    throw new Error("Forbidden: Email not verified");
+  }
+  
   const fileField = formData.get("file");
   if (fileField === null) {
     throw new Error(`Missing 'file' field in form`);
