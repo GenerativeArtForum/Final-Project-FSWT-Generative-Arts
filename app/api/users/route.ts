@@ -1,7 +1,7 @@
 import {
   createUserAction,
   getUserAction,
-  getUsersAction,
+  getUsersAction
 } from "@/actions/users";
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";

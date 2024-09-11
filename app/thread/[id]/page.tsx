@@ -1,5 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 "use client";
 
+import React, { useEffect } from "react";
+import { useParams } from "next/navigation";
+import { ThreadPageWrapper } from "./page.style";
 import Tag from "@/components/common/tag/tag";
 import Response from "@/components/thread/response/response";
 import ThreadActions from "@/components/thread/threadActions/threadActions";
@@ -8,9 +13,6 @@ import useModal from "@/hooks/useModal";
 import useResponses from "@/hooks/useResponses";
 import useThreads from "@/hooks/useThreads";
 import { NewResponseForm } from "@/types/forms/newResponseForm";
-import { useParams } from "next/navigation";
-import { useEffect } from "react";
-import { ThreadPageWrapper } from "./page.style";
 
 const ThreadPage = () => {
   const params = useParams();
@@ -22,20 +24,24 @@ const ThreadPage = () => {
     if (params?.id) {
       const threadId = Array.isArray(params.id) ? params.id[0] : params.id;
       fetchSingleThread(threadId);
-      setNewResponseFormState((prevState) => ({
-        ...prevState,
-        threadId: params?.id,
-      }));
+      setThreadId(threadId);
     }
-  }, [params?.id]);
+  }, [params?.id, fetchSingleThread]);
+
+  const setThreadId = (threadId: string) => {
+    setNewResponseFormState((prevState) => ({
+      ...prevState,
+      threadId,
+    }));
+  };
 
   const handleResponseCreation = async (responseData: NewResponseForm) => {
     try {
       await createResponse(responseData);
       if (params?.id) {
         const threadId = Array.isArray(params.id) ? params.id[0] : params.id;
-        await refetchResponses(threadId); // Refetch responses for the thread
-        fetchSingleThread(threadId); // Ensure thread details are up-to-date
+        await refetchResponses(threadId);
+        fetchSingleThread(threadId);
       }
     } catch (error) {
       console.error("Failed to create response:", error);

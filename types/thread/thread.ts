@@ -4,8 +4,8 @@ export type TagType = {
 };
 
 export type UserType = {
-  id?: number;
-  username: string;
+  id?: number | string;
+  username: string | null;
   imageUrl?: string;
   isFollowing?: boolean;
   followers?: number;

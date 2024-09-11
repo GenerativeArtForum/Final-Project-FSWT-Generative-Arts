@@ -60,14 +60,14 @@ type ThreadModalContextType = {
   setResponseData: (name: keyof NewResponseForm, value: any) => void;
   setIsOpenModal: (isOpenModal: boolean | undefined) => void;
   setFeedDisplay: (feedDisplay: number) => void;
-  setNewThreadFormState: (newThreadForm: NewThreadForm) => void;
-  setNewResponseFormState: (newResponseForm: NewResponseForm) => void;
+  setNewThreadFormState: React.Dispatch<React.SetStateAction<NewThreadForm>>;
+  setNewResponseFormState: React.Dispatch<React.SetStateAction<NewResponseForm>>;
   setEditProfileFormState: (editProfileForm: EditProfileForm) => void;
   setThreadData: (name: keyof NewThreadForm, value: any) => void;
   validateThreadForm: () => { isValid: boolean; successMessage: string };
   setError: (error: string) => void;
-  setSelectedTags: (tags: TagType[]) => void;
-  setImages: (images: File[]) => void;
+  setSelectedTags: React.Dispatch<React.SetStateAction<TagType[]>>;
+  setImages: (updater: (prevImages: File[]) => File[]) => void;
   setActiveModal: (activeModal: string) => void;
   setPrevActiveModal: (prevActiveModal: string) => void;
   setContent: (content: string) => void;
@@ -94,9 +94,14 @@ const ThreadModalContext = createContext<ThreadModalContextType>({
   editProfileFormState: InitialEditProfileForm,
   error: null,
   selectedTags: [],
-  formFields: [],
-  responseFields: [],
-  editProfileFields: [],
+  formFields: [
+    { name: "question", placeholder: "Thread question", type: "text" },
+    { name: "body", placeholder: "Thread body", type: "textarea" },
+  ],
+  responseFields: [
+    { name: "text", placeholder: "Response body", type: "textarea" },
+  ],
+  editProfileFields: [{ name: "bio", placeholder: "Bio", type: "text" }],
   images: [],
   content: "",
   activeModal: "",
@@ -219,18 +224,11 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
   const setThreadData = (name: keyof NewThreadForm, value: any) => {
     setError("");
-    setNewThreadFormState((prevState) => {
-      const updatedState = {
-        ...prevState,
-        [name]: value,
-      };
-      return updatedState;
-    });
+    setNewThreadFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
-
-  useEffect(() => {
-    // console.log("New thread form state updated:", newThreadFormState);
-  }, [newThreadFormState]);
 
   const setResponseData = (name: keyof NewResponseForm, value: any) => {
     setError("");
@@ -292,10 +290,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
       }
       successMessage = "Response submitted successfully";
     } else if (activeModal === "editProfile") {
-      if (!editProfileFormState.username) {
-        errorMessage = "Please enter a username";
-      }
-
       if (errorMessage) {
         setError(errorMessage);
         setToast("error", undefined, errorMessage);

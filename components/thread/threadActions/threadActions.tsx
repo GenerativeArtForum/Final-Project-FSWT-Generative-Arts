@@ -1,15 +1,18 @@
 import Image from "next/image";
-
 import useModal from "@/hooks/useModal";
 import { useUser } from "@clerk/nextjs";
-
 import ResponseIcon from "../../../assets/icons/common/response-icon.svg";
 import SaveIcon from "../../../assets/icons/common/save-icon.svg";
 import ShareIcon from "../../../assets/icons/common/share-icon.svg";
-
 import { ThreadActionsWrapper } from "./threadActions.style";
+import { NewResponseForm } from "@/types/forms/newResponseForm";
 
-const ThreadActions = ({ id }: { id: number }) => {
+type ThreadActionsProps = {
+  id: number;
+  onResponseCreate?: (responseData: NewResponseForm) => Promise<void>;
+};
+
+const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
   const { setIsOpenModal, setActiveModal, setShareLink } = useModal();
   const { isSignedIn } = useUser();
 
@@ -21,6 +24,14 @@ const ThreadActions = ({ id }: { id: number }) => {
       if (action === "response") {
         setIsOpenModal(true);
         setActiveModal("newResponse");
+        onResponseCreate &&
+          onResponseCreate({
+            _id: "",
+            text: "",
+            userId: "",
+            threadId: id.toString(),
+            images: [],
+          });
       } else if (action === "save") {
         console.log("save");
       } else if (action === "share") {
