@@ -14,7 +14,7 @@ const useResponses = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.}/responses`
+        `${process.env.VERCEL_URL}/responses`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
