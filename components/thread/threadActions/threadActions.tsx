@@ -37,7 +37,7 @@ const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
       } else if (action === "share") {
         setIsOpenModal(true);
         setActiveModal("share");
-        setShareLink(`${process.env.VERCEL_URL}/thread/${id}`);
+        setShareLink(`${process.env.VERCEL_URL}thread/${id}`);
       }
     }
   };

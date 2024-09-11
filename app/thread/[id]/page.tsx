@@ -26,7 +26,7 @@ const ThreadPage = () => {
       fetchSingleThread(threadId);
       setThreadId(threadId);
     }
-  }, [params?.id, fetchSingleThread]);
+  }, [params?.id]);
 
   const setThreadId = (threadId: string) => {
     setNewResponseFormState((prevState) => ({
