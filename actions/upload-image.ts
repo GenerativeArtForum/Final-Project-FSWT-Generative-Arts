@@ -3,6 +3,7 @@
 import { r2client } from "@/lib/R2";
 import { extname } from "path";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import sharp from 'sharp';
 
 function buf2hex(buffer: ArrayBuffer) {
   // buffer is an ArrayBuffer
@@ -71,6 +72,13 @@ export async function actionUploadImage(formData: FormData) {
   const file = object as File;
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
+
+  // Validación de contenido de fichero
+  const image = sharp(buffer);
+  const metadata = await image.metadata();
+  if (!['jpeg', 'png', 'webp', 'gif'].includes(metadata.format || '')) {
+    throw new Error("Invalid image format. Only JPEG, PNG, WebP, and GIF are allowed.");
+  }
 
   // Calcula hash del fichero para el nombre
   const hashBytes = await crypto.subtle.digest("SHA-256", buffer);
