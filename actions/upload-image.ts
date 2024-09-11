@@ -43,8 +43,11 @@ export async function actionUploadImage(formData: FormData) {
   const hashBytes = await crypto.subtle.digest("SHA-256", buffer);
   const hash = buf2hex(hashBytes);
 
+  //Nombre del Fichero
   const extension = extname(file.name);
-  const uploadFilename = `${hash}${extension}`;
+  const uploadFilename = `${userId}/${hash}${extension}`;
+
+  //Enviamos el fichero a r2
   await r2client.uploadFile(uploadFilename, buffer);
   
   return uploadFilename;
