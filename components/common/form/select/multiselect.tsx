@@ -26,7 +26,7 @@ const MultiSelect = ({
   selectedTags: TagType[];
   maxTags: number;
   setThreadData: any;
-  setSelectedTags: (tags: TagType[]) => void;
+  setSelectedTags: React.Dispatch<React.SetStateAction<TagType[]>>;
   setTagParams: (tagParams: string) => void;
 }) => {
   const { toast } = useToast();
@@ -103,17 +103,17 @@ const MultiSelect = ({
       return;
     }
 
-    setSelectedTags((prevSelected) => {
+    setSelectedTags((prevSelected: TagType[]) => {
       const isSelected = prevSelected.some(
-        (selected: any) => selected.id === tag.id
+        (selected) => selected.id === tag.id
       );
       const newSelected = isSelected
-        ? prevSelected.filter((selected: any) => selected.id !== tag.id)
+        ? prevSelected.filter((selected) => selected.id !== tag.id)
         : [...prevSelected, tag];
 
       updateTotalChars(newSelected);
 
-      const tagIds = newSelected.map((tag: TagType) => tag.id);
+      const tagIds = newSelected.map((tag) => tag.id);
 
       setThreadData("tagIds", tagIds);
       return newSelected;
