@@ -18,7 +18,7 @@ const useThreads = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.VERCEL_URL}/api/threads`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/threads`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -70,7 +70,7 @@ const useThreads = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.VERCEL_URL}/api/threads?id=${id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/threads?id=${id}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -110,7 +110,7 @@ const useThreads = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.VERCEL_URL}/api/tags${tagParams}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tags${tagParams}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -125,7 +125,7 @@ const useThreads = () => {
   };
 
   const createTag = async (userTag: string) => {
-    const response = await fetch(`${process.env.VERCEL_URL}/api/tags`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tags`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -149,7 +149,7 @@ const useThreads = () => {
       status: thread.status,
     };
 
-    const response = await fetch(`${process.env.VERCEL_URL}/api/threads`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/threads`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -169,7 +169,7 @@ const useThreads = () => {
   const getUserById = async (id: number | string | undefined) => {
     try {
       const response = await fetch(
-        `${process.env.VERCEL_URL}/api/users?id=${id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${id}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
