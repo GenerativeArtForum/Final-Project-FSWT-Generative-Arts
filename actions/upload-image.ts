@@ -17,6 +17,9 @@ const userUploads = new Map<string, { count: number; lastReset: number }>();
 const RATE_LIMIT = 5; // 5 uploads por hora
 const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hora en milisegunndos
 
+//SetUp Image Size
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 function RateLimiting(
   userId: string,
   userUploads: Map<string, { count: number; lastReset: number }>,
@@ -78,6 +81,11 @@ export async function actionUploadImage(formData: FormData) {
   const metadata = await image.metadata();
   if (!['jpeg', 'png', 'webp', 'gif'].includes(metadata.format || '')) {
     throw new Error("Invalid image format. Only JPEG, PNG, WebP, and GIF are allowed.");
+  }
+
+  //Image Size validation
+  if (buffer.length > MAX_FILE_SIZE) {
+    throw new Error("File size exceeds the maximum limit of 5MB.");
   }
 
   // Calcula hash del fichero para el nombre
