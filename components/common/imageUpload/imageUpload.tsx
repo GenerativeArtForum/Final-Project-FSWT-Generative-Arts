@@ -36,16 +36,18 @@ const ImageUpload = ({ maxImages }: { maxImages: number }) => {
       setToast(
         "error",
         undefined,
-        `You can only upload ${maxImages} ${maxImages === 1 ? 'image' : 'images'}` || undefined
+        `You can only upload ${maxImages} ${
+          maxImages === 1 ? "image" : "images"
+        }` || undefined
       );
       return;
     }
 
-    setImages((prevImages) => [...prevImages, ...selectedFiles]);
+    setImages((prevImages: File[]) => [...prevImages, ...selectedFiles]);
   };
 
   const removeImage = (index: number) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setImages((prevImages: File[]) => prevImages.filter((_, i) => i !== index));
   };
 
   const handleUploadButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {

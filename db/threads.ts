@@ -6,11 +6,12 @@ export type Thread = {
   description: string;
   userId: string;
   tagIds: string[];
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
 };
 
 export async function getThreads() {
   const threads = await db.thread.findMany({
-    orderBy: { id: "asc" },
+    orderBy: { createdAt: "desc" },
   });
 
   const populatedThreads = await Promise.all(
@@ -20,9 +21,30 @@ export async function getThreads() {
           id: { in: thread.tagIds },
         },
       });
+
+      // Ensure responses are filtered by threadId
+      const responses = await db.response.findMany({
+        where: { threadId: thread.id },
+        orderBy: { createdAt: "asc" },
+      });
+
+      // Populate responses with user data
+      const populatedResponses = await Promise.all(
+        responses.map(async (response) => {
+          const user = await db.user.findUnique({
+            where: { id: response.userId },
+          });
+          return {
+            ...response,
+            user,
+          };
+        })
+      );
+
       return {
         ...thread,
         tags,
+        responses: populatedResponses,
       };
     })
   );
@@ -43,9 +65,29 @@ export async function getThread(id: string) {
     },
   });
 
+  // Filter responses to ensure they belong to the thread
+  const responses = await db.response.findMany({
+    where: { threadId: thread.id },
+    orderBy: { createdAt: "asc" },
+  });
+
+  // Populate responses with user data
+  const populatedResponses = await Promise.all(
+    responses.map(async (response) => {
+      const user = await db.user.findUnique({
+        where: { id: response.userId },
+      });
+      return {
+        ...response,
+        user,
+      };
+    })
+  );
+
   return {
     ...thread,
     tags,
+    responses: populatedResponses,
   };
 }
 
@@ -53,7 +95,8 @@ export async function createThread(
   title: string,
   description: string,
   userId: string,
-  tagIds: string[]
+  tagIds: string[],
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
 ) {
   return await db.thread.create({
     data: {
@@ -61,6 +104,7 @@ export async function createThread(
       description,
       userId,
       tagIds,
+      status,
     },
   });
 }
@@ -70,17 +114,19 @@ export async function updateThread(
   title: string,
   description: string,
   userId: string,
-  tagIds: string[]
+  tagIds: string[],
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
 ) {
   return await db.thread.update({
     where: {
-      id: id,
+      id,
     },
     data: {
       title,
       description,
       userId,
       tagIds,
+      status,
     },
   });
 }

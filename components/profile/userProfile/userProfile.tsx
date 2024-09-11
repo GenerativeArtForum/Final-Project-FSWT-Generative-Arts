@@ -39,11 +39,21 @@ const UserProfile = ({
   return (
     <UserProfileWrapper isFollowing={user.isFollowing}>
       <div className="user-container">
-        <div className="user-image"></div>
+        {user.imageUrl ? (
+          <Image
+            src={user.imageUrl}
+            alt={user.username || "User image"}
+            className="user-image"
+            width={200}
+            height={200}
+          />
+        ) : (
+          <div className="image-fallback"></div>
+        )}
         <div className="user-data">
           <div className="first-row">
             <a className="username">@{user.username}</a>
-            {!ownProfile ? (
+            {!ownProfile && (
               <button
                 className="follow-button"
                 onClick={() => buttonClicked("followButton")}
@@ -55,20 +65,15 @@ const UserProfile = ({
                   height={16}
                 />
               </button>
-            ) : (
-              <button onClick={() => buttonClicked("editButton")}>
-                <Image
-                  src={CommonIcons["edit"]}
-                  alt="Edit profile"
-                  width={20}
-                  height={20}
-                />
-              </button>
             )}
           </div>
           <div className="following-container">
-            <p className="following-text">{user.followers} Followers</p>
-            <p className="following-text">{user.following} Following</p>
+            <p className="following-text">
+              {user.followers ? user.followers : 0} Followers
+            </p>
+            <p className="following-text">
+              {user.following ? user.following : 0} Following
+            </p>
           </div>
         </div>
       </div>

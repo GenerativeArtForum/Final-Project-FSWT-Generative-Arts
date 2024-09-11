@@ -1,50 +1,63 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 "use client";
 
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
-
+import { ThreadPageWrapper } from "./page.style";
 import Tag from "@/components/common/tag/tag";
+import Response from "@/components/thread/response/response";
 import ThreadActions from "@/components/thread/threadActions/threadActions";
 import ThreadUser from "@/components/thread/threadUser/threadUser";
-
-import Response from "@/components/thread/response/response";
-import { useEffect, useState } from "react";
-import { ThreadPageWrapper } from "./page.style";
+import useModal from "@/hooks/useModal";
+import useResponses from "@/hooks/useResponses";
 import useThreads from "@/hooks/useThreads";
+import { NewResponseForm } from "@/types/forms/newResponseForm";
 
 const ThreadPage = () => {
   const params = useParams();
-  const { thread, error, loading, fetchSingleThread } = useThreads();
+  const { thread, loading, fetchSingleThread } = useThreads();
+  const { setNewResponseFormState } = useModal();
+  const { createResponse, refetchResponses } = useResponses();
 
   useEffect(() => {
     if (params?.id) {
       const threadId = Array.isArray(params.id) ? params.id[0] : params.id;
       fetchSingleThread(threadId);
+      setThreadId(threadId);
     }
-  }, [params?.id]);
+  }, [params?.id, fetchSingleThread]);
 
-  // const [loadedResponses, setLoadedResponses] = useState(3);
-  // const maxResponses = thread.responses.length;
+  const setThreadId = (threadId: string) => {
+    setNewResponseFormState((prevState) => ({
+      ...prevState,
+      threadId,
+    }));
+  };
 
-  // const sortedResponses = thread.responses.sort((a, b) => b.votes - a.votes);
-  // const displayedResponses = sortedResponses.slice(0, loadedResponses);
+  const handleResponseCreation = async (responseData: NewResponseForm) => {
+    try {
+      await createResponse(responseData);
+      if (params?.id) {
+        const threadId = Array.isArray(params.id) ? params.id[0] : params.id;
+        await refetchResponses(threadId);
+        fetchSingleThread(threadId);
+      }
+    } catch (error) {
+      console.error("Failed to create response:", error);
+    }
+  };
 
-  // const handleLoadMore = () => {
-  //   if (loadedResponses === maxResponses) {
-  //     setLoadedResponses(3);
-  //   } else {
-  //     setLoadedResponses(loadedResponses + 3);
-  //   }
-  // };
-
-  // const loadMoreButtonText =
-  //   loadedResponses === maxResponses ? "Show Less" : "Load More";
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!thread) {
-    return <div>Thread not found.</div>;
+  if (loading || !thread) {
+    return (
+      <ThreadPageWrapper>
+        <div className="container">
+          <div className="loading" style={{ height: "300px" }}></div>
+          <div className="loading" style={{ height: "50px" }}></div>
+          <div className="loading" style={{ height: "50px" }}></div>
+        </div>
+      </ThreadPageWrapper>
+    );
   }
 
   return (
@@ -52,36 +65,34 @@ const ThreadPage = () => {
       <div className="container">
         <div className="thread-header">
           <h1 className="title">{thread.title}</h1>
-          {/* <ThreadUser
-            thread={thread}
-            isFollowing={thread.user.isFollowing ? true : undefined}
-          /> */}
+          <ThreadUser id={thread.userId} user={thread.user} thread={thread} />
         </div>
         <div className="tags">
           {thread.tags.slice(0, 5).map((tag) => (
             <Tag key={tag.id} text={tag.name} />
           ))}
         </div>
-        <span>{thread.description}</span>
+        <div dangerouslySetInnerHTML={{ __html: thread.description }} />
         <div className="thread-footer">
           <div className="data">
             <span>
-              {thread.responses ? Number(thread.responses) : "0"} Responses
+              {Array.isArray(thread.responses) ? thread.responses.length : "0"}{" "}
+              Responses
             </span>
-            <span>{thread.views ? thread.views : "0"} Views</span>
           </div>
-          <ThreadActions id={thread.id} />
+          <ThreadActions
+            id={thread.id}
+            onResponseCreate={handleResponseCreation}
+          />
         </div>
-        {/* <div className="responses-wrapper">
+        <div className="responses-wrapper">
           <div className="responses">
-            {displayedResponses.map((response, index) => (
-              <Response key={index} response={response} />
-            ))}
+            {Array.isArray(thread.responses) &&
+              thread.responses.map((response, index) => (
+                <Response key={index} response={response} />
+              ))}
           </div>
-          <button onClick={handleLoadMore} className="more-less">
-            {loadMoreButtonText}
-          </button>
-        </div> */}
+        </div>
       </div>
     </ThreadPageWrapper>
   );

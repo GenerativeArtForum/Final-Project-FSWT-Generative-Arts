@@ -1,15 +1,5 @@
 export const calculateTimeAgo = (dateString: string): string => {
-  const [datePart, timePart, period] = dateString.split(" ");
-  const [month, day, year] = datePart.split("/").map(Number);
-  let [hours, minutes, seconds] = timePart.split(":").map(Number);
-
-  if (period === "PM" && hours < 12) {
-    hours += 12;
-  } else if (period === "AM" && hours === 12) {
-    hours = 0;
-  }
-
-  const threadDate = new Date(year, month - 1, day, hours, minutes, seconds);
+  const threadDate = new Date(dateString);
   const today = new Date();
 
   const timeDifference = today.getTime() - threadDate.getTime();

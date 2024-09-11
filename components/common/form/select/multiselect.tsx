@@ -1,16 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-import useSearch from "@/hooks/useSearch";
 import { useToast } from "@/components/ui/use-toast";
+import useSearch from "@/hooks/useSearch";
 import Tag from "../../tag/tag";
 import SearchBar from "../searchBar/searchBar";
 import { MultiSelectWrapper } from "./multiselect.style";
 
+import useThreads from "@/hooks/useThreads";
+import { TagType } from "@/types/thread/thread";
 import DownArrow from "../../../../assets/icons/common/down-arrow.svg";
 import UpArrow from "../../../../assets/icons/common/up-arrow.svg";
-import { TagType } from "@/types/thread/thread";
-import useThreads from "@/hooks/useThreads";
 
 const MultiSelect = ({
   tagsList,
@@ -26,7 +28,7 @@ const MultiSelect = ({
   selectedTags: TagType[];
   maxTags: number;
   setThreadData: any;
-  setSelectedTags: (tags: TagType[]) => void;
+  setSelectedTags: React.Dispatch<React.SetStateAction<TagType[]>>;
   setTagParams: (tagParams: string) => void;
 }) => {
   const { toast } = useToast();
@@ -103,16 +105,19 @@ const MultiSelect = ({
       return;
     }
 
-    setSelectedTags((prevSelected) => {
+    setSelectedTags((prevSelected: TagType[]) => {
       const isSelected = prevSelected.some(
-        (selected: any) => selected.id === tag.id
+        (selected) => selected.id === tag.id
       );
       const newSelected = isSelected
-        ? prevSelected.filter((selected: any) => selected.id !== tag.id)
+        ? prevSelected.filter((selected) => selected.id !== tag.id)
         : [...prevSelected, tag];
 
       updateTotalChars(newSelected);
-      setThreadData("tags", newSelected);
+
+      const tagIds = newSelected.map((tag) => tag.id);
+
+      setThreadData("tagIds", tagIds);
       return newSelected;
     });
   };
@@ -123,7 +128,10 @@ const MultiSelect = ({
     );
     setSelectedTags(updatedTags);
     updateTotalChars(updatedTags);
-    setThreadData("tags", updatedTags);
+    setThreadData(
+      "tagIds",
+      updatedTags.map((tag) => tag.id)
+    );
   };
 
   const getDisplayedTags = () => {
@@ -154,12 +162,14 @@ const MultiSelect = ({
     try {
       const newTag = await createTag(text);
       setSelectedTags((prevSelected) => [...prevSelected, newTag]);
-      setText(""); // Clear the input
-      fetchTags(); // Refresh tags list
+      setText("");
+      fetchTags();
     } catch (e: any) {
       setToast("error", "Failed to add tag", e.message);
     }
   };
+
+  const isExactMatch = tagsList.some((tag) => tag.name === text);
 
   return (
     <MultiSelectWrapper ref={multiselectRef}>
@@ -241,31 +251,43 @@ const MultiSelect = ({
           </div>
           <div className="options">
             {tagsList.length > 0 ? (
-              tagsList.map((tag) => (
-                <div key={tag.id} className="button">
-                  <label
-                    className={`checkbox-label ${
-                      isTagSelected(tag) ? "selected" : ""
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isTagSelected(tag)}
-                      onChange={() => handleClickMultiSelect(tag)}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleClickMultiSelect(tag)}
+              <>
+                {tagsList.map((tag) => (
+                  <div key={tag.id} className="button">
+                    <label
+                      className={`checkbox-label ${
+                        isTagSelected(tag) ? "selected" : ""
+                      }`}
                     >
-                      {tag.name}
+                      <input
+                        type="checkbox"
+                        checked={isTagSelected(tag)}
+                        onChange={() => handleClickMultiSelect(tag)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleClickMultiSelect(tag)}
+                      >
+                        {tag.name}
+                      </button>
+                    </label>
+                  </div>
+                ))}
+                {!isExactMatch && text !== "" && (
+                  <div className="tag-not-found">
+                    <span>Add another tag?</span>
+                    <button onClick={addCustomTag}>
+                      Add &apos;{text}&apos; manually
                     </button>
-                  </label>
-                </div>
-              ))
+                  </div>
+                )}
+              </>
             ) : (
               <div className="tag-not-found">
                 <span>Tag not found</span>
-                <button onClick={addCustomTag}>Add '{text}' manually</button>
+                <button onClick={addCustomTag}>
+                  Add &apos;{text}&apos; manually
+                </button>
               </div>
             )}
           </div>

@@ -4,9 +4,9 @@ export type TagType = {
 };
 
 export type UserType = {
-  id?: number;
-  username: string;
-  image?: string;
+  id?: number | string;
+  username: string | null;
+  imageUrl?: string;
   isFollowing?: boolean;
   followers?: number;
   following?: number;
@@ -18,18 +18,22 @@ export type ResponseType = {
   id: number;
   text: string;
   user: UserType;
-  votes: number;
-  personalVote: string | undefined;
-  date: string;
+  userId: number | string | undefined;
+  threadId: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ThreadType = {
   id: number;
   title: string;
   user: UserType;
+  userId: number | undefined;
   date: string;
   tags: TagType[];
   description: string;
   responses: number | ResponseType[];
   views: number;
+  createdAt: string;
+  updatedAt: string;
 };
