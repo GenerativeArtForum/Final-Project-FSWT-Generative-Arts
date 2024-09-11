@@ -14,7 +14,7 @@ const useResponses = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/responses`
+        `${process.env.VERCEL_URL}/responses`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -46,7 +46,7 @@ const useResponses = () => {
     setError(null);
     try {
       const data = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/responses?id=${id}`
+        `${process.env.VERCEL_URL}/api/responses?id=${id}`
       );
       if (!data.ok) {
         throw new Error(`Error: ${data.status} ${data.statusText}`);
@@ -77,7 +77,7 @@ const useResponses = () => {
     };
 
     const data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/responses`,
+      `${process.env.VERCEL_URL}/api/responses`,
       {
         method: "POST",
         headers: {
@@ -99,7 +99,7 @@ const useResponses = () => {
   const getUserById = async (id: number | string | undefined) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${id}`
+        `${process.env.VERCEL_URL}/api/users?id=${id}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -131,7 +131,7 @@ const useResponses = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/responses?threadId=${threadId}`
+        `${process.env.VERCEL_URL}/api/responses?threadId=${threadId}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
