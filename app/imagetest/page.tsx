@@ -4,16 +4,30 @@ import { actionUploadImage } from "@/actions/upload-image";
 import { useState } from "react";
 import Image from "next/image";
 
-
 export default function Page() {
   const [imageUrl, setImageUrl] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
   const upload = async (formData: FormData) => {
     try {
-      const filename = await actionUploadImage(formData);
+      const { presignedUrl, uploadFilename } = await actionUploadImage(formData);
+      
+      // Upload the file using the presigned URL
+      const file = formData.get("file") as File;
+      const response = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: file,
+        headers: {
+          'Content-Type': file.type,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload file");
+      }
+
       const publicUrl = process.env.NEXT_PUBLIC_R2_PUBLIC_URL;
-      setImageUrl(`${publicUrl}/${filename}`);
+      setImageUrl(`${publicUrl}/${uploadFilename}`);
     } catch (e: any) {
       setMessage(`Error: ${e.toString()}`);
     }

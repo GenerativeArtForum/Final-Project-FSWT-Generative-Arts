@@ -1,4 +1,5 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { env } from "@/lib/env";
 import { extname } from "path";
 
@@ -24,17 +25,15 @@ class R2Client {
     this.bucket = bucket;
   }
 
-  async uploadFile(filename: string, buffer: Buffer) {
+  async getPresignedUrl(filename: string) {
     const extension = extname(filename);
-    await this.s3client.send(
-      new PutObjectCommand({
-        Bucket: this.bucket,
-        Key: filename,
-        Body: buffer,
-        ACL: "public-read",
-        ContentType: mimeTypes[extension] || "application/octet-stream",
-      })
-    );
+    const command = new PutObjectCommand({
+      Bucket: this.bucket,
+      Key: filename,
+      ContentType: mimeTypes[extension] || "application/octet-stream",
+    });
+
+    return getSignedUrl(this.s3client, command, { expiresIn: 3600 });
   }
 
   destroy() {

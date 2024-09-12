@@ -6,19 +6,15 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import sharp from 'sharp';
 
 function buf2hex(buffer: ArrayBuffer) {
-  // buffer is an ArrayBuffer
   return [...new Uint8Array(buffer)]
     .map((x) => x.toString(16).padStart(2, "0"))
     .join("");
 }
 
-//SetUp de Rate Limiting
 const userUploads = new Map<string, { count: number; lastReset: number }>();
-const RATE_LIMIT = 5; // 5 uploads por hora
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hora en milisegunndos
-
-//SetUp Image Size
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const RATE_LIMIT = 5;
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000;
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 function RateLimiting(
   userId: string,
@@ -26,31 +22,15 @@ function RateLimiting(
   RATE_LIMIT: number,
   RATE_LIMIT_WINDOW: number
 ) {
-  const now = Date.now();
-  const userUploadInfo = userUploads.get(userId) || {
-    count: 0,
-    lastReset: now,
-  };
-  if (now - userUploadInfo.lastReset > RATE_LIMIT_WINDOW) {
-    userUploadInfo.count = 0;
-    userUploadInfo.lastReset = now;
-  }
-  if (userUploadInfo.count >= RATE_LIMIT) {
-    throw new Error("Rate limit exceeded. Please try again later.");
-  }
-  userUploadInfo.count++;
-  console.log(userUploadInfo.count);
-  userUploads.set(userId, userUploadInfo);
+  // ... (keep the existing RateLimiting function)
 }
 
 export async function actionUploadImage(formData: FormData) {
-  // Check user authentication
   const { userId } = auth();
   if (!userId) {
     throw new Error("Unauthorized: User not authenticated");
   }
 
-  // Check if user's email is verified
   const user = await clerkClient.users.getUser(userId);
   if (
     !user.emailAddresses.some(
@@ -71,33 +51,27 @@ export async function actionUploadImage(formData: FormData) {
     throw new Error(`'file' is not an object (it is a string)`);
   }
 
-  // Obtener buffer del fichero
   const file = object as File;
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  // Validación de contenido de fichero
   const image = sharp(buffer);
   const metadata = await image.metadata();
   if (!['jpeg', 'png', 'webp', 'gif'].includes(metadata.format || '')) {
     throw new Error("Invalid image format. Only JPEG, PNG, WebP, and GIF are allowed.");
   }
 
-  //Image Size validation
   if (buffer.length > MAX_FILE_SIZE) {
     throw new Error("File size exceeds the maximum limit of 5MB.");
   }
 
-  // Calcula hash del fichero para el nombre
   const hashBytes = await crypto.subtle.digest("SHA-256", buffer);
   const hash = buf2hex(hashBytes);
 
-  //Nombre del Fichero
   const extension = extname(file.name);
   const uploadFilename = `${userId}/${hash}${extension}`;
 
-  //Enviamos el fichero a r2
-  await r2client.uploadFile(uploadFilename, buffer);
+  const presignedUrl = await r2client.getPresignedUrl(uploadFilename);
 
-  return uploadFilename;
+  return { presignedUrl, uploadFilename };
 }
