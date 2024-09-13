@@ -35,6 +35,7 @@ Our project leverages a modern and powerful tech stack:
 - **Recomended Page**: Browse new automatically recomended generative artworks
 - **Following Page**: Browse new generative artworks from users you follow
 - **Thread Creation**: Create new discussions, tutorials or ask questions
+- **Response Creation**: Respond to other users threads and comments
 - **User Profiles**: Personalized spaces for artists to see their threads
 - **Tag Exploration**: Discover art by styles, techniques, or themes
 - **Likes and Comments System**: Interact with other artists' threads
@@ -66,6 +67,7 @@ This project was created by:
 * **Luis Antonio Castro**
 * **Marc López**
 * **Jacobo Galofre**
+
 Members of the 2024 cohort of the Postgraduate Course in Full-Stack Web Technologies at UPC School. The project mentor is **Cristina Bonamusa**.
 
 ## Acknowledgments
