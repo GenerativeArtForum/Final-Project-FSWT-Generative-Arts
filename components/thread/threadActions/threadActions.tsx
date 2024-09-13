@@ -16,6 +16,11 @@ const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
   const { setIsOpenModal, setActiveModal, setShareLink } = useModal();
   const { isSignedIn } = useUser();
 
+  const baseURL =
+  process.env.NODE_ENV === "development"
+    ? process.env.NEXT_PUBLIC_API_URL
+    : process.env.VERCEL_URL;
+
   const buttonClicked = (action: string) => {
     if (!isSignedIn && action !== "share") {
       setIsOpenModal(true);
@@ -37,7 +42,9 @@ const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
       } else if (action === "share") {
         setIsOpenModal(true);
         setActiveModal("share");
-        setShareLink(`${process.env.NEXT_PUBLIC_API_URL}/thread/${id}`);
+        setShareLink(
+          `${baseURL}/api/thread/${id}`
+        );
       }
     }
   };

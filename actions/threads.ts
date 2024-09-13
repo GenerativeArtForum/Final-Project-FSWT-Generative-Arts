@@ -8,8 +8,8 @@ import {
   updateThread,
 } from "@/db/threads";
 
-export async function actionGetThreads() {
-  const threads = await getThreads();
+export async function actionGetThreads(userId?: string | undefined) {
+  const threads = await getThreads(userId);
   return threads;
 }
 
