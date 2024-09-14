@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { NewResponseForm } from "@/types/forms/newResponseForm";
 import { ResponseType } from "@/types/thread/thread";
-import { clerkClient } from "@clerk/nextjs/server"; // Assuming you're using Clerk's server-side API
+import { useState } from "react";
 
 const useResponses = () => {
   const [responses, setResponses] = useState<ResponseType[]>([]);
@@ -9,13 +8,16 @@ const useResponses = () => {
   const [responseLoading, setResponseLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  const baseURL =
+    process.env.NODE_ENV === "development"
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.VERCEL_URL;
+
   const fetchResponses = async () => {
     setResponseLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/responses`
-      );
+      const response = await fetch(`${baseURL}/api/responses`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -45,9 +47,7 @@ const useResponses = () => {
     setResponseLoading(true);
     setError(null);
     try {
-      const data = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/responses?id=${id}`
-      );
+      const data = await fetch(`${baseURL}/api/responses?id=${id}`);
       if (!data.ok) {
         throw new Error(`Error: ${data.status} ${data.statusText}`);
       }
@@ -76,16 +76,13 @@ const useResponses = () => {
       threadId: response.threadId,
     };
 
-    const data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/responses`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(responsePayload),
-      }
-    );
+    const data = await fetch(`${baseURL}/api/responses`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(responsePayload),
+    });
 
     if (!data.ok) {
       const errorData = await data.json();
@@ -98,9 +95,7 @@ const useResponses = () => {
 
   const getUserById = async (id: number | string | undefined) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${id}`
-      );
+      const response = await fetch(`${baseURL}/api/users?id=${id}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -111,7 +106,7 @@ const useResponses = () => {
     }
   };
 
-  const getClerkUserData = async (clerkId: string) => {
+  const getClerkUserData = async (clerkId: string | undefined) => {
     try {
       const response = await fetch(`/api/users?clerk_id=${clerkId}`);
       if (!response.ok) {
@@ -125,13 +120,13 @@ const useResponses = () => {
       console.error("Failed to fetch user by Clerk ID:", error);
     }
   };
-  
+
   const refetchResponses = async (threadId: string) => {
     setResponseLoading(true);
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/responses?threadId=${threadId}`
+        `${baseURL}/api/responses?threadId=${threadId}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);

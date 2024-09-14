@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-
-import { ResponseType, TagType, ThreadType } from "@/types/thread/thread";
 import { NewThreadForm } from "@/types/forms/newThreadForm";
-import { clerkClient } from "@clerk/nextjs/server";
+import { ResponseType, TagType, ThreadType } from "@/types/thread/thread";
+import { useEffect, useState } from "react";
 
 const useThreads = () => {
   const [threads, setThreads] = useState<ThreadType[]>([]);
@@ -13,13 +11,16 @@ const useThreads = () => {
   const [error, setError] = useState<string | null>(null);
   const [tagParams, setTagParams] = useState<string>("");
 
+  const baseURL =
+    process.env.NODE_ENV === "development"
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.VERCEL_URL;
+
   const fetchThreads = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/threads`
-      );
+      const response = await fetch(`${baseURL}/api/threads`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -69,9 +70,7 @@ const useThreads = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/threads?id=${id}`
-      );
+      const response = await fetch(`${baseURL}/api/threads?id=${id}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -109,9 +108,7 @@ const useThreads = () => {
     setTagLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/tags${tagParams}`
-      );
+      const response = await fetch(`${baseURL}/api/tags${tagParams}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -125,7 +122,7 @@ const useThreads = () => {
   };
 
   const createTag = async (userTag: string) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tags`, {
+    const response = await fetch(`${baseURL}/api/tags`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -149,7 +146,7 @@ const useThreads = () => {
       status: thread.status,
     };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/threads`, {
+    const response = await fetch(`${baseURL}/api/threads`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -168,9 +165,7 @@ const useThreads = () => {
 
   const getUserById = async (id: number | string | undefined) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${id}`
-      );
+      const response = await fetch(`${baseURL}/api/users?id=${id}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }

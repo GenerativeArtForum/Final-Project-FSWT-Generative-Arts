@@ -15,7 +15,7 @@ const shimmer = keyframes`
 export const HomePageWrapper = styled.div`
   ${PageWrapperStyles}
 
-  margin-top: 0px;
+  margin-top: 30px;
 
   .container {
     display: flex;

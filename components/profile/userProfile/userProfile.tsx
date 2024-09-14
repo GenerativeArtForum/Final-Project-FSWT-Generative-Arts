@@ -53,7 +53,7 @@ const UserProfile = ({
         <div className="user-data">
           <div className="first-row">
             <a className="username">@{user.username}</a>
-            {!ownProfile && (
+            {/* {!ownProfile && (
               <button
                 className="follow-button"
                 onClick={() => buttonClicked("followButton")}
@@ -65,16 +65,16 @@ const UserProfile = ({
                   height={16}
                 />
               </button>
-            )}
+            )} */}
           </div>
-          <div className="following-container">
+          {/* <div className="following-container">
             <p className="following-text">
               {user.followers ? user.followers : 0} Followers
             </p>
             <p className="following-text">
               {user.following ? user.following : 0} Following
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </UserProfileWrapper>

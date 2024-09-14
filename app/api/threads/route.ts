@@ -10,6 +10,7 @@ import {
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
+  const userId = searchParams.get("user");
 
   if (id) {
     try {
@@ -30,7 +31,7 @@ export async function GET(req: Request) {
     }
   } else {
     try {
-      const threads = await actionGetThreads();
+      const threads = await actionGetThreads(userId || undefined);
       return NextResponse.json(threads, { status: 200 });
     } catch (error) {
       return NextResponse.json(

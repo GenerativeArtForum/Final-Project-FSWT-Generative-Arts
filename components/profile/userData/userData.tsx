@@ -9,8 +9,8 @@ import { UserDataWrapper } from "./userData.style";
 
 export const userData = {
   name: "johndoe",
-  followers: 100,
-  following: 200,
+  // followers: 100,
+  // following: 200,
   bio: "Creative coder passionate about generative arts",
   tags: {
     1: "Processing",

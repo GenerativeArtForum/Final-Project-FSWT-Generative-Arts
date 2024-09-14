@@ -9,8 +9,9 @@ export type Thread = {
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
 };
 
-export async function getThreads() {
+export async function getThreads(userId?: string) {
   const threads = await db.thread.findMany({
+    where: userId ? { userId } : undefined,
     orderBy: { createdAt: "desc" },
   });
 

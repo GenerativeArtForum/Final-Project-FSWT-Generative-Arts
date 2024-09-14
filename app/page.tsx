@@ -2,11 +2,10 @@
 
 "use client";
 
-import { useEffect } from "react";
 import useThreads from "@/hooks/useThreads";
+import { useEffect } from "react";
 
 import CreateThread from "@/components/common/createThread/createThread";
-import TabsSwitcher from "@/components/common/tabsSwitcher/tabsSwitcher";
 import Thread from "@/components/thread/threadComponent/threadComponent";
 
 import { HomePageWrapper } from "./home.style";
@@ -20,7 +19,7 @@ const Home = () => {
 
   return (
     <HomePageWrapper>
-      <TabsSwitcher />
+      {/* <TabsSwitcher /> */}
       <CreateThread />
       <div className="container">
         {loading || !threads ? (
