@@ -8,9 +8,10 @@ const useResponses = () => {
   const [responseLoading, setResponseLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const baseURL = process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_API_URL
-    : process.env.VERCEL_URL;
+  const baseURL =
+    process.env.NODE_ENV === "development"
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.VERCEL_URL;
 
   const fetchResponses = async () => {
     setResponseLoading(true);
@@ -105,11 +106,13 @@ const useResponses = () => {
     }
   };
 
-  const getClerkUserData = async (clerkId: string) => {
+  const getClerkUserData = async (clerkId: string | undefined) => {
     try {
       const response = await fetch(`/api/users?clerk_id=${clerkId}`);
       if (!response.ok) {
-        throw new Error(`Error fetching user by Clerk ID: ${response.statusText}`);
+        throw new Error(
+          `Error fetching user by Clerk ID: ${response.statusText}`
+        );
       }
       const user = await response.json();
       return user;
@@ -122,7 +125,9 @@ const useResponses = () => {
     setResponseLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${baseURL}/api/responses?threadId=${threadId}`);
+      const response = await fetch(
+        `${baseURL}/api/responses?threadId=${threadId}`
+      );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
