@@ -14,7 +14,7 @@ const useThreads = () => {
   const baseURL =
     process.env.NODE_ENV === "development"
       ? process.env.NEXT_PUBLIC_API_URL
-      : process.env.PRODUCTION_URL;
+      : process.env.NEXT_PUBLIC_PRODUCTION_URL;
 
   const fetchThreads = async () => {
     setLoading(true);
