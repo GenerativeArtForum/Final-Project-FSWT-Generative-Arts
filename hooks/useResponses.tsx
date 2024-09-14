@@ -11,7 +11,7 @@ const useResponses = () => {
   const baseURL =
     process.env.NODE_ENV === "development"
       ? process.env.NEXT_PUBLIC_API_URL
-      : process.env.VERCEL_URL;
+      : process.env.PRODUCTION_URL;
 
   const fetchResponses = async () => {
     setResponseLoading(true);
