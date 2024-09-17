@@ -5,6 +5,8 @@ export type User = {
   clerk_id: string;
   email?: string;
   username?: string;
+  bio?: string;
+  coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
 };
 
 export async function getUsers() {
@@ -28,27 +30,35 @@ export async function getUserByClerkId(clerk_id: string) {
 export async function createUser(
   clerk_id: string,
   email: string,
-  username: string
+  username: string,
+  bio?: string,
+  coverPhoto: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" = "ONE"
 ) {
   return await db.user.create({
     data: {
       clerk_id,
       email,
       username,
+      bio,
+      coverPhoto,
     },
   });
 }
 
 export async function updateUser(
   clerk_id: string,
-  email: string,
-  username: string
+  email?: string,
+  username?: string,
+  bio?: string,
+  coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE"
 ) {
   return await db.user.update({
     where: { clerk_id },
     data: {
       email,
       username,
+      bio,
+      coverPhoto,
     },
   });
 }

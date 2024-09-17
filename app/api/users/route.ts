@@ -1,7 +1,8 @@
 import {
   createUserAction,
   getUserAction,
-  getUsersAction
+  getUsersAction,
+  updateUserAction,
 } from "@/actions/users";
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
@@ -60,12 +61,37 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { clerk_id, email, username } = await req.json();
-    const newUser = await createUserAction(clerk_id, email, username);
+    const { clerk_id, email, username, bio, coverPhoto } = await req.json();
+    const newUser = await createUserAction(
+      clerk_id,
+      email,
+      username,
+      bio,
+      coverPhoto
+    );
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { message: "Error creating user", error },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const { clerk_id, email, username, bio, coverPhoto } = await req.json();
+    const updatedUser = await updateUserAction(
+      clerk_id,
+      email,
+      username,
+      bio,
+      coverPhoto
+    );
+    return NextResponse.json(updatedUser, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error updating user", error },
       { status: 500 }
     );
   }
