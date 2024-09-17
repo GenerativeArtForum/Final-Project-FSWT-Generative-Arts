@@ -26,17 +26,37 @@ export async function getUserByClerkIdAction(clerk_id: string) {
 export async function createUserAction(
   clerk_id: string,
   email: string,
-  username: string
+  username: string,
+  bio?: string,
+  coverPhoto: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" = "ONE",
+  tagIds: string[] = []
 ) {
-  const user = await createUser(clerk_id, email, username);
+  const user = await createUser(
+    clerk_id,
+    email,
+    username,
+    bio,
+    coverPhoto,
+    tagIds
+  );
   return user;
 }
 
 export async function updateUserAction(
   clerk_id: string,
-  email: string,
-  username: string
+  email?: string,
+  username?: string,
+  bio?: string,
+  coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE",
+  tagIds?: string[]
 ) {
-  const user = await updateUser(clerk_id, email, username);
+  const user = await updateUser(
+    clerk_id,
+    email,
+    username,
+    bio,
+    coverPhoto,
+    tagIds
+  );
   return user;
 }

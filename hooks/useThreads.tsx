@@ -18,9 +18,7 @@ const useThreads = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch( 
-        `${process.env.NEXT_PUBLIC_API_URL}/api/threads`
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/threads`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -36,12 +34,8 @@ const useThreads = () => {
           const responsesWithUserData = Array.isArray(thread.responses)
             ? await Promise.all(
                 thread.responses.map(async (response: ResponseType) => {
-                  const responseUserClerkId = await getUserById(
-                    response.userId
-                  );
-                  const responseUserData = await getClerkUserData(
-                    responseUserClerkId
-                  );
+                  const responseUserClerkId = await getUserById(response.userId);
+                  const responseUserData = await getClerkUserData(responseUserClerkId);
                   return {
                     ...response,
                     user: responseUserData,
@@ -70,9 +64,7 @@ const useThreads = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/threads?id=${id}`
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/threads?id=${id}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -110,9 +102,7 @@ const useThreads = () => {
     setTagLoading(true);
     setError(null);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/tags${tagParams}`
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tags${tagParams}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
@@ -126,16 +116,13 @@ const useThreads = () => {
   };
 
   const createTag = async (userTag: string) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/tags`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: userTag }),
-      }
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tags`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: userTag }),
+    });
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -153,16 +140,13 @@ const useThreads = () => {
       status: thread.status,
     };
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/threads`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(threadPayload),
-      }
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/threads`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(threadPayload),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -177,15 +161,13 @@ const useThreads = () => {
     if (id === undefined) {
       throw new Error("User ID is undefined");
     }
-
+  
     if (userCache[id]) {
       return userCache[id];
     }
-
+  
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${id}`
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${id}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }

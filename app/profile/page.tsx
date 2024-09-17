@@ -83,21 +83,16 @@ const ProfilePage = () => {
     return null;
   }
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <ProfilePageWrapper>
-      {loading ? (
-        <div>Loading...</div>
-      ) : error ? (
-        <div>Error: {error}</div>
-      ) : (
-        <>
-          <UserProfile user={user} ownProfile={true} />
-          <UserData user={user} ownProfile={true} />
-          {userThreads.map((thread, index) => (
-            <Thread key={index} thread={thread} />
-          ))}
-        </>
-      )}
+      <UserProfile user={user} ownProfile={true} />
+      <UserData user={user} ownProfile={true} />
+      {userThreads.map((thread, index) => (
+        <Thread key={index} thread={thread} />
+      ))}
     </ProfilePageWrapper>
   );
 };
