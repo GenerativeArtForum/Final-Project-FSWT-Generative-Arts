@@ -33,9 +33,7 @@ const ProfilePage = () => {
           const userData = await getUserByClerkIdAction(clerkId);
           if (userData) {
             setUserId(userData.id);
-          } else {
-            throw new Error("User data is null");
-          }
+          } 
         } else {
           throw new Error("Clerk ID is missing");
         }
