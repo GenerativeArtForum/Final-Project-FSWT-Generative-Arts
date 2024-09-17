@@ -29,9 +29,16 @@ export async function createUserAction(
   username: string,
   bio?: string,
   coverPhoto: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" = "ONE",
-  tags?: string[]
+  tagIds: string[] = []
 ) {
-  const user = await createUser(clerk_id, email, username, bio, coverPhoto);
+  const user = await createUser(
+    clerk_id,
+    email,
+    username,
+    bio,
+    coverPhoto,
+    tagIds
+  );
   return user;
 }
 
@@ -40,8 +47,16 @@ export async function updateUserAction(
   email?: string,
   username?: string,
   bio?: string,
-  coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE"
+  coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE",
+  tagIds?: string[]
 ) {
-  const user = await updateUser(clerk_id, email, username, bio, coverPhoto);
+  const user = await updateUser(
+    clerk_id,
+    email,
+    username,
+    bio,
+    coverPhoto,
+    tagIds
+  );
   return user;
 }

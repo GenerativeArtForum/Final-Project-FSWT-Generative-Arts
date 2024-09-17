@@ -61,13 +61,15 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { clerk_id, email, username, bio, coverPhoto } = await req.json();
+    const { clerk_id, email, username, bio, coverPhoto, tagIds } =
+      await req.json(); // Add tagIds
     const newUser = await createUserAction(
       clerk_id,
       email,
       username,
       bio,
-      coverPhoto
+      coverPhoto,
+      tagIds
     );
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
@@ -80,13 +82,15 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const { clerk_id, email, username, bio, coverPhoto } = await req.json();
+    const { clerk_id, email, username, bio, coverPhoto, tagIds } =
+      await req.json(); // Add tagIds
     const updatedUser = await updateUserAction(
       clerk_id,
       email,
       username,
       bio,
-      coverPhoto
+      coverPhoto,
+      tagIds
     );
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {

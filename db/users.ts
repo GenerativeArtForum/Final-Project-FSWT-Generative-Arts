@@ -7,6 +7,7 @@ export type User = {
   username?: string;
   bio?: string;
   coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
+  tagIds?: string[];
 };
 
 export async function getUsers() {
@@ -32,7 +33,8 @@ export async function createUser(
   email: string,
   username: string,
   bio?: string,
-  coverPhoto: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" = "ONE"
+  coverPhoto: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" = "ONE",
+  tagIds: string[] = []
 ) {
   return await db.user.create({
     data: {
@@ -41,6 +43,7 @@ export async function createUser(
       username,
       bio,
       coverPhoto,
+      tagIds,
     },
   });
 }
@@ -50,7 +53,8 @@ export async function updateUser(
   email?: string,
   username?: string,
   bio?: string,
-  coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE"
+  coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE",
+  tagIds?: string[]
 ) {
   return await db.user.update({
     where: { clerk_id },
@@ -59,6 +63,7 @@ export async function updateUser(
       username,
       bio,
       coverPhoto,
+      tagIds: tagIds || [],
     },
   });
 }
