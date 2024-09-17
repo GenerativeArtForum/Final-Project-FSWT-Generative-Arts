@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-
-import { ResponseType, TagType, ThreadType } from "@/types/thread/thread";
 import { NewThreadForm } from "@/types/forms/newThreadForm";
-import { clerkClient } from "@clerk/nextjs/server";
+import { ResponseType, TagType, ThreadType } from "@/types/thread/thread";
+import { useEffect, useState } from "react";
 
 const useThreads = () => {
   const [threads, setThreads] = useState<ThreadType[]>([]);
@@ -13,12 +11,15 @@ const useThreads = () => {
   const [error, setError] = useState<string | null>(null);
   const [tagParams, setTagParams] = useState<string>("");
 
+  const userCache: Record<number | string, string> = {};
+  const clerkCache: Record<string, any> = {};
+
   const fetchThreads = async () => {
     setLoading(true);
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.VERCEL_URL}/api/threads`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/threads`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -70,7 +71,7 @@ const useThreads = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.VERCEL_URL}/api/threads?id=${id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/threads?id=${id}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -110,7 +111,7 @@ const useThreads = () => {
     setError(null);
     try {
       const response = await fetch(
-        `${process.env.VERCEL_URL}/api/tags${tagParams}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/tags${tagParams}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -125,13 +126,16 @@ const useThreads = () => {
   };
 
   const createTag = async (userTag: string) => {
-    const response = await fetch(`${process.env.VERCEL_URL}/api/tags`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: userTag }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/tags`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: userTag }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -149,13 +153,16 @@ const useThreads = () => {
       status: thread.status,
     };
 
-    const response = await fetch(`${process.env.VERCEL_URL}/api/threads`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(threadPayload),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/threads`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(threadPayload),
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -167,14 +174,23 @@ const useThreads = () => {
   };
 
   const getUserById = async (id: number | string | undefined) => {
+    if (id === undefined) {
+      throw new Error("User ID is undefined");
+    }
+
+    if (userCache[id]) {
+      return userCache[id];
+    }
+
     try {
       const response = await fetch(
-        `${process.env.VERCEL_URL}/api/users?id=${id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${id}`
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
       const user = await response.json();
+      userCache[id] = user.clerk_id;
       return user.clerk_id;
     } catch (e: any) {
       throw new Error(e.message);
@@ -182,6 +198,10 @@ const useThreads = () => {
   };
 
   const getClerkUserData = async (clerkId: string) => {
+    if (clerkCache[clerkId]) {
+      return clerkCache[clerkId];
+    }
+
     try {
       const response = await fetch(`/api/users?clerk_id=${clerkId}`);
       if (!response.ok) {
@@ -190,6 +210,7 @@ const useThreads = () => {
         );
       }
       const user = await response.json();
+      clerkCache[clerkId] = user;
       return user;
     } catch (error) {
       console.error("Failed to fetch user by Clerk ID:", error);

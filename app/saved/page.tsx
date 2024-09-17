@@ -17,7 +17,7 @@ const SavedPage = () => {
 
   return (
     <SavedPageWrapper>
-      <span>SAVED PAGE</span>
+      <span></span>
     </SavedPageWrapper>
   );
 };

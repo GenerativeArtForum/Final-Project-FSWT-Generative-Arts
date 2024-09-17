@@ -8,14 +8,14 @@ const SideBarUser = ({
   speaker: { username: string; tag: string };
 }) => {
   return (
-    <Link href={`/user/${index}`} key={index} className="user-container">
+    <span key={index} className="user-container">
       <div className="user-data">
         <span className="user-name">@{speaker.username}</span>
         <span className="user-tag">
           Speaks about <span className="user-tag-detail">{speaker.tag}</span>
         </span>
       </div>
-    </Link>
+    </span>
   );
 };
 
