@@ -12,6 +12,8 @@ export type UserType = {
   following?: number;
   bio?: string;
   tags?: TagType[];
+  clerkId?: string;
+  coverPhoto?: "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE",
 };
 
 export type ResponseType = {

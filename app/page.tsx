@@ -23,18 +23,8 @@ const Home = () => {
     }
   }, [clerkId]);
 
-  // Optional: Add a condition to ensure threads and userId are available
-  useEffect(() => {
-    if (loggedUserId) {
-      console.log("User ID is set:", loggedUserId);
-    } else {
-      console.log("User ID is not set yet.");
-    }
-  }, [loggedUserId]);
-
   return (
     <HomePageWrapper>
-      {/* <TabsSwitcher /> */}
       <CreateThread />
       <div className="container">
         {loading || !threads ? (

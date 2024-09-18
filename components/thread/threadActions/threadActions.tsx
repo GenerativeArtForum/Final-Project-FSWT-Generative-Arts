@@ -33,7 +33,6 @@ const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
             images: [],
           });
       } else if (action === "save") {
-        console.log("save");
       } else if (action === "share") {
         setIsOpenModal(true);
         setActiveModal("share");

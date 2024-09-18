@@ -10,10 +10,10 @@ const SavedPage = () => {
 
   const { isSignedIn } = useUser();
 
-  if (!isSignedIn) {
-    router.push("/");
-    return null;
-  }
+  // if (!isSignedIn) {
+  //   router.push("/");
+  //   return null;
+  // }
 
   return (
     <SavedPageWrapper>

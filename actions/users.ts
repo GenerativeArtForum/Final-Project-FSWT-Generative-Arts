@@ -28,7 +28,7 @@ export async function createUserAction(
   email: string,
   username: string,
   bio?: string,
-  coverPhoto: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" = "ONE",
+  coverPhoto: "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" = "ZERO",
   tagIds: string[] = []
 ) {
   const user = await createUser(
@@ -44,19 +44,14 @@ export async function createUserAction(
 
 export async function updateUserAction(
   clerk_id: string,
-  email?: string,
-  username?: string,
-  bio?: string,
-  coverPhoto?: "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE",
-  tagIds?: string[]
+  updateFields: {
+    email?: string;
+    username?: string;
+    bio?: string;
+    coverPhoto?: "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
+    tagIds?: string[];
+  }
 ) {
-  const user = await updateUser(
-    clerk_id,
-    email,
-    username,
-    bio,
-    coverPhoto,
-    tagIds
-  );
+  const user = await updateUser(clerk_id, updateFields);
   return user;
 }

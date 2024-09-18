@@ -19,6 +19,7 @@ import { InitialEditProfileForm } from "@/data/forms/InitialEditProfileForm";
 import { InitialNewResponseForm } from "@/data/forms/InitialNewResponseForm";
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
 import { useUser } from "@clerk/nextjs";
+import useProfile from "./useProfile";
 import useResponses from "./useResponses";
 import useThreads from "./useThreads";
 
@@ -134,6 +135,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();
   const { createThread } = useThreads();
   const { createResponse } = useResponses();
+  const { updateProfile } = useProfile();
 
   const [isOpenModal, setIsOpenModal] = useState<boolean | undefined>(false);
   const [activeModal, setActiveModal] = useState<string>("");
@@ -150,7 +152,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [images, setImages] = useState<File[]>([]);
   const [content, setContent] = useState<string>("");
   const [shareLink, setShareLink] = useState<string>("");
-  const [successText, setSuccessText] = useState<string>("");
 
   const responseFields: {
     name: keyof NewResponseForm;
@@ -357,6 +358,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
           handleSuccessMessage(successMessage);
         } else if (activeModal === "newResponse") {
           await createResponse(newResponseFormState);
+          handleSuccessMessage(successMessage);
+        } else if (activeModal === "editProfile") {
+          await updateProfile(editProfileFormState);
           handleSuccessMessage(successMessage);
         }
       } else {

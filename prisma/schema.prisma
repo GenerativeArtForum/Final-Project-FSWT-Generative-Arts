@@ -25,6 +25,7 @@ enum Status {
 }
 
 enum Cover {
+  ZERO
   ONE
   TWO
   THREE

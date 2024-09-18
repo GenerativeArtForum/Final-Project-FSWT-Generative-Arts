@@ -44,6 +44,47 @@ export const EditProfileModalWrapper = styled.div`
     font-weight: 300;
   }
 
+  .cover-photo-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .cover-photo-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    input[type="radio"] {
+      display: none;
+    }
+    label {
+      cursor: pointer;
+      display: inline-block;
+      img {
+        border: 2px solid transparent;
+        border-radius: 4px;
+        transition: border-color 0.3s;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        filter: saturate(0);
+      }
+    }
+    input[type="radio"]:checked + label img {
+      border-color: ${Colors.blue};
+      filter: saturate(1);
+    }
+
+    .no-image-text {
+      display: inline-block;
+      text-align: center;
+      font-size: 12px;
+      color: ${Colors.gray};
+    }
+  }
+
   .buttons-container {
     display: flex;
     flex-direction: row;

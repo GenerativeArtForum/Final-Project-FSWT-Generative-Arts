@@ -80,18 +80,18 @@ export async function POST(req: Request) {
   }
 }
 
-export async function PUT(req: Request) {
+export async function PATCH(req: Request) {
   try {
-    const { clerk_id, email, username, bio, coverPhoto, tagIds } =
-      await req.json(); // Add tagIds
-    const updatedUser = await updateUserAction(
-      clerk_id,
-      email,
-      username,
-      bio,
-      coverPhoto,
-      tagIds
-    );
+    const { clerk_id, ...updateFields } = await req.json();
+
+    if (!clerk_id) {
+      return NextResponse.json(
+        { message: "clerk_id is required" },
+        { status: 400 }
+      );
+    }
+
+    const updatedUser = await updateUserAction(clerk_id, updateFields);
     return NextResponse.json(updatedUser, { status: 200 });
   } catch (error) {
     return NextResponse.json(

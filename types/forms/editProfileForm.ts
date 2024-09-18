@@ -3,7 +3,8 @@ import { TagType } from "./newThreadForm";
 export type EditProfileForm = {
   _id: string;
   bio: string;
-  tags: TagType[] | [];
+  coverPhoto: "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
+  tags?: TagType[] | [];
 };
 
 export type ImageType = {

@@ -144,7 +144,6 @@ const useThreads = () => {
         const userData = await getUserByClerkIdAction(clerkId);
         if (!userData) throw new Error("User data is missing");
         setLoggedUserId(userData.id);
-        console.log("Logged user ID:", userData.id);
         setNewThreadFormState((prevState) => ({
           ...prevState,
           userId: userData.id,
@@ -158,9 +157,7 @@ const useThreads = () => {
   };
 
   const createThread = async (thread: NewThreadForm) => {
-    console.log(loggedUserId);
     const finalUserId = newThreadFormState.userId || loggedUserId;
-    console.log("Final user ID:", finalUserId);
 
     if (!finalUserId) {
       throw new Error("User ID is not available");
@@ -173,8 +170,6 @@ const useThreads = () => {
       userId: finalUserId,
       status: thread.status,
     };
-
-    console.log("Thread payload:", threadPayload);
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/threads`,
