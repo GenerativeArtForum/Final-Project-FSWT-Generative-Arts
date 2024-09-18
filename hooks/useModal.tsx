@@ -19,6 +19,7 @@ import { InitialEditProfileForm } from "@/data/forms/InitialEditProfileForm";
 import { InitialNewResponseForm } from "@/data/forms/InitialNewResponseForm";
 import { InitialNewThreadForm } from "@/data/forms/InitialNewThreadForm";
 import { useUser } from "@clerk/nextjs";
+import useProfile from "./useProfile";
 import useResponses from "./useResponses";
 import useThreads from "./useThreads";
 
@@ -61,7 +62,9 @@ type ThreadModalContextType = {
   setIsOpenModal: (isOpenModal: boolean | undefined) => void;
   setFeedDisplay: (feedDisplay: number) => void;
   setNewThreadFormState: React.Dispatch<React.SetStateAction<NewThreadForm>>;
-  setNewResponseFormState: React.Dispatch<React.SetStateAction<NewResponseForm>>;
+  setNewResponseFormState: React.Dispatch<
+    React.SetStateAction<NewResponseForm>
+  >;
   setEditProfileFormState: (editProfileForm: EditProfileForm) => void;
   setThreadData: (name: keyof NewThreadForm, value: any) => void;
   validateThreadForm: () => { isValid: boolean; successMessage: string };
@@ -132,6 +135,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUser();
   const { createThread } = useThreads();
   const { createResponse } = useResponses();
+  const { updateProfile } = useProfile();
 
   const [isOpenModal, setIsOpenModal] = useState<boolean | undefined>(false);
   const [activeModal, setActiveModal] = useState<string>("");
@@ -148,7 +152,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [images, setImages] = useState<File[]>([]);
   const [content, setContent] = useState<string>("");
   const [shareLink, setShareLink] = useState<string>("");
-  const [successText, setSuccessText] = useState<string>("");
 
   const responseFields: {
     name: keyof NewResponseForm;
@@ -335,23 +338,36 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     fetchUserId();
   }, [user, newThreadFormState.userId]);
 
-  const closeModal = async (action: string, e: any) => {
+  const closeModal = async (
+    action: string,
+    e: any,
+    status?: "DRAFT" | "PUBLISHED" | "ARCHIVED"
+  ) => {
     e.preventDefault();
 
     if (action === "submit") {
       const { isValid, successMessage } = validateThreadForm();
       if (isValid) {
         if (activeModal === "newThread") {
-          await createThread(newThreadFormState);
+          const threadStatus = status ?? "DRAFT";
+          const updatedThreadFormState: NewThreadForm = {
+            ...newThreadFormState,
+            status: threadStatus,
+          };
+          await createThread(updatedThreadFormState);
           handleSuccessMessage(successMessage);
         } else if (activeModal === "newResponse") {
           await createResponse(newResponseFormState);
+          handleSuccessMessage(successMessage);
+        } else if (activeModal === "editProfile") {
+          await updateProfile(editProfileFormState);
           handleSuccessMessage(successMessage);
         }
       } else {
         return;
       }
     }
+
     setIsOpenModal(false);
     setPrevActiveModal("");
     setActiveModal("");

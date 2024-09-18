@@ -16,7 +16,6 @@ import { NewThreadModalWrapper } from "./newThreadModal.style";
 const NewThreadModal = () => {
   const {
     newThreadFormState,
-    error,
     selectedTags,
     formFields,
     content,
@@ -105,7 +104,7 @@ const NewThreadModal = () => {
           text="Create thread"
           variant={1}
           onClick={(e) => {
-            closeModal("submit", e, 'PUBLISHED');
+            closeModal("submit", e, "PUBLISHED");
           }}
         />
       </div>

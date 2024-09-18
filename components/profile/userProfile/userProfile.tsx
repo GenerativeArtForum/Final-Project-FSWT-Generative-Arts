@@ -1,22 +1,35 @@
 "use client";
 
-import useModal from "@/hooks/useModal";
-import { useUser } from "@clerk/nextjs";
-
-import AddIcon from "../../../assets/icons/common/add.svg";
-import TickIcon from "../../../assets/icons/common/tick.svg";
-
 import { UserType } from "@/types/thread/thread";
-
-import { CommonIcons } from "@/constants/Icons";
 import Image from "next/image";
 import { UserProfileWrapper } from "./userProfile.style";
 
+import cover1 from "../../../assets/wallpaper-images/wallpaper-1.png";
+import cover2 from "../../../assets/wallpaper-images/wallpaper-2.png";
+import cover3 from "../../../assets/wallpaper-images/wallpaper-3.png";
+import cover4 from "../../../assets/wallpaper-images/wallpaper-4.png";
+import cover5 from "../../../assets/wallpaper-images/wallpaper-5.png";
+import { CommonIcons } from "@/constants/Icons";
+import useModal from "@/hooks/useModal";
+import { useUser } from "@clerk/nextjs";
+
+const coverPhotos = {
+  ONE: cover1,
+  TWO: cover2,
+  THREE: cover3,
+  FOUR: cover4,
+  FIVE: cover5,
+};
+
 const UserProfile = ({
   user,
+  bio,
+  coverPhoto,
   ownProfile,
 }: {
   user: UserType;
+  bio: string | null;
+  coverPhoto: "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE";
   ownProfile: boolean;
 }) => {
   const { setIsOpenModal, setActiveModal } = useModal();
@@ -36,8 +49,25 @@ const UserProfile = ({
     }
   };
 
+  const backgroundImage =
+    coverPhoto !== "ZERO" ? coverPhotos[coverPhoto] : null;
+
   return (
-    <UserProfileWrapper isFollowing={user.isFollowing}>
+    <UserProfileWrapper
+      isFollowing={user.isFollowing}
+      backgroundImage={backgroundImage ? backgroundImage.src : null}
+    >
+      {backgroundImage && (
+        <div className="cover-photo">
+          <Image
+            src={backgroundImage}
+            alt="Cover photo"
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
+        </div>
+      )}
       <div className="user-container">
         {user.imageUrl ? (
           <Image
@@ -53,28 +83,21 @@ const UserProfile = ({
         <div className="user-data">
           <div className="first-row">
             <a className="username">@{user.username}</a>
-            {/* {!ownProfile && (
-              <button
-                className="follow-button"
-                onClick={() => buttonClicked("followButton")}
-              >
-                <Image
-                  src={user.isFollowing ? TickIcon : AddIcon}
-                  alt={user.isFollowing ? "following" : "not following"}
-                  width={16}
-                  height={16}
-                />
-              </button>
-            )} */}
+            {bio && <p>{bio}</p>}
           </div>
-          {/* <div className="following-container">
-            <p className="following-text">
-              {user.followers ? user.followers : 0} Followers
-            </p>
-            <p className="following-text">
-              {user.following ? user.following : 0} Following
-            </p>
-          </div> */}
+          {ownProfile && (
+            <button
+              onClick={() => buttonClicked("editButton")}
+              className="edit-btn"
+            >
+              <Image
+                src={CommonIcons["edit"]}
+                alt="Edit profile"
+                width={20}
+                height={20}
+              />
+            </button>
+          )}
         </div>
       </div>
     </UserProfileWrapper>

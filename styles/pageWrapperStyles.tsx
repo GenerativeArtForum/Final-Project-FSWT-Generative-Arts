@@ -7,5 +7,4 @@ export const PageWrapperStyles = css`
   align-items: center;
   gap: 2rem;
   margin-top: 30px;
-  min-height: 100vh;
 `;

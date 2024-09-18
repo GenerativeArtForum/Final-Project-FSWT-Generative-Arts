@@ -1,28 +1,40 @@
 "use client";
 
+import cover1 from "../../../assets/wallpaper-images/wallpaper-1.png";
+import cover2 from "../../../assets/wallpaper-images/wallpaper-2.png";
+import cover3 from "../../../assets/wallpaper-images/wallpaper-3.png";
+import cover4 from "../../../assets/wallpaper-images/wallpaper-4.png";
+import cover5 from "../../../assets/wallpaper-images/wallpaper-5.png";
+
 import useModal from "@/hooks/useModal";
 
 import Button from "@/components/common/button/button";
 import Input from "@/components/common/form/input/input";
-import MultiSelect from "@/components/common/form/select/multiselect";
-import ImageUpload from "@/components/common/imageUpload/imageUpload";
 
+import Image from "next/image";
 import { EditProfileModalWrapper } from "./editProfileModal.style";
-import useThreads from "@/hooks/useThreads";
+
+const coverPhotos = {
+  ONE: cover1,
+  TWO: cover2,
+  THREE: cover3,
+  FOUR: cover4,
+  FIVE: cover5,
+};
 
 const EditProfileModal = () => {
   const {
     editProfileFormState,
-    selectedTags,
     editProfileFields,
     content,
     setProfileData,
-    setSelectedTags,
     closeModal,
     cancelThread,
   } = useModal();
 
-  const { tags, setTagParams } = useThreads();
+  const handleCoverPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProfileData("coverPhoto", e.target.value);
+  };
 
   return (
     <EditProfileModalWrapper>
@@ -50,16 +62,46 @@ const EditProfileModal = () => {
             );
           })}
           <div className="input-container">
-            <label className="input-label">Tags</label>
-            <MultiSelect
-              tagsList={tags}
-              placeholder="Add tags"
-              maxTags={4}
-              selectedTags={selectedTags}
-              setThreadData={setProfileData}
-              setSelectedTags={setSelectedTags}
-              setTagParams={setTagParams}
-            />
+            <label className="input-label">Cover photo</label>
+            <div className="cover-photo-options">
+              <div className="cover-photo-container">
+                {Object.keys(coverPhotos).map((tag) => {
+                  return (
+                    <div key={tag} className="cover-photo-container">
+                      <input
+                        type="radio"
+                        id={tag}
+                        name="coverPhoto"
+                        value={tag}
+                        onChange={handleCoverPhotoChange}
+                        checked={editProfileFormState.coverPhoto === tag}
+                      />
+                      <label htmlFor={tag}>
+                        <Image
+                          src={coverPhotos[tag as keyof typeof coverPhotos]}
+                          alt={`cover-photo-${tag}`}
+                          width={100}
+                          height={100}
+                        />
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="cover-photo-container">
+                <input
+                  type="radio"
+                  id="ZERO"
+                  name="coverPhoto"
+                  value="ZERO"
+                  onChange={handleCoverPhotoChange}
+                  checked={editProfileFormState.coverPhoto === "ZERO"}
+                />
+                <label htmlFor="ZERO" className="no-bg-label">
+                  No Background Image
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </div>

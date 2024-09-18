@@ -28,25 +28,25 @@ const UserData = ({
   const { setIsOpenModal, setActiveModal } = useModal();
   const { isSignedIn } = useUser();
 
-  const tagsArray = Object.values(userData.tags);
+  // const tagsArray = Object.values(userData.tags);
 
-  const buttonClicked = (button: string) => {
-    if (!isSignedIn) {
-      setIsOpenModal(true);
-      setActiveModal("login");
-    }
+  // const buttonClicked = (button: string) => {
+  //   if (!isSignedIn) {
+  //     setIsOpenModal(true);
+  //     setActiveModal("login");
+  //   }
 
-    if (button === "followButton") {
-      alert(!user.isFollowing ? "Followed" : "Unfollowed");
-    } else if (button === "editButton") {
-      setIsOpenModal(true);
-      setActiveModal("editProfile");
-    }
-  };
+  //   if (button === "followButton") {
+  //     alert(!user.isFollowing ? "Followed" : "Unfollowed");
+  //   } else if (button === "editButton") {
+  //     setIsOpenModal(true);
+  //     setActiveModal("editProfile");
+  //   }
+  // };
 
   return (
     <UserDataWrapper>
-      {userData.bio && userData.bio !== "" && (
+      {/* {userData.bio && userData.bio !== "" && (
         <p className="bio-text">{userData.bio}</p>
       )}
       <div className="about">
@@ -66,7 +66,7 @@ const UserData = ({
             height={20}
           />
         </button>
-      )}
+      )} */}
     </UserDataWrapper>
   );
 };

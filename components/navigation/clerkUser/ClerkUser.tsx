@@ -39,7 +39,10 @@ export default function ClerkUser() {
           existingUser.email !== email ||
           existingUser.username !== username
         ) {
-          await updateUserAction(user.id, email, username);
+          await updateUserAction(user.id, {
+            email,
+            username,
+          });
         }
       } else {
         await createUserAction(user.id, email, username);

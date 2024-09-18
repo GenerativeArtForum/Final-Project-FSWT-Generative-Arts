@@ -16,11 +16,6 @@ const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
   const { setIsOpenModal, setActiveModal, setShareLink } = useModal();
   const { isSignedIn } = useUser();
 
-  const baseURL =
-  process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_API_URL
-    : process.env.NEXT_PUBLIC_PRODUCTION_URL;
-
   const buttonClicked = (action: string) => {
     if (!isSignedIn && action !== "share") {
       setIsOpenModal(true);
@@ -38,12 +33,11 @@ const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
             images: [],
           });
       } else if (action === "save") {
-        console.log("save");
       } else if (action === "share") {
         setIsOpenModal(true);
         setActiveModal("share");
         setShareLink(
-          `${baseURL}/api/thread/${id}`
+          `${process.env.NEXT_PUBLIC_API_URL}thread/${id}`
         );
       }
     }

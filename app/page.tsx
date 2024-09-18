@@ -1,25 +1,30 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 "use client";
-
-import useThreads from "@/hooks/useThreads";
-import { useEffect } from "react";
 
 import CreateThread from "@/components/common/createThread/createThread";
 import Thread from "@/components/thread/threadComponent/threadComponent";
-
+import useThreads from "@/hooks/useThreads";
+import { useUser } from "@clerk/nextjs";
+import { useEffect } from "react";
 import { HomePageWrapper } from "./home.style";
 
 const Home = () => {
-  const { threads, loading, fetchThreads } = useThreads();
+  const { threads, loading, fetchThreads, fetchLoggedUserData, loggedUserId } =
+    useThreads();
+  const { user } = useUser();
+  const clerkId = user?.id;
 
   useEffect(() => {
     fetchThreads();
   }, []);
 
+  useEffect(() => {
+    if (clerkId) {
+      fetchLoggedUserData();
+    }
+  }, [clerkId]);
+
   return (
     <HomePageWrapper>
-      {/* <TabsSwitcher /> */}
       <CreateThread />
       <div className="container">
         {loading || !threads ? (

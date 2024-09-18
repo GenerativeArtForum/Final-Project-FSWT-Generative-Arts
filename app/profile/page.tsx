@@ -2,23 +2,24 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-
-import UserData from "@/components/profile/userData/userData";
 import UserProfile from "@/components/profile/userProfile/userProfile";
-
 import { getUserByClerkIdAction } from "@/actions/users";
 import Thread from "@/components/thread/threadComponent/threadComponent";
 import { useEffect, useState } from "react";
-import { ProfilePageWrapper } from "./page.style";
+import useProfile from "@/hooks/useProfile";
+import { ProfilePageWrapper } from "@/app/profile/page.style";
 
 const ProfilePage = () => {
   const router = useRouter();
-
   const { isSignedIn, user } = useUser();
 
+  const [bio, setBio] = useState<string | null>(null);
+  const [coverPhoto, setCoverPhoto] = useState<
+    "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE"
+  >("ZERO");
   const [userThreads, setUserThreads] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
 
   const clerkId = user?.id;
@@ -33,8 +34,8 @@ const ProfilePage = () => {
           const userData = await getUserByClerkIdAction(clerkId);
           if (userData) {
             setUserId(userData.id);
-          } else {
-            throw new Error("User data is null");
+            setBio(userData.bio);
+            setCoverPhoto(userData.coverPhoto);
           }
         } else {
           throw new Error("Clerk ID is missing");
@@ -46,7 +47,9 @@ const ProfilePage = () => {
       }
     };
 
-    fetchUserData();
+    if (clerkId) {
+      fetchUserData();
+    }
   }, [clerkId]);
 
   useEffect(() => {
@@ -63,8 +66,6 @@ const ProfilePage = () => {
           } else {
             throw new Error("Error fetching user threads");
           }
-        } else {
-          throw new Error("User ID is missing");
         }
       } catch (e: any) {
         setError(e.message);
@@ -78,21 +79,37 @@ const ProfilePage = () => {
     }
   }, [userId]);
 
+  const { updateProfile } = useProfile(userId);
+
+  // useEffect(() => {
+  //   if (!isSignedIn) {
+  //     router.push("/");
+  //   }
+  // }, [isSignedIn, router]);
+
   if (!isSignedIn) {
-    router.push("/");
     return null;
   }
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <ProfilePageWrapper>
-      <UserProfile user={user} ownProfile={true} />
-      <UserData user={user} ownProfile={true} />
-      {userThreads.map((thread, index) => (
-        <Thread key={index} thread={thread} />
-      ))}
+      {loading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div>Error: {error}</div>
+      ) : (
+        <>
+          <UserProfile
+            user={user}
+            bio={bio}
+            coverPhoto={coverPhoto}
+            ownProfile={true}
+          />
+          {userThreads.map((thread, index) => (
+            <Thread key={index} thread={thread} />
+          ))}
+        </>
+      )}
     </ProfilePageWrapper>
   );
 };
