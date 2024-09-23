@@ -20,7 +20,7 @@ const useProfile = (userId?: string | null) => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users?id=${userId}`,
+        `${process.env.VERCEL_URL}/api/users?id=${userId}`,
         {
           method: "PATCH",
           headers: {
