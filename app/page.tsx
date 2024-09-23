@@ -8,20 +8,13 @@ import { useEffect } from "react";
 import { HomePageWrapper } from "./home.style";
 
 const Home = () => {
-  const { threads, loading, fetchThreads, fetchLoggedUserData, loggedUserId } =
-    useThreads();
+  const { threads, loading, fetchThreads } = useThreads();
   const { user } = useUser();
   const clerkId = user?.id;
 
   useEffect(() => {
     fetchThreads();
   }, []);
-
-  useEffect(() => {
-    if (clerkId) {
-      fetchLoggedUserData();
-    }
-  }, [clerkId]);
 
   return (
     <HomePageWrapper>

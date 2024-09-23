@@ -1,16 +1,13 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import UserProfile from "@/components/profile/userProfile/userProfile";
 import { getUserByClerkIdAction } from "@/actions/users";
-import Thread from "@/components/thread/threadComponent/threadComponent";
-import { useEffect, useState } from "react";
-import useProfile from "@/hooks/useProfile";
 import { ProfilePageWrapper } from "@/app/profile/page.style";
+import UserProfile from "@/components/profile/userProfile/userProfile";
+import Thread from "@/components/thread/threadComponent/threadComponent";
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 
 const ProfilePage = () => {
-  const router = useRouter();
   const { isSignedIn, user } = useUser();
 
   const [bio, setBio] = useState<string | null>(null);
@@ -78,14 +75,6 @@ const ProfilePage = () => {
       fetchUserThreads();
     }
   }, [userId]);
-
-  const { updateProfile } = useProfile(userId);
-
-  // useEffect(() => {
-  //   if (!isSignedIn) {
-  //     router.push("/");
-  //   }
-  // }, [isSignedIn, router]);
 
   if (!isSignedIn) {
     return null;
