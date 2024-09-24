@@ -23,9 +23,10 @@ export async function actionCreateThread(
   description: string,
   userId: string,
   tagIds: string[],
+  images: string[],
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
 ) {
-  const thread = await createThread(title, description, userId, tagIds, status);
+  const thread = await createThread(title, description, userId, tagIds, status, images);
   return thread;
 }
 

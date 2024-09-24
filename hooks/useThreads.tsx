@@ -175,6 +175,7 @@ const useThreads = () => {
       tagIds: thread.tagIds.length > 0 ? thread.tagIds : [],
       userId: userId,
       status: thread.status,
+      images: thread.images,
     };
 
     console.log("Thread payload:", threadPayload);

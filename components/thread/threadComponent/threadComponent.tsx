@@ -9,6 +9,7 @@ import { ThreadType } from "@/types/thread/thread";
 
 import ThreadUser from "../threadUser/threadUser";
 import { ThreadWrapper } from "./threadComponent.style";
+import ImageOverlay from "@/components/common/image/ImageOverlay";
 
 const Thread = ({ thread }: { thread: ThreadType }) => {
 
@@ -28,6 +29,13 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
         </div>
       )}
       <div dangerouslySetInnerHTML={{ __html: thread.description }} />
+      {thread.images.length > 0 && (
+        <div className="image">
+          {thread.images.map((image) => (
+            <ImageOverlay src={image} alt="image" width={100} height={50} />
+          ))}
+        </div>
+      )}
       <div className="thread-footer">
         <div className="data">
           <span>

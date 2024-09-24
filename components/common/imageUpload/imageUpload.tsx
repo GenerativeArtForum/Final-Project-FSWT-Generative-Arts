@@ -10,8 +10,9 @@ import UploadFileIcon from "../../../assets/icons/common/upload-file";
 import { TagColors } from "@/constants/Colors";
 
 import { ImageUploadWrapper } from "./imageUpload.style";
+import { useEffect } from "react";
 
-const ImageUpload = ({ maxImages }: { maxImages: number }) => {
+const ImageUpload = ({ maxImages, setThreadData }: { maxImages: number, setThreadData: any, }) => {
   const { toast } = useToast();
   const { images, setImages } = useModal();
 
@@ -45,6 +46,10 @@ const ImageUpload = ({ maxImages }: { maxImages: number }) => {
 
     setImages((prevImages: File[]) => [...prevImages, ...selectedFiles]);
   };
+
+  useEffect(() => {
+   setThreadData("images", images);
+  }, [images]);
 
   const removeImage = (index: number) => {
     setImages((prevImages: File[]) => prevImages.filter((_, i) => i !== index));

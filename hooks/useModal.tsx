@@ -23,6 +23,8 @@ import useProfile from "./useProfile";
 import useResponses from "./useResponses";
 import useThreads from "./useThreads";
 
+import { actionUploadImage } from "@/actions/upload-image";
+
 type FormField = {
   name: keyof NewThreadForm;
   placeholder: string;
@@ -337,6 +339,59 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
     fetchUserId();
   }, [user, newThreadFormState.userId]);
+  
+  
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [imagesUrls, setImagesUrls] = useState<string[]>([]);
+
+  const upload = async (imageFile: File) => {
+    try {
+      
+      console.log("This is upload before");
+
+      const { presignedUrl, imageUrl } = await actionUploadImage(imageFile);
+      
+      console.log("This is upload after");
+      
+      // Upload the file using the presigned URL
+      const response = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: imageFile,
+        headers: {
+          'Content-Type': imageFile.type,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to upload file");
+      }
+  
+      const publicUrl = process.env.NEXT_PUBLIC_R2_PUBLIC_URL;
+      setImageUrl(`${imageUrl}`);
+
+      console.log(imageUrl);
+
+      return imageUrl;
+
+    } catch (e: any) {
+      setMessage(`Error: ${e.toString()}`);
+    }
+  };
+
+  
+  const AssignImageUrl = async () => {
+    
+    images.map(async (image) => {
+      const imageUrl = await upload(image);
+      setImagesUrls((prevState) => ({
+        ...prevState,
+        imageUrl,
+      }));
+    });
+    
+  }
+
 
   const closeModal = async (
     action: string,
@@ -349,11 +404,14 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
       const { isValid, successMessage } = validateThreadForm();
       if (isValid) {
         if (activeModal === "newThread") {
+          await AssignImageUrl();
           const threadStatus = status ?? "DRAFT";
           const updatedThreadFormState: NewThreadForm = {
             ...newThreadFormState,
             status: threadStatus,
+            images: imagesUrls,
           };
+          console.log(updatedThreadFormState);
           await createThread(updatedThreadFormState);
           handleSuccessMessage(successMessage);
         } else if (activeModal === "newResponse") {

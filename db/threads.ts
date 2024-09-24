@@ -6,6 +6,7 @@ export type Thread = {
   description: string;
   userId: string;
   tagIds: string[];
+  image: string[];
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
 };
 
@@ -97,7 +98,8 @@ export async function createThread(
   description: string,
   userId: string,
   tagIds: string[],
-  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT",
+  image: string[],
 ) {
   return await db.thread.create({
     data: {
@@ -106,6 +108,7 @@ export async function createThread(
       userId,
       tagIds,
       status,
+      images:image,
     },
   });
 }

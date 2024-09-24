@@ -34,6 +34,7 @@ export type ThreadType = {
   date: string;
   tags: TagType[];
   description: string;
+  images: string[];
   responses: number | ResponseType[];
   views: number;
   createdAt: string;

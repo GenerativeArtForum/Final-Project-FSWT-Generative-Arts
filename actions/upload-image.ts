@@ -25,11 +25,15 @@ function RateLimiting(
   // ... (keep the existing RateLimiting function)
 }
 
-export async function actionUploadImage(formData: FormData) {
+export async function actionUploadImage(imageFile: File) {
+  
+  console.log('imagefile ', imageFile);
+  
   const { userId } = auth();
   if (!userId) {
     throw new Error("Unauthorized: User not authenticated");
   }
+
 
   const user = await clerkClient.users.getUser(userId);
   if (
@@ -42,7 +46,7 @@ export async function actionUploadImage(formData: FormData) {
 
   RateLimiting(userId, userUploads, RATE_LIMIT, RATE_LIMIT_WINDOW);
 
-  const fileField = formData.get("file");
+  const fileField = imageFile;
   if (fileField === null) {
     throw new Error(`Missing 'file' field in form`);
   }
@@ -70,8 +74,9 @@ export async function actionUploadImage(formData: FormData) {
 
   const extension = extname(file.name);
   const uploadFilename = `${userId}/${hash}${extension}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${uploadFilename}`;
 
   const presignedUrl = await r2client.getPresignedUrl(uploadFilename);
 
-  return { presignedUrl, uploadFilename };
+  return { presignedUrl, imageUrl };
 }
