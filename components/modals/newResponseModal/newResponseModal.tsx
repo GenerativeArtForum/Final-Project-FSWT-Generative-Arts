@@ -13,7 +13,7 @@ const NewResponsetModal = () => {
     newResponseFormState,
     responseFields,
     content,
-    setThreadData,
+    setResponseData,
     setContent,
     closeModal,
     cancelThread,
@@ -21,7 +21,7 @@ const NewResponsetModal = () => {
 
   const handleEditorChange = (content: string | any) => {
     setContent(content);
-    setThreadData("body", content);
+    setResponseData("text", content);
   };
 
   return (
@@ -40,7 +40,7 @@ const NewResponsetModal = () => {
                   type={field.type}
                   placeholder={field.placeholder}
                   onChange={(e) =>
-                    setThreadData(field.name, e.target.value as any)
+                    setResponseData(field.name, e.target.value as any)
                   }
                   content={field.type === "textarea" ? content : ""}
                   value={newResponseFormState[field.name] as string}
@@ -51,7 +51,7 @@ const NewResponsetModal = () => {
           })}
           <div className="input-container">
             <label className="input-label">Images</label>
-            <ImageUpload />
+            <ImageUpload maxImages={2}/>
           </div>
         </div>
       </div>

@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Generative Arts Forum
+
+## About the Project
+
+Generative Arts Forum is the final project of the Postgraduate Degree in Full-Stack Web Technologies at UPC School. This innovative platform allows artists, enthusiasts, and curious minds to explore, create, and share generative art, serving as a space for innovation and collaboration in the field of digital art.
+
+## Technologies Used
+
+Our project leverages a modern and powerful tech stack:
+
+- **Frontend**: 
+  - Next.js 14 for server-side rendering and performance optimization
+  - React for building interactive user interfaces
+  - Tailwind CSS for fast and responsive design
+
+- **Backend**: 
+  - Express with TypeScript for a robust and typed server
+  - Prisma ORM for efficient database management
+
+- **Database**: 
+  - MongoDB for persistent data storage
+
+- **Authentication**: 
+  - NextAuth.js for secure and flexible authentication
+
+- **Image Storage**:
+  - Cloudflare R2 for efficient image storage and loading
+
+- **Deployment**:
+  - Vercel for frontend deployment and hosting
+
+## Features
+
+- **User Authentication**: Secure login and registration system
+- **Recomended Page**: Browse new automatically recomended generative artworks
+- **Following Page**: Browse new generative artworks from users you follow
+- **Thread Creation**: Create new discussions, tutorials or ask questions
+- **Response Creation**: Respond to other users threads and comments
+- **User Profiles**: Personalized spaces for artists to see their threads
+- **Tag Exploration**: Discover art by styles, techniques, or themes
+- **Likes and Comments System**: Interact with other artists' threads
+- **Advanced Search**: Find specific threads with detailed filters
+- **Social Media Integration**: Easily share your art on other platforms
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/GenerativeArtForum/Final-Project-FSWT-Generative-Arts.git
+
+# Navigate to the project directory
+cd Final-Project-FSWT-Generative-Arts
+
+# Install dependencies using Bun
+bun install
+
+# Set up environment variables
+cp .env.example .env.local
+
+# Start the development server
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Authors
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project was created by:
+* **Luis Antonio Castro**
+* **Marc López**
+* **Jacobo Galofre**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Members of the 2024 cohort of the Postgraduate Course in Full-Stack Web Technologies at UPC School. The project mentor is **Cristina Bonamusa**.
 
-## Learn More
+## Acknowledgments
 
-To learn more about Next.js, take a look at the following resources:
+We would like to thank the faculty and staff of UPC School for their guidance and support throughout this program. A special thanks to our mentor, **Cristina Bonamusa**, and to **Pau Fernández**, who has been our professor during the course, for their valuable guidance and support in our learning.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is open-source and available under the MIT License. Generative Arts Forum is more than just a project; it is a testament to the skills and knowledge we have acquired during our time at UPC School. We hope it serves as an inspiration for future students and a valuable resource for the generative art community.

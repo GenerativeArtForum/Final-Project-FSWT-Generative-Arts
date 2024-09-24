@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 "use client";
 
 import useModal from "@/hooks/useModal";
@@ -7,12 +9,13 @@ import Input from "@/components/common/form/input/input";
 import MultiSelect from "@/components/common/form/select/multiselect";
 import ImageUpload from "@/components/common/imageUpload/imageUpload";
 
+import useThreads from "@/hooks/useThreads";
+import { useEffect } from "react";
 import { NewThreadModalWrapper } from "./newThreadModal.style";
 
 const NewThreadModal = () => {
   const {
     newThreadFormState,
-    error,
     selectedTags,
     formFields,
     content,
@@ -23,27 +26,11 @@ const NewThreadModal = () => {
     cancelThread,
   } = useModal();
 
-  const tagsList = [
-    "Processing",
-    "p5.js",
-    "OpenFrameworks",
-    "Cinder",
-    "Max/MSP",
-    "TouchDesigner",
-    "Shader Programming",
-    "Algorithmic Art",
-    "Generative Art",
-    "Creative Coding",
-    "Digital Art",
-    "Interactive Art",
-    "Data Visualization",
-    "Audiovisual Art",
-    "Computer Graphics",
-    "Virtual Reality",
-    "Augmented Reality",
-    "Machine Learning",
-    "Artificial Intelligence",
-  ];
+  const { tags, fetchTags, setTagParams } = useThreads();
+
+  useEffect(() => {
+    fetchTags();
+  }, []);
 
   const handleEditorChange = (content: string | any) => {
     setContent(content);
@@ -82,16 +69,18 @@ const NewThreadModal = () => {
           })}
           <div className="input-container">
             <label className="input-label">Images</label>
-            <ImageUpload />
+            <ImageUpload maxImages={4} />
           </div>
           <div className="input-container">
             <label className="input-label">Tags</label>
             <MultiSelect
-              tagsList={tagsList}
+              tagsList={tags}
               placeholder="Add tags"
+              maxTags={4}
               selectedTags={selectedTags}
               setThreadData={setThreadData}
               setSelectedTags={setSelectedTags}
+              setTagParams={setTagParams}
             />
           </div>
         </div>
@@ -104,18 +93,18 @@ const NewThreadModal = () => {
             cancelThread(e);
           }}
         />
-        <Button
+        {/* <Button
           text="Save as draft"
           variant={3}
           onClick={(e) => {
-            closeModal("close", e);
+            closeModal("close", e, 'DRAFT');
           }}
-        />
+        /> */}
         <Button
           text="Create thread"
           variant={1}
           onClick={(e) => {
-            closeModal("submit", e);
+            closeModal("submit", e, "PUBLISHED");
           }}
         />
       </div>

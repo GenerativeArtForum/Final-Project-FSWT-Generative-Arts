@@ -1,34 +1,39 @@
+"use client";
+
 import Link from "next/link";
 
 import Tag from "@/components/common/tag/tag";
 import ThreadActions from "../threadActions/threadActions";
-import ThreadUser from "../threadUser/threadUser";
+
 import { ThreadType } from "@/types/thread/thread";
 
+import ThreadUser from "../threadUser/threadUser";
 import { ThreadWrapper } from "./threadComponent.style";
 
 const Thread = ({ thread }: { thread: ThreadType }) => {
+
   return (
     <ThreadWrapper>
       <div className="thread-header">
         <Link className="title" href={`/thread/${thread.id}`}>
-          {thread.question}
+          {thread.title}
         </Link>
-        <ThreadUser
-          thread={thread}
-          isFollowing={thread.user.isFollowing ? true : undefined}
-        />
+        <ThreadUser id={thread.userId} user={thread.user} thread={thread} />
       </div>
-      <div className="tags">
-        {thread.tags.map((tag) => (
-          <Tag key={tag.id} text={tag.name} />
-        ))}
-      </div>
-      <span>{thread.body}</span>
+      {thread.tags.length > 0 && (
+        <div className="tags">
+          {thread.tags.slice(0, 5).map((tag) => (
+            <Tag key={tag.id} text={tag.name} />
+          ))}
+        </div>
+      )}
+      <div dangerouslySetInnerHTML={{ __html: thread.description }} />
       <div className="thread-footer">
         <div className="data">
-          <span>{Number(thread.responses)} Responses</span>
-          <span>{thread.views} Views</span>
+          <span>
+          {Array.isArray(thread.responses) ? thread.responses.length : "0"} Responses
+          </span>
+          {/* <span>{thread.views ? thread.views : "0"} Views</span> */}
         </div>
         <ThreadActions id={thread.id} />
       </div>

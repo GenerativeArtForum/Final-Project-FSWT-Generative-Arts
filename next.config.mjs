@@ -4,6 +4,7 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
+    domains: ['img.clerk.com'],
     remotePatterns: [
       {
         protocol: "https",

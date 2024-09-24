@@ -11,9 +11,7 @@ import { TagColors } from "@/constants/Colors";
 
 import { ImageUploadWrapper } from "./imageUpload.style";
 
-const MAX_IMAGES = 4;
-
-const ImageUpload = () => {
+const ImageUpload = ({ maxImages }: { maxImages: number }) => {
   const { toast } = useToast();
   const { images, setImages } = useModal();
 
@@ -34,20 +32,22 @@ const ImageUpload = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []) as File[];
 
-    if (selectedFiles.length + images.length > MAX_IMAGES) {
+    if (selectedFiles.length + images.length > maxImages) {
       setToast(
         "error",
         undefined,
-        `You can only upload ${MAX_IMAGES} images` || undefined
+        `You can only upload ${maxImages} ${
+          maxImages === 1 ? "image" : "images"
+        }` || undefined
       );
       return;
     }
 
-    setImages((prevImages) => [...prevImages, ...selectedFiles]);
+    setImages((prevImages: File[]) => [...prevImages, ...selectedFiles]);
   };
 
   const removeImage = (index: number) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setImages((prevImages: File[]) => prevImages.filter((_, i) => i !== index));
   };
 
   const handleUploadButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {

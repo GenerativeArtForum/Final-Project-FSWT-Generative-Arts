@@ -1,31 +1,41 @@
-type Tag = {
-  id: number;
+export type TagType = {
+  id: string;
   name: string;
 };
 
-type User = {
-  id: number;
-  username: string;
-  image: string;
-  isFollowing: boolean;
+export type UserType = {
+  id?: number | string;
+  username: string | null;
+  imageUrl?: string;
+  isFollowing?: boolean;
+  followers?: number;
+  following?: number;
+  bio?: string;
+  tags?: TagType[];
+  clerkId?: string;
+  coverPhoto?: "ZERO" | "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE",
 };
 
 export type ResponseType = {
   id: number;
   text: string;
-  user: User;
-  votes: number;
-  personalVote: string | undefined;
-  date: string;
+  user: UserType;
+  userId: number | string | undefined;
+  threadId: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type ThreadType = {
   id: number;
-  question: string;
-  user: User;
+  title: string;
+  user: UserType;
+  userId: number | undefined;
   date: string;
-  tags: Tag[];
-  body: string;
+  tags: TagType[];
+  description: string;
   responses: number | ResponseType[];
   views: number;
+  createdAt: string;
+  updatedAt: string;
 };

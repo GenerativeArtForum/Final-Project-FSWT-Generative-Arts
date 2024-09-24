@@ -10,6 +10,7 @@ import {
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
+  const userId = searchParams.get("user");
 
   if (id) {
     try {
@@ -30,7 +31,7 @@ export async function GET(req: Request) {
     }
   } else {
     try {
-      const threads = await actionGetThreads();
+      const threads = await actionGetThreads(userId || undefined);
       return NextResponse.json(threads, { status: 200 });
     } catch (error) {
       return NextResponse.json(
@@ -43,8 +44,14 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const { title, description, userId } = await req.json();
-    const newThread = await actionCreateThread(title, description, userId);
+    const { title, description, userId, tagIds, status } = await req.json();
+    const newThread = await actionCreateThread(
+      title,
+      description,
+      userId,
+      tagIds,
+      status
+    );
     return NextResponse.json(newThread, { status: 201 });
   } catch (error) {
     return NextResponse.json(
@@ -66,12 +73,14 @@ export async function PUT(req: Request) {
   }
 
   try {
-    const { title, description, userId } = await req.json();
+    const { title, description, userId, tagIds, status } = await req.json();
     const updatedThread = await actionUpdateThread(
       id,
       title,
       description,
-      userId
+      userId,
+      tagIds,
+      status
     );
     return NextResponse.json(updatedThread, { status: 200 });
   } catch (error) {

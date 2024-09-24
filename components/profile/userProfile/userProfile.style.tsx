@@ -1,12 +1,22 @@
 import styled from "styled-components";
+import { Colors, TagColors } from "@/constants/Colors";
 
-import { Colors } from "@/constants/Colors";
-
-export const UserProfileWrapper = styled.div`
+export const UserProfileWrapper = styled.div<{
+  isFollowing: boolean | undefined;
+  backgroundImage: string | null;
+}>`
   position: relative;
   width: calc(100% + 2px);
   min-height: 200px;
   background-color: ${Colors.lightgray};
+  margin-bottom: 100px;
+
+  .cover-photo {
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+  }
 
   .user-container {
     position: absolute;
@@ -18,7 +28,8 @@ export const UserProfileWrapper = styled.div`
     gap: 36px;
   }
 
-  .user-image {
+  .user-image,
+  .image-fallback {
     width: 200px;
     height: 200px;
     border-radius: 100px;
@@ -27,7 +38,23 @@ export const UserProfileWrapper = styled.div`
   }
 
   .user-data {
-    margin-top: 75px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 100px;
+  }
+
+  .first-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .edit-btn{
+    margin-top: 4px;
   }
 
   .username {
@@ -47,5 +74,13 @@ export const UserProfileWrapper = styled.div`
     font-size: 12px;
     font-family: "Inter", sans-serif;
     font-weight: 400;
+  }
+
+  .follow-button {
+    background-color: ${(props) =>
+      props.isFollowing ? TagColors.background : Colors.pureWhite};
+    border: 1px solid
+      ${(props) => (props.isFollowing ? TagColors.border : Colors.gray)};
+    border-radius: 25%;
   }
 `;
