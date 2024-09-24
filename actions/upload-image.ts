@@ -25,10 +25,10 @@ function RateLimiting(
   // ... (keep the existing RateLimiting function)
 }
 
-export async function actionUploadImage(imageFile: File) {
+export async function actionUploadImage(formData: FormData) {
   
-  console.log('imagefile ', imageFile);
-  
+  console.log(formData.has('file'));
+
   const { userId } = auth();
   if (!userId) {
     throw new Error("Unauthorized: User not authenticated");
@@ -46,7 +46,7 @@ export async function actionUploadImage(imageFile: File) {
 
   RateLimiting(userId, userUploads, RATE_LIMIT, RATE_LIMIT_WINDOW);
 
-  const fileField = imageFile;
+  const fileField = formData.get("file");
   if (fileField === null) {
     throw new Error(`Missing 'file' field in form`);
   }

@@ -345,14 +345,26 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [message, setMessage] = useState<string>("");
   const [imagesUrls, setImagesUrls] = useState<string[]>([]);
 
+  function convertFileToFormData(file: File): FormData {
+    const formData = new FormData();
+    
+    // Append the file to the FormData
+    formData.append('file', file, file.name);
+  
+    return formData;
+  }
+
   const upload = async (imageFile: File) => {
     try {
       
       console.log("This is upload before");
 
-      const { presignedUrl, imageUrl } = await actionUploadImage(imageFile);
+      const formData = convertFileToFormData(imageFile);
+      const { presignedUrl, imageUrl } = await actionUploadImage(formData);
       
       console.log("This is upload after");
+      console.log(presignedUrl);
+      console.log(imageUrl);
       
       // Upload the file using the presigned URL
       const response = await fetch(presignedUrl, {
@@ -381,17 +393,24 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
   
   const AssignImageUrl = async () => {
-    
-    images.map(async (image) => {
+    const uploadedUrls = await Promise.all(images.map(async (image) => {
+      try {
       const imageUrl = await upload(image);
-      setImagesUrls((prevState) => ({
-        ...prevState,
-        imageUrl,
-      }));
-    });
+      return imageUrl;
+      } catch (error) {
+        console.error("Failed to upload image:", error);
+        return null;
+      }
+    }));
+    
+    const validUrls = uploadedUrls.filter((url): url is string => url !== null);
+    setImagesUrls(  (prevState) => ({
+      ...prevState,
+      imageUrl,
+     }));
+    return validUrls;
     
   }
-
 
   const closeModal = async (
     action: string,
@@ -404,14 +423,14 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
       const { isValid, successMessage } = validateThreadForm();
       if (isValid) {
         if (activeModal === "newThread") {
-          await AssignImageUrl();
+          const uploadedImageUrls = await AssignImageUrl();
           const threadStatus = status ?? "DRAFT";
           const updatedThreadFormState: NewThreadForm = {
             ...newThreadFormState,
             status: threadStatus,
-            images: imagesUrls,
+            images: uploadedImageUrls,
           };
-          console.log(updatedThreadFormState);
+          console.log("updatedThreadFormState",updatedThreadFormState);
           await createThread(updatedThreadFormState);
           handleSuccessMessage(successMessage);
         } else if (activeModal === "newResponse") {
