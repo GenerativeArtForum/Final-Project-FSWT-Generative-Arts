@@ -3,6 +3,7 @@
 import { actionUploadImage } from "@/actions/upload-image";
 import { useState } from "react";
 import Image from "next/image";
+import ImageOverlay from "@/components/common/image/ImageOverlay";
 
 export default function Page() {
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -46,7 +47,7 @@ export default function Page() {
         </div>
         <div className="mt-2">{message}</div>
         {imageUrl && (
-          <Image src={imageUrl} alt="test image" width={500} height={300} />
+          <ImageOverlay src={imageUrl} alt="test image" width={500} height={300} />
         )}
       </form>
     </main>
