@@ -4,6 +4,8 @@ import styled from "styled-components";
 export const SearchPageWrapper = styled.div`
   ${PageWrapperStyles}
 
+  margin-top: 30px;
+
   .container {
     position: relative;
     display: flex;

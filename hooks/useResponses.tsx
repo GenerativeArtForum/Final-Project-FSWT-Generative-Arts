@@ -1,12 +1,43 @@
+import { getUserByClerkIdAction } from "@/actions/users";
 import { NewResponseForm } from "@/types/forms/newResponseForm";
 import { ResponseType } from "@/types/thread/thread";
-import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 
 const useResponses = () => {
   const [responses, setResponses] = useState<ResponseType[]>([]);
   const [response, setResponse] = useState<ResponseType | null>(null);
   const [responseLoading, setResponseLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  const { user } = useUser();
+  const clerkId = user?.id;
+
+  useEffect(() => {
+    const fetchUserData = async (): Promise<void> => {
+      try {
+        setError(null);
+
+        if (clerkId) {
+          const userData = await getUserByClerkIdAction(clerkId);
+          if (userData) {
+            setUserId(userData.id);
+          }
+        } else {
+          throw new Error("Clerk ID is missing");
+        }
+      } catch (e: any) {
+        setError(e.message);
+      }
+    };
+
+    console.log("user id", userId);
+
+    if (clerkId) {
+      fetchUserData();
+    }
+  }, [clerkId]);
 
   const fetchResponses = async () => {
     setResponseLoading(true);
@@ -67,9 +98,11 @@ const useResponses = () => {
   const createResponse = async (response: NewResponseForm) => {
     const responsePayload = {
       text: response.text,
-      userId: response.userId,
+      userId: userId,
       threadId: response.threadId,
     };
+
+    console.log("responsePayload", responsePayload);
 
     const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/responses`, {
       method: "POST",

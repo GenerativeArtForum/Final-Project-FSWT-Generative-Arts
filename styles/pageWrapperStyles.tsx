@@ -6,6 +6,5 @@ export const PageWrapperStyles = css`
   justify-content: flex-start;
   align-items: center;
   gap: 2rem;
-  margin-top: 30px;
-  min-height: 100vh;
+  margin-top: 0px;
 `;

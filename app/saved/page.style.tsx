@@ -4,4 +4,5 @@ import { PageWrapperStyles } from "@/styles/pageWrapperStyles";
 
 export const SavedPageWrapper = styled.div`
   ${PageWrapperStyles}
+  margin-top: 30px;
 `;

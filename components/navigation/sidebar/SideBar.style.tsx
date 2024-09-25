@@ -16,6 +16,7 @@ export const SideBarWrapper = styled.nav`
   min-width: max(200px, 15vw);
   border-left: 1.5px solid ${Colors.lightgray};
   background-color: ${Colors.pureWhite};
+  margin-top: 30px;
 
   h3 {
     font-size: 18px;
