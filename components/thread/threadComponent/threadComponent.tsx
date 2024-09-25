@@ -31,7 +31,7 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
       {thread.images.length > 0 && (
         <div className="images">
           {thread.images.map((image, index) => (
-            <ImageOverlay key={index} src={image} alt="image" width={100} height={100} />
+            <ImageOverlay src={image} alt="image" width={100} height={100} key={index}/>
           ))}
         </div>
       )}
