@@ -26,10 +26,14 @@ function RateLimiting(
 }
 
 export async function actionUploadImage(formData: FormData) {
+  
+  console.log(formData.has('file'));
+
   const { userId } = auth();
   if (!userId) {
     throw new Error("Unauthorized: User not authenticated");
   }
+
 
   const user = await clerkClient.users.getUser(userId);
   if (
@@ -70,8 +74,9 @@ export async function actionUploadImage(formData: FormData) {
 
   const extension = extname(file.name);
   const uploadFilename = `${userId}/${hash}${extension}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${uploadFilename}`;
 
   const presignedUrl = await r2client.getPresignedUrl(uploadFilename);
 
-  return { presignedUrl, uploadFilename };
+  return { presignedUrl, imageUrl };
 }

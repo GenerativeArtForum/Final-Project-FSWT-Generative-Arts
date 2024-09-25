@@ -175,9 +175,10 @@ const useThreads = () => {
       tagIds: thread.tagIds.length > 0 ? thread.tagIds : [],
       userId: userId,
       status: thread.status,
+      images: thread.images,
     };
 
-    console.log("Thread payload:", threadPayload);
+    console.log("Thread payload:", JSON.stringify(threadPayload));
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/threads`,

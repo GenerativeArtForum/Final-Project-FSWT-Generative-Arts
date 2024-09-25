@@ -59,4 +59,17 @@ export const ThreadWrapper = styled.div`
       gap: 8px;
     }
   }
+
+  .images {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .image {
+    max-width: 100%;
+    height: auto;
+  }
 `;
