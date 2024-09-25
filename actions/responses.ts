@@ -29,3 +29,4 @@ export async function updateResponseAction(id: string, text: string) {
 export async function deleteResponseAction(id: string) {
   return await deleteResponse(id);
 }
+
