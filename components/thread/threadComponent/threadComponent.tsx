@@ -30,8 +30,8 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
       <div dangerouslySetInnerHTML={{ __html: thread.description }} />
       {thread.images.length > 0 && (
         <div className="images">
-          {thread.images.map((image) => (
-            <ImageOverlay src={image} alt="image" width={100} height={100} />
+          {thread.images.map((image, index) => (
+            <ImageOverlay src={image} alt="image" width={100} height={100} key={index}/>
           ))}
         </div>
       )}
