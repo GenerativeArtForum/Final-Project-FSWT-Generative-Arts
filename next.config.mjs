@@ -13,6 +13,11 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    config.externals = config.externals || [];
+    config.externals.push('@aws-sdk/client-s3', '@aws-sdk/s3-request-presigner', '@smithy/util-retry');
+    return config;
+  }
 };
 
-export default nextConfig;
+  export default nextConfig;
