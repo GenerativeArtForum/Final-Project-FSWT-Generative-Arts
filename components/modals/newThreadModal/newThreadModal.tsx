@@ -69,7 +69,7 @@ const NewThreadModal = () => {
           })}
           <div className="input-container">
             <label className="input-label">Images</label>
-            <ImageUpload maxImages={4} />
+            <ImageUpload maxImages={4} setThreadData={setThreadData} />
           </div>
           <div className="input-container">
             <label className="input-label">Tags</label>

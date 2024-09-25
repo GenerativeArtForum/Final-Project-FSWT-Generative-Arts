@@ -6,6 +6,7 @@ import SaveIcon from "../../../assets/icons/common/save-icon.svg";
 import ShareIcon from "../../../assets/icons/common/share-icon.svg";
 import { ThreadActionsWrapper } from "./threadActions.style";
 import { NewResponseForm } from "@/types/forms/newResponseForm";
+import { useRouter } from "next/navigation";
 
 type ThreadActionsProps = {
   id: number;
@@ -13,6 +14,7 @@ type ThreadActionsProps = {
 };
 
 const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
+  const router = useRouter();
   const { setIsOpenModal, setActiveModal, setShareLink } = useModal();
   const { isSignedIn } = useUser();
 
@@ -22,9 +24,10 @@ const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
       setActiveModal("login");
     } else {
       if (action === "response") {
-        setIsOpenModal(true);
-        setActiveModal("newResponse");
-        onResponseCreate &&
+        if (onResponseCreate) {
+          setIsOpenModal(true);
+          setActiveModal("newResponse");
+
           onResponseCreate({
             _id: "",
             text: "",
@@ -32,13 +35,17 @@ const ThreadActions = ({ id, onResponseCreate }: ThreadActionsProps) => {
             threadId: id.toString(),
             images: [],
           });
+        } else {
+          router.push(`/thread/${id}`);
+
+          setIsOpenModal(true);
+          setActiveModal("newResponse");
+        }
       } else if (action === "save") {
       } else if (action === "share") {
         setIsOpenModal(true);
         setActiveModal("share");
-        setShareLink(
-          `${process.env.NEXT_PUBLIC_API_URL}/thread/${id}`
-        );
+        setShareLink(`${process.env.NEXT_PUBLIC_API_URL}/thread/${id}`);
       }
     }
   };

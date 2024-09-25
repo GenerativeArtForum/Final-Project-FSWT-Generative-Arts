@@ -13,6 +13,7 @@ import useModal from "@/hooks/useModal";
 import useResponses from "@/hooks/useResponses";
 import useThreads from "@/hooks/useThreads";
 import { NewResponseForm } from "@/types/forms/newResponseForm";
+import ImageOverlay from "@/components/common/image/ImageOverlay";
 
 const ThreadPage = () => {
   const params = useParams();
@@ -59,7 +60,7 @@ const ThreadPage = () => {
       </ThreadPageWrapper>
     );
   }
-
+  console.log(thread);
   return (
     <ThreadPageWrapper>
       <div className="container">
@@ -73,6 +74,11 @@ const ThreadPage = () => {
           ))}
         </div>
         <div dangerouslySetInnerHTML={{ __html: thread.description }} />
+        <div className="images">
+          {thread.images.map((image) => (
+            <ImageOverlay src={image} alt="image" width={150} height={100} />
+          ))}
+        </div>
         <div className="thread-footer">
           <div className="data">
             <span>

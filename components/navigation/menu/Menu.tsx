@@ -11,7 +11,6 @@ import LogoIcon from "../../../assets/icons/menu/logo.tsx";
 import ProfileIcon from "../../../assets/icons/menu/profile.tsx";
 import SavedIcon from "../../../assets/icons/menu/saved.tsx";
 import SearchIcon from "../../../assets/icons/menu/search.tsx";
-import SettingsIcon from "../../../assets/icons/menu/settings.tsx";
 import ClerkUser from "../clerkUser/ClerkUser.tsx";
 
 import { MenuWrapper } from "./Menu.style.tsx";

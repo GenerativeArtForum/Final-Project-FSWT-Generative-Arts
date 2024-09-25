@@ -10,10 +10,11 @@ if (args.length < 4) {
 }
 
 const [title, description, userId, ...tagIds] = args;
+let images: string[] = [];
 
 async function main() {
   try {
-    const thread = await actionCreateThread(title, description, userId, tagIds);
+    const thread = await actionCreateThread(title, description, userId, tagIds, images);
     console.log("Thread created:", thread);
   } catch (error) {
     console.error("Error creating thread:", error);

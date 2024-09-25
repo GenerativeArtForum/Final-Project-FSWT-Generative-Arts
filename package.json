@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3000",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,6 +11,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.635.0",
     "@babel/runtime": "^7.25.0",
     "@clerk/nextjs": "^5.2.8",
     "@prisma/client": "5.17.0",
@@ -35,6 +37,7 @@
     "react-quill": "^2.0.0",
     "sass": "^1.77.8",
     "shadcn-ui": "^0.8.0",
+    "sharp": "^0.33.5",
     "styled-components": "^6.1.12",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"

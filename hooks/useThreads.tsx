@@ -14,10 +14,14 @@ const useThreads = () => {
   const [tagLoading, setTagLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [tagParams, setTagParams] = useState<string>("");
-  const [loggedUserId, setLoggedUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const { user } = useUser();
   const clerkId = user?.id;
+
+  useEffect(() => {
+    console.log("user id of clerk:", clerkId);
+  }, [clerkId]);
 
   const userCache: Record<number | string, string> = {};
   const clerkCache: Record<string, any> = {};
@@ -138,38 +142,43 @@ const useThreads = () => {
     return await response.json();
   };
 
-  const fetchLoggedUserData = async () => {
-    if (clerkId) {
+  useEffect(() => {
+    const fetchUserData = async (): Promise<void> => {
       try {
-        const userData = await getUserByClerkIdAction(clerkId);
-        if (!userData) throw new Error("User data is missing");
-        setLoggedUserId(userData.id);
-        setNewThreadFormState((prevState) => ({
-          ...prevState,
-          userId: userData.id,
-        }));
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+        setLoading(true);
+        setError(null);
+
+        if (clerkId) {
+          const userData = await getUserByClerkIdAction(clerkId);
+          if (userData) {
+            setUserId(userData.id);
+          }
+        } else {
+          throw new Error("Clerk ID is missing");
+        }
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
       }
-    } else {
-      console.error("Clerk ID is missing");
+    };
+
+    if (clerkId) {
+      fetchUserData();
     }
-  };
+  }, [clerkId]);
 
   const createThread = async (thread: NewThreadForm) => {
-    const finalUserId = newThreadFormState.userId || loggedUserId;
-
-    if (!finalUserId) {
-      throw new Error("User ID is not available");
-    }
-
     const threadPayload = {
       title: thread.question,
       description: thread.body,
       tagIds: thread.tagIds.length > 0 ? thread.tagIds : [],
-      userId: finalUserId,
+      userId: userId,
       status: thread.status,
+      images: thread.images,
     };
+
+    console.log("Thread payload:", JSON.stringify(threadPayload));
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/threads`,
@@ -237,7 +246,6 @@ const useThreads = () => {
     tagLoading,
     error,
     tagParams,
-    loggedUserId,
     setTagParams,
     fetchThreads,
     createThread,
@@ -246,7 +254,6 @@ const useThreads = () => {
     createTag,
     getUserById,
     getClerkUserData,
-    fetchLoggedUserData,
   };
 };
 
