@@ -55,6 +55,7 @@ export async function POST(req: Request) {
     );
     return NextResponse.json(newThread, { status: 201 });
   } catch (error) {
+    console.log("I've got here");
     return NextResponse.json(
       { message: "Error creating thread", error },
       { status: 500 }

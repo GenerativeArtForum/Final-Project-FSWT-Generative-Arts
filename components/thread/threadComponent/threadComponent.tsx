@@ -12,7 +12,7 @@ import { ThreadWrapper } from "./threadComponent.style";
 import ImageOverlay from "@/components/common/image/ImageOverlay";
 
 const Thread = ({ thread }: { thread: ThreadType }) => {
-
+  console.log(thread);
   return (
     <ThreadWrapper>
       <div className="thread-header">
@@ -30,9 +30,9 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
       )}
       <div dangerouslySetInnerHTML={{ __html: thread.description }} />
       {thread.images.length > 0 && (
-        <div className="image">
+        <div className="images">
           {thread.images.map((image) => (
-            <ImageOverlay src={image} alt="image" width={100} height={50} />
+            <ImageOverlay src={image} alt="image" width={100} height={100} />
           ))}
         </div>
       )}

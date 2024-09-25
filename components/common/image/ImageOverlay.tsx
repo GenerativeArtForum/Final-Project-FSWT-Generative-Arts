@@ -32,15 +32,15 @@ const ImageOverlay: React.FC<ImageOverlayProps> = ({ src, alt, width, height }) 
             <Image
               src={src}
               alt={alt}
-              width={width * 2}
-              height={height * 2}
+              width={width * 5}
+              height={height * 5}
               className="max-h-[90vh] max-w-[90vw] object-contain"
             />
             <button 
               className="absolute top-4 right-4 text-white text-2xl"
               onClick={toggleOverlay}
             >
-              ×
+              
             </button>
           </div>
         </div>
