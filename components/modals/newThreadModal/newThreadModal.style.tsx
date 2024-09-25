@@ -7,11 +7,11 @@ export const NewThreadModalWrapper = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
-    width: 100%;
     overflow-y: auto;
     padding-bottom: 1rem;
     padding: 3rem 4rem;
     max-height: 70vh;
+    width: 100%;
   }
 
   h1 {

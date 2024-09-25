@@ -35,9 +35,8 @@ export const ModalWrapper = styled.div<{ isOpen: boolean | undefined }>`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    max-width: 1200px;
+    max-width: calc(55vw + 60px);
     max-height: 90vh;
-    width: fit-content;
     background-color: ${Colors.pureWhite};
     border-radius: 16px;
     transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(5%)")};
