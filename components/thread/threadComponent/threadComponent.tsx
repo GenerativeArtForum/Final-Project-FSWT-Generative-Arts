@@ -30,8 +30,8 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
       <div dangerouslySetInnerHTML={{ __html: thread.description }} />
       {thread.images.length > 0 && (
         <div className="images">
-          {thread.images.map((image) => (
-            <ImageOverlay src={image} alt="image" width={100} height={100} />
+          {thread.images.map((image, index) => (
+            <ImageOverlay key={index} src={image} alt="image" width={100} height={100} />
           ))}
         </div>
       )}
@@ -40,7 +40,6 @@ const Thread = ({ thread }: { thread: ThreadType }) => {
           <span>
           {Array.isArray(thread.responses) ? thread.responses.length : "0"} Responses
           </span>
-          {/* <span>{thread.views ? thread.views : "0"} Views</span> */}
         </div>
         <ThreadActions id={thread.id} />
       </div>

@@ -75,8 +75,8 @@ const ThreadPage = () => {
         </div>
         <div dangerouslySetInnerHTML={{ __html: thread.description }} />
         <div className="images">
-          {thread.images.map((image) => (
-            <ImageOverlay src={image} alt="image" width={150} height={100} />
+          {thread.images.map((image, index) => (
+            <ImageOverlay key={index} src={image} alt="image" width={150} height={100} />
           ))}
         </div>
         <div className="thread-footer">

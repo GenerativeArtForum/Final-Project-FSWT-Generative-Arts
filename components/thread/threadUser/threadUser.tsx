@@ -1,12 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import useModal from "@/hooks/useModal";
-import { useUser } from "@clerk/nextjs";
-
-import AddIcon from "../../../assets/icons/common/add.svg";
-import TickIcon from "../../../assets/icons/common/tick.svg";
-
 import { ThreadType } from "@/types/thread/thread";
 
 import { calculateTimeAgo } from "@/utils/date";
@@ -24,16 +18,6 @@ const ThreadUser = ({
   thread: ThreadType;
   isFollowing?: boolean | undefined;
 }) => {
-  const { setIsOpenModal, setActiveModal } = useModal();
-  const { isSignedIn } = useUser();
-
-  const buttonClicked = () => {
-    if (!isSignedIn) {
-      setIsOpenModal(true);
-      setActiveModal("login");
-    }
-  };
-
   if (!user) return null;
 
   const { imageUrl, username } = user;
@@ -63,18 +47,6 @@ const ThreadUser = ({
             <div className="image-fallback"></div>
           </Link>
         )}
-        {/* 
-        Uncomment and use the follow button if needed
-        {isFollowing && (
-          <button className="follow-button" onClick={buttonClicked}>
-            <Image
-              src={isFollowing ? TickIcon : AddIcon}
-              alt={isFollowing ? "following" : "not following"}
-              width={16}
-              height={16}
-            />
-          </button>
-        )} */}
       </div>
     </ThreadUserWrapper>
   );

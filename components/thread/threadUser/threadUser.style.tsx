@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { Colors, TagColors } from "@/constants/Colors";
 
 export const ThreadUserWrapper = styled.div<{
@@ -32,15 +31,16 @@ export const ThreadUserWrapper = styled.div<{
     position: relative;
 
     .image {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      flex: 1;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 100%;
     }
 
     .image-fallback {
       width: 36px;
       height: 36px;
-      border-radius: 10px;
+      border-radius: 50%;
       background-color: ${Colors.lightgray};
     }
 
@@ -52,7 +52,7 @@ export const ThreadUserWrapper = styled.div<{
         props.isfollowing ? TagColors.background : Colors.pureWhite};
       border: 1px solid
         ${(props) => (props.isfollowing ? TagColors.border : Colors.gray)};
-      border-radius: 25%;
+      border-radius: 50%;
     }
   }
 `;
