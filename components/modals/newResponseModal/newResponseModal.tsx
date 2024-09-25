@@ -49,10 +49,6 @@ const NewResponsetModal = () => {
               </div>
             );
           })}
-          <div className="input-container">
-            <label className="input-label">Images</label>
-            <ImageUpload maxImages={2}/>
-          </div>
         </div>
       </div>
       <div className="buttons-container">

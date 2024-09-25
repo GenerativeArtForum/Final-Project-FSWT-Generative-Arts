@@ -23,6 +23,8 @@ import useProfile from "./useProfile";
 import useResponses from "./useResponses";
 import useThreads from "./useThreads";
 
+import { actionUploadImage } from "@/actions/upload-image";
+
 type FormField = {
   name: keyof NewThreadForm;
   placeholder: string;
@@ -337,6 +339,78 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
     fetchUserId();
   }, [user, newThreadFormState.userId]);
+  
+  
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [imagesUrls, setImagesUrls] = useState<string[]>([]);
+
+  function convertFileToFormData(file: File): FormData {
+    const formData = new FormData();
+    
+    // Append the file to the FormData
+    formData.append('file', file, file.name);
+  
+    return formData;
+  }
+
+  const upload = async (imageFile: File) => {
+    try {
+      
+      console.log("This is upload before");
+
+      const formData = convertFileToFormData(imageFile);
+      const { presignedUrl, imageUrl } = await actionUploadImage(formData);
+      
+      console.log("This is upload after");
+      console.log(presignedUrl);
+      console.log(imageUrl);
+      
+      // Upload the file using the presigned URL
+      const response = await fetch(presignedUrl, {
+        method: 'PUT',
+        body: imageFile,
+        headers: {
+          'Content-Type': imageFile.type,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to upload file");
+      }
+  
+      const publicUrl = process.env.NEXT_PUBLIC_R2_PUBLIC_URL;
+      setImageUrl(`${imageUrl}`);
+
+      console.log(imageUrl);
+
+      return imageUrl;
+
+    } catch (e: any) {
+      setMessage(`Error: ${e.toString()}`);
+    }
+  };
+
+  
+  const AssignImageUrl = async () => {
+    const uploadedUrls = await Promise.all(images.map(async (image) => {
+      try {
+      const imageUrl = await upload(image);
+      return imageUrl;
+      } catch (error) {
+        console.error("Failed to upload image:", error);
+        return null;
+      }
+    }));
+    
+    const validUrls = uploadedUrls.filter((url): url is string => url !== null);
+    setImagesUrls(  (prevState) => ({
+      ...prevState,
+      imageUrl,
+     }));
+    return validUrls;
+    
+  }
 
   const closeModal = async (
     action: string,
@@ -349,11 +423,14 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
       const { isValid, successMessage } = validateThreadForm();
       if (isValid) {
         if (activeModal === "newThread") {
+          const uploadedImageUrls = await AssignImageUrl();
           const threadStatus = status ?? "DRAFT";
           const updatedThreadFormState: NewThreadForm = {
             ...newThreadFormState,
+            images: uploadedImageUrls,
             status: threadStatus,
           };
+          console.log("updatedThreadFormState",updatedThreadFormState);
           await createThread(updatedThreadFormState);
           handleSuccessMessage(successMessage);
         } else if (activeModal === "newResponse") {

@@ -4,7 +4,7 @@ export type NewThreadForm = {
     userId: string;
     body: string;
     tagIds: string[];
-    images: ImageType[],
+    images: string[],
     status: string;
 }
 

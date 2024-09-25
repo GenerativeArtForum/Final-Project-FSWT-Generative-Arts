@@ -10,8 +10,9 @@ import UploadFileIcon from "../../../assets/icons/common/upload-file";
 import { TagColors } from "@/constants/Colors";
 
 import { ImageUploadWrapper } from "./imageUpload.style";
+import { useEffect } from "react";
 
-const ImageUpload = ({ maxImages }: { maxImages: number }) => {
+const ImageUpload = ({ maxImages, setThreadData }: { maxImages: number, setThreadData: any, }) => {
   const { toast } = useToast();
   const { images, setImages } = useModal();
 
