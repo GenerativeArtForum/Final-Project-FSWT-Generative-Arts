@@ -12,7 +12,6 @@ import { ThreadWrapper } from "./threadComponent.style";
 import ImageOverlay from "@/components/common/image/ImageOverlay";
 
 const Thread = ({ thread }: { thread: ThreadType }) => {
-  console.log(thread);
   return (
     <ThreadWrapper>
       <div className="thread-header">

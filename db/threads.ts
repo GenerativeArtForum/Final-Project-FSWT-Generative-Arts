@@ -99,7 +99,7 @@ export async function createThread(
   userId: string,
   tagIds: string[],
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT",
-  image: string[],
+  images: string[],
 ) {
   return await db.thread.create({
     data: {
@@ -107,8 +107,8 @@ export async function createThread(
       description,
       userId,
       tagIds,
+      images,
       status,
-      images:image,
     },
   });
 }

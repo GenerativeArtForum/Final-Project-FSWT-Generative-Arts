@@ -427,8 +427,8 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
           const threadStatus = status ?? "DRAFT";
           const updatedThreadFormState: NewThreadForm = {
             ...newThreadFormState,
-            status: threadStatus,
             images: uploadedImageUrls,
+            status: threadStatus,
           };
           console.log("updatedThreadFormState",updatedThreadFormState);
           await createThread(updatedThreadFormState);

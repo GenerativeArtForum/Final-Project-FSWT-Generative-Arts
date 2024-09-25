@@ -26,6 +26,7 @@ export async function actionCreateThread(
   images: string[],
   status: "DRAFT" | "PUBLISHED" | "ARCHIVED" = "DRAFT"
 ) {
+  console.log(title, description, userId, tagIds, status, images);
   const thread = await createThread(title, description, userId, tagIds, status, images);
   return thread;
 }

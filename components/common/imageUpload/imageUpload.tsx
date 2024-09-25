@@ -47,10 +47,6 @@ const ImageUpload = ({ maxImages, setThreadData }: { maxImages: number, setThrea
     setImages((prevImages: File[]) => [...prevImages, ...selectedFiles]);
   };
 
-  useEffect(() => {
-   setThreadData("images", images);
-  }, [images]);
-
   const removeImage = (index: number) => {
     setImages((prevImages: File[]) => prevImages.filter((_, i) => i !== index));
   };
