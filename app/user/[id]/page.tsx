@@ -34,7 +34,6 @@ const UserPage = () => {
           Array.isArray(userId) ? userId[0] : userId
         );
         const userData = await getClerkUserData(clerkId);
-        console.log("userData", userData);
         setUserData(userData);
 
         if (userData) {

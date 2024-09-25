@@ -19,10 +19,6 @@ const useThreads = () => {
   const { user } = useUser();
   const clerkId = user?.id;
 
-  useEffect(() => {
-    console.log("user id of clerk:", clerkId);
-  }, [clerkId]);
-
   const userCache: Record<number | string, string> = {};
   const clerkCache: Record<string, any> = {};
 
@@ -176,8 +172,6 @@ const useThreads = () => {
       userId: userId,
       status: thread.status,
     };
-
-    console.log("Thread payload:", threadPayload);
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/threads`,

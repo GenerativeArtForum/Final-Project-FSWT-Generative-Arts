@@ -4,5 +4,5 @@ import { PageWrapperStyles } from "@/styles/pageWrapperStyles";
 
 export const ProfilePageWrapper = styled.div`
   ${PageWrapperStyles}
-  margin-top: 0px;
+  margin-top: 24px;
 `;

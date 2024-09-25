@@ -7,12 +7,7 @@ const useProfile = (userId?: string | null) => {
 
   const clerkId = user?.id;
 
-  useEffect(() => {
-    console.log("User id:", userId);
-  }, [userId]);
-
   const updateProfile = async (payload: EditProfileForm) => {
-    console.log("payload", payload);
     const responsePayload = {
       clerk_id: clerkId,
       ...payload,
