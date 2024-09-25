@@ -15,6 +15,8 @@ const shimmer = keyframes`
 export const ThreadPageWrapper = styled.div`
   ${PageWrapperStyles}
 
+  margin-top: 30px;
+
   .container {
     display: flex;
     flex-direction: column;

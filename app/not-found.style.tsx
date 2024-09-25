@@ -7,6 +7,8 @@ import { PageWrapperStyles } from "@/styles/pageWrapperStyles";
 export const NotFoundPageWrapper = styled.div`
   ${PageWrapperStyles}
 
+  margin-top: 30px;
+
   text-align: center;
   gap: 16px;
   padding: 0 32px;
