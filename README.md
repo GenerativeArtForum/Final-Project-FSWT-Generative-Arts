@@ -40,6 +40,18 @@ Our project leverages a modern and powerful tech stack:
 - **Add Images**: Add images to your threads and show your art
 - **Social Media Integration**: Easily share your art on other platforms
 
+**Feed Page**
+![Feed Page](https://github.com/GenerativeArtForum/Final-Project-FSWT-Generative-Arts/blob/Documentation/ReadmeImgs/artforum1.png)
+
+**Thread Page**
+![Thread Page](https://github.com/GenerativeArtForum/Final-Project-FSWT-Generative-Arts/blob/Documentation/ReadmeImgs/artforum2.png)
+
+**User Profile**
+![Profile Page](https://github.com/GenerativeArtForum/Final-Project-FSWT-Generative-Arts/blob/Documentation/ReadmeImgs/artforum3.png)
+
+**Thread Creation**
+![Thread Creation](https://github.com/GenerativeArtForum/Final-Project-FSWT-Generative-Arts/blob/Documentation/ReadmeImgs/artforum4.png)
+
 ## Getting Started
 
 ```bash
