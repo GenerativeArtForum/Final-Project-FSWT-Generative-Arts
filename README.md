@@ -14,7 +14,7 @@ Our project leverages a modern and powerful tech stack:
   - Tailwind CSS for fast and responsive design
 
 - **Backend**: 
-  - Express with TypeScript for a robust and typed server
+  - TypeScript for a robust and typed server
   - Prisma ORM for efficient database management
 
 - **Database**: 
@@ -32,14 +32,12 @@ Our project leverages a modern and powerful tech stack:
 ## Features
 
 - **User Authentication**: Secure login and registration system
-- **Recomended Page**: Browse new automatically recomended generative artworks
-- **Following Page**: Browse new generative artworks from users you follow
+- **Feed Page**: Browse new automatically recomended generative artworks
 - **Thread Creation**: Create new discussions, tutorials or ask questions
 - **Response Creation**: Respond to other users threads and comments
 - **User Profiles**: Personalized spaces for artists to see their threads
 - **Tag Exploration**: Discover art by styles, techniques, or themes
-- **Likes and Comments System**: Interact with other artists' threads
-- **Advanced Search**: Find specific threads with detailed filters
+- **Add Images**: Add images to your threads and show your art
 - **Social Media Integration**: Easily share your art on other platforms
 
 ## Getting Started
